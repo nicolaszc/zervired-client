@@ -7,4 +7,5 @@ export interface Provider {
   avatarUrl?: string
   services: string[]
   priceFrom?: number
+  image?: string | null
 }
