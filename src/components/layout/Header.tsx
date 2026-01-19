@@ -13,12 +13,12 @@ export default function Header() {
         </div>
 
         <nav className="flex items-center gap-6 text-sm">
-          <a href="#" className="text-white/50 hover:text-white">
+          <a href="#" className="text-white/80 hover:text-white">
             Explorar
           </a>
           <a
             href="#"
-            className="rounded-md bg-sky-500 px-4 py-2 text-white hover:bg-sky-700"
+            className="rounded-full bg-amber-500 px-4 py-2 text-white hover:bg-amber-600"
           >
             Publicar servicio
           </a>

@@ -1,6 +1,6 @@
 import ProviderCard from '@/components/providers/ProviderCard'
 import { providers } from '@/data/providers'
-import { coda } from "@/styles/fonts/fonts";
+import { actor } from "@/styles/fonts/fonts";
 import { montserrat } from "@/styles/fonts/fonts";
 export default function ProvidersGrid() {
   return (
