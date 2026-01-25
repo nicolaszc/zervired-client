@@ -1,6 +1,15 @@
+@custom-variant dark (&:where(.dark &));
 @import "tailwindcss";
 
+
+
 :root {
+  --background: #efefef;
+  --foreground: #0f172a;
+}
+
+/* Dark mode controlado por clase */
+.dark {
   --background: #041f2f;
   --foreground: #ededed;
 }
@@ -10,13 +19,6 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root{
-    --background: #041f2f;
-    --foreground: #ededed;
-  }
 }
 
 body {
