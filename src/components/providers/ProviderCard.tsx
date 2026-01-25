@@ -18,6 +18,7 @@ export default function ProviderCard({ provider }: Props) {
     alt={provider.name}
     width={48}
     height={48}
+    unoptimized
     className="h-14 w-14 rounded-full object-cover"
   />
 ) : (
