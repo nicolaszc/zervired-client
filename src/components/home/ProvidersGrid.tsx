@@ -1,11 +1,9 @@
 import ProviderCard from '@/components/providers/ProviderCard'
 import { providers } from '@/data/providers'
-import { actor } from "@/styles/fonts/fonts";
-import { montserrat } from "@/styles/fonts/fonts";
 export default function ProvidersGrid() {
   return (
-    <section className="mx-auto max-w-7xl px-6 py-16">
-      <h2 className="mb-8 text-2xl font-semibold" style={montserrat.style}>
+    <section className="mx-auto max-w-7xl px-6 py-16 relative z-1">
+      <h2 className="mb-8 text-2xl font-semibold">
         Servicios disponibles
       </h2>
 
