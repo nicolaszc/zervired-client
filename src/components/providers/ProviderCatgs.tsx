@@ -6,7 +6,7 @@ import { ICON_MAP } from '@/constants/icon-map'
 export default function ProviderCatgs() {
   return (
     <div className="mx-auto max-w-7xl px-6 pt-8 pb-8">
-      <h2 className="mb-8 text-2xl font-semibold bg-radial from-[#efefef] from-40% to-transparent dark:from-[#041f2f] dark:from-40% dark:to-transparent">
+      <h2 className="inline-block mb-8 text-2xl font-semibold bg-radial from-[#efefef] from-40% to-transparent dark:from-[#041f2f] dark:from-40% dark:to-transparent">
         Categorías de Servicio
       </h2>
 

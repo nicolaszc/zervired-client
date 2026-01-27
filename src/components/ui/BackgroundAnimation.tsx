@@ -2,8 +2,7 @@
 
 const lineGroups = [
   { startY: 150, count: 10, gap: 14 },
-  { startY: 450, count: 9, gap: 16 },
-  { startY: 900, count: 8, gap: 18 },
+  { startY: 570, count: 9, gap: 16 },
 ]
 
 const LINE_WIDTHS = [0.6, 0.8, 1]
@@ -19,7 +18,7 @@ const NODE_KEYPOINTS = [0.3, 0.5, 0.75]
 export default function BackgroundAnimation() {
   return (
     <svg
-      className="fixed inset-0 w-full h-full z-0 pointer-events-none opacity-[0.5] dark:opacity-[0.25] text-amber-500 dark:text-sky-500"
+      className="fixed inset-0 w-full h-full z-0 pointer-events-none opacity-[0.3] dark:opacity-[0.2] text-amber-500 dark:text-sky-500"
       viewBox="0 0 1200 700"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"

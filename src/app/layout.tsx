@@ -32,7 +32,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="es" className={`${montserrat.variable}`}>
-      <body className="min-h-screen flex flex-col relative pt-[100px]">
+      <body className="min-h-screen flex flex-col relative pt-25">
         <BackgroundAnimation />
         <Header />
         <main className="flex-1">{children}</main>

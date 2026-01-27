@@ -43,13 +43,13 @@ export default function Hero() {
         </motion.div>
       </AnimatePresence>
 
-        <div className="absolute inset-y-0 start-0 end-50% w-[50%] bg-amber-950/40 dark:bg-sky-950/70 z-1"></div>
-        <div className="absolute inset-y-0 start-50% end-0 w-[50%] bg-amber-500/20 dark:bg-sky-500/40 z-1"></div>
+        <div className="absolute w-[100%] top-0 h-[50%] md:left-0 md:w-[50%] md:h-[100%] bg-amber-950/40 dark:bg-sky-950/70 z-1"></div>
+        <div className="absolute w-[100%] top-[50%] h-[50%] md:top-0 md:left-[50%] md:w-[50%] md:h-[100%] bg-amber-500/20 dark:bg-sky-500/40 z-1"></div>
         {/* Content */}
-        <div className='relative z-10 grid grid-cols-1 md:grid-cols-2 gap-12 mx-auto max-w-7xl px-6 py-10'>
+        <div className='relative z-10 grid grid-rows-2 md:grid-rows-1 grid-cols-1 md:grid-cols-2 gap-12 mx-auto max-w-7xl px-6 py-10'>
 
-          <div className='flex h-full items-center'>
-            <h1 className="w-[50%] me-5 text-4xl font-semibold tracking-normal text-shadow-lg text-shadow-amber-950/50 dark:text-shadow-sky-950/50 mt-3 mb-4 text-white">3 simples pasos y encuentra tu servicio</h1>
+          <div className='flex flex-col row-span-1 md:flex-row h-full min-h-full items-center justify-center'>
+            <h1 className="text-center md:text-start md:w-[50%] md:me-5 text-4xl font-semibold tracking-normal text-shadow-lg text-shadow-amber-950/50 dark:text-shadow-sky-950/50 mt-3 mb-4 text-white">3 simples pasos y encuentra tu servicio</h1>
             <ol className='list-decimal list-inside text-white text-shadow-lg text-shadow-amber-950/50 dark:text-shadow-sky-950/50 p-0 m-0 text-lg font-semibold leading-none'>
               <li className='flex items-center mb-6'>
                 <span className='bg-amber-500/90 dark:bg-sky-950/90 rounded-full w-8 h-8 text-white text-shadow-none shadow-lg shadow-grey-500/30 dark:shadow-sky-500/70 me-3 flex justify-center items-center text-xl'>1</span>
@@ -66,12 +66,12 @@ export default function Hero() {
             </ol>
           </div>
 
-          <div className="flex flex-col h-full justify-center items-center">
-            <h1 className="text-4xl font-semibold tracking-normal text-shadow-lg text-shadow-amber-950/50 dark:text-shadow-sky-950/50 mt-3 text-white">
+          <div className="flex flex-col row-span-1 h-full justify-center items-center">
+            <h1 className="text-center text-4xl font-semibold tracking-normal text-shadow-lg text-shadow-amber-950/50 dark:text-shadow-sky-950/50 mt-3 text-white">
               Inscríbete como proveedor
             </h1>
 
-            <p className="mt-1 text-white font-light uppercase text-xs text-shadow-lg text-shadow-amber-950/50 dark:text-shadow-sky-950/50 tracking-[.415rem]">
+            <p className="mt-1 text-center text-white font-light uppercase text-xs text-shadow-lg text-shadow-amber-950/50 dark:text-shadow-sky-950/50 tracking-[.415rem]">
               Personas reales ofreciendo servicios reales
             </p>
 

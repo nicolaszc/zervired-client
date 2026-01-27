@@ -29,18 +29,18 @@ export default async function CategoryPage({ params }: Props) {
   )
 
   return (
-    <section className="mx-auto max-w-7xl px-6 pt-32 pb-16">
+    <section className="mx-auto max-w-7xl px-6 pt-16 pb-16 relative z-1">
       <header className="mb-10">
-        <h1 className="text-3xl font-semibold">
+        <h1 className="text-3xl font-semibold bg-radial from-[#efefef] from-40% to-transparent dark:from-[#041f2f] dark:from-40% dark:to-transparent">
           {category.label}
         </h1>
-        <p className="mt-2 text-sm text-sky-500">
+        <p className="mt-2 text-sm text-amber-600 dark:text-sky-500 bg-radial from-[#efefef] from-40% to-transparent dark:from-[#041f2f] dark:from-40% dark:to-transparent">
           Servicios disponibles en esta categoría
         </p>
       </header>
 
       {filteredProviders.length === 0 ? (
-        <p className="text-sky-500">
+        <p className="text-sky-500 bg-radial from-[#efefef] from-40% to-transparent dark:from-[#041f2f] dark:from-40% dark:to-transparent">
           Aún no hay proveedores en esta categoría.
         </p>
       ) : (
