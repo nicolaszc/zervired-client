@@ -22,7 +22,7 @@ export default function Hero() {
   }, [])
 
   return (
-    <section className="relative overflow-hidden bg-amber-500 dark:bg-sky-500 relative z-1">
+    <section className="relative overflow-hidden bg-amber-500 dark:bg-sky-500 z-1">
       {/* Background slideshow */}
       <AnimatePresence>
         <motion.div
@@ -38,35 +38,66 @@ export default function Hero() {
             alt="Hero background"
             fill
             priority
-            className="object-cover mix-blend-multiply opacity-50"
+            className="object-cover mix-blend-multiply opacity-[.4]"
           />
         </motion.div>
       </AnimatePresence>
 
-      {/* Overlay */}
-      <div className="absolute inset-0 bg-sky-900/40 z-0" />
+        <div className="absolute inset-y-0 start-0 end-50% w-[50%] bg-amber-950/40 dark:bg-sky-950/70 z-1"></div>
+        <div className="absolute inset-y-0 start-50% end-0 w-[50%] bg-amber-500/20 dark:bg-sky-500/40 z-1"></div>
+        {/* Content */}
+        <div className='relative z-10 grid grid-cols-1 md:grid-cols-2 gap-12 mx-auto max-w-7xl px-6 py-10'>
 
-      {/* Content */}
-      <div className="relative z-10 mx-auto max-w-7xl px-6 py-20 text-center">
-        <h1 className="text-4xl font-semibold tracking-normal text-shadow-lg/20 mt-3 text-white">
-          Encuentra servicios cerca de ti
-        </h1>
+          <div className='flex h-full items-center'>
+            <h1 className="w-[50%] me-5 text-4xl font-semibold tracking-normal text-shadow-lg text-shadow-amber-950/50 dark:text-shadow-sky-950/50 mt-3 mb-4 text-white">3 simples pasos y encuentra tu servicio</h1>
+            <ol className='list-decimal list-inside text-white text-shadow-lg text-shadow-amber-950/50 dark:text-shadow-sky-950/50 p-0 m-0 text-lg font-semibold leading-none'>
+              <li className='flex items-center mb-6'>
+                <span className='bg-amber-500/90 dark:bg-sky-950/90 rounded-full w-8 h-8 text-white text-shadow-none shadow-lg shadow-grey-500/30 dark:shadow-sky-500/70 me-3 flex justify-center items-center text-xl'>1</span>
+                <span className='font-thin'>Busca un servicio</span>
+              </li>
+              <li className='flex items-center mb-6'>
+                <span className='bg-amber-500/90 dark:bg-sky-950/90 rounded-full w-8 h-8 text-white text-shadow-none shadow-lg shadow-grey-500/30 dark:shadow-sky-500/70 me-3 flex justify-center items-center text-xl'>2</span>
+                <span className='font-thin'>Elige un provider verificado</span> 
+              </li>
+              <li className='flex items-center mb-6'>
+                <span className='bg-amber-500/90 dark:bg-sky-950/90 rounded-full w-8 h-8 text-white text-shadow-none shadow-lg shadow-grey-500/30 dark:shadow-sky-500/70 me-3 flex justify-center items-center text-xl'>3</span>  
+                <span className='font-thin'>Agenda y contrata fácil y seguro</span> 
+              </li>
+            </ol>
+          </div>
 
-        <p className="mt-1 text-white/80 font-light uppercase text-xs text-shadow-lg/50 tracking-[.415rem]">
-          Personas reales ofreciendo servicios reales
-        </p>
+          <div className="flex flex-col h-full justify-center items-center">
+            <h1 className="text-4xl font-semibold tracking-normal text-shadow-lg text-shadow-amber-950/50 dark:text-shadow-sky-950/50 mt-3 text-white">
+              Inscríbete como proveedor
+            </h1>
 
-        <div className="mt-8 flex justify-center">
-          <input
-            type="text"
-            placeholder="¿Qué servicio buscas?"
-            className="w-64 rounded-l-full bg-white/90 px-4 py-2 placeholder-gray-700 focus:outline-none"
-          />
-          <button className="rounded-r-full bg-sky-500 hover:bg-sky-600 dark:bg-amber-500 dark:hover:bg-amber-600 px-6 py-2 text-white cursor-pointer transition">
-            Buscar
-          </button>
+            <p className="mt-1 text-white font-light uppercase text-xs text-shadow-lg text-shadow-amber-950/50 dark:text-shadow-sky-950/50 tracking-[.415rem]">
+              Personas reales ofreciendo servicios reales
+            </p>
+
+            <div className="w-64 text-sm mt-5 text-center">
+              <input
+                type="mail"
+                placeholder="mail@mail.com"
+                className="w-full block mb-3 rounded-full bg-white/90 px-4 py-2 placeholder-gray-700 focus:outline-none"
+              />
+              <input
+                type="password"
+                placeholder="********"
+                className="w-full block mb-3 rounded-full bg-white/90 px-4 py-2 placeholder-gray-700 focus:outline-none"
+              />
+              <button className="rounded-full bg-sky-950 hover:bg-sky-950/90 dark:bg-amber-500 dark:hover:bg-amber-600 px-6 py-2 text-white cursor-pointer transition">
+                Enviar
+              </button>
+              <button type="button" className="mt-8 text-sky-950 bg-white hover:bg-white/80 focus:ring-4 focus:outline-none focus:ring-[#4285F4]/50 font-extralight rounded-full text-sm px-6 py-1.5 text-center inline-flex items-center justify-center mr-2 mb-2">
+                <Image className="w-6 h-6" width={24} height={24} src="https://www.svgrepo.com/show/475656/google-color.svg" loading="lazy" alt="google logo" />Sign up with Google
+              </button>
+            </div>
+
+          </div>
+
         </div>
-      </div>
+      
     </section>
   )
 }
