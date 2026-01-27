@@ -4,8 +4,9 @@ export interface Provider {
   name: string
   title: string
   location: string
-  avatarUrl?: string
   services: string[]
   priceFrom?: number
   image?: string | null
+  categories: string[]   
+  featured?: boolean     
 }
