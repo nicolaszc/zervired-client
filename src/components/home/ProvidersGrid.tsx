@@ -1,10 +1,14 @@
 import ProviderCard from '@/components/providers/ProviderCard'
 import ProviderCatgs from '@/components/providers/ProviderCatgs'
 import FeaturedProviders from '@/components/providers/FeaturedProviders'
+import Steps from '@/components/home/Steps'
 import { providers } from '@/data/providers'
 export default function ProvidersGrid() {
   return (
     <>
+        <section className='relative z-1 mt-16'>
+          <Steps />
+        </section>
         <section className='relative z-1'>
           <FeaturedProviders />
           <ProviderCatgs />
