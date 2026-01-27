@@ -32,15 +32,19 @@ export default function ThemeSwitch() {
   return (
     <button
       onClick={toggle}
-      className="rounded-full w-9.5 h-9.5 flex justify-center items-center border border-sky-950/40 text-sky-950/80 dark:border-white/20 dark:text-white/80 text-sm backdrop-blur hover:bg-sky-950/10 dark:hover:bg-white/10 transition gap-2 cursor-pointer"
+      className="rounded-full w-full md:w-9.5 h-9.5 flex justify-center items-center border border-sky-950/40 text-sky-950/80 dark:border-white/20 dark:text-white/80 text-sm backdrop-blur hover:bg-sky-950/10 dark:hover:bg-white/10 transition gap-2 cursor-pointer"
     >
       
-      <span className="hidden sm:inline text-sky-950/80 dark:text-white/80">
+      <span className="text-sky-950/80 dark:text-white/80">
         {dark ? (
   <FontAwesomeIcon icon={faMoon} />
 ) : (
   <SunIcon className="w-5 h-5 text-sky-950 dark:text-white" />
 )}
+
+      </span>
+      <span className='md:hidden'>
+        {dark ? 'Dark Mode' : 'Light Mode'}
       </span>
     </button>
   )
