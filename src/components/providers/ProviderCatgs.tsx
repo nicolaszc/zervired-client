@@ -6,11 +6,11 @@ import { ICON_MAP } from '@/constants/icon-map'
 export default function ProviderCatgs() {
   return (
     <div className="mx-auto max-w-7xl px-6 pt-8 pb-8">
-      <h2 className="inline-block mb-8 text-2xl font-semibold bg-radial from-[#efefef] from-40% to-transparent dark:from-[#041f2f] dark:from-40% dark:to-transparent">
+      <h2 className="inline-block mb-8 text-2xl w-full md:w-auto text-center md:text-start font-semibold bg-radial from-[#efefef] from-40% to-transparent dark:from-[#041f2f] dark:from-40% dark:to-transparent">
         Categorías de Servicio
       </h2>
 
-      <div className="flex justify-between gap-4 flex-wrap">
+      <div className="flex justify-around md:justify-between gap-5 md:gap-4 flex-wrap">
         {Object.entries(CATEGORIES).map(([slug, category]) => {
           const icon = ICON_MAP[category.icon]
 
