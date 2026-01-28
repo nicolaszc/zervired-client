@@ -44,7 +44,7 @@ export default function Hero() {
       </AnimatePresence>
 
         {/* <div className="absolute w-[100%] top-0 h-[50%] md:left-0 md:w-[50%] md:h-[100%] bg-amber-950/40 dark:bg-sky-950/70 z-1"></div> */}
-        <div className="absolute w-[100%] top-0 h-[100%] bg-amber-500/20 dark:bg-sky-950/70 z-1"></div>
+        <div className="absolute w-full top-0 h-full bg-amber-500/20 dark:bg-sky-950/70 z-1"></div>
         {/* Content */}
         <div className='relative z-10 grid gap-12 mx-auto max-w-7xl px-6 py-10'>
 

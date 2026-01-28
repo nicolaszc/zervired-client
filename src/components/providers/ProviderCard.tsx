@@ -30,9 +30,6 @@ export default function ProviderCard({ provider, featured = false }: Props) {
               </div>
             )} 
             
-            <span className='hidden rounded-full bg-white dark:bg-[#041926] absolute top-2 left-2 w-8 h-8 justify-center items-center '>
-              <FontAwesomeIcon icon={faTrophy} className='text-amber-500/90' />  
-            </span> 
             <a
               href="#"
               className="rounded-full w-12 h-12 flex justify-center items-center leading-1 tracking-1 text-sky-950/90 dark:text-white bg-white dark:bg-[#041926] absolute right-0 bottom-0"
@@ -43,11 +40,10 @@ export default function ProviderCard({ provider, featured = false }: Props) {
         </div>
         <div className="flex-1 text-sky-950/90 dark:text-white/80 text-center mt-3 bg-radial from-[#efefef] from-40% to-transparent dark:from-[#041f2f] dark:from-40% dark:to-transparent">
           <h3 className="font-semibold mb-2"><FontAwesomeIcon icon={faTrophy} className='me-2' />{provider.name}</h3>
-          <p className="text-sm text-amber-600 dark:text-sky-500/75">{provider.title}</p>
-          <p className="text-xs text-amber-600 dark:text-amber-500/90 hidden">{provider.location}</p>
+          <p className="text-sm font-light text-amber-500 dark:text-sky-500/75 mb-0">{provider.title}</p>
           {provider.priceFrom && (
-            <p className='font-bold text-sm text-center'>
-              <span className='font-extralight text-xs'>Desde</span> ${provider.priceFrom.toLocaleString()}
+            <p className="text-sm font-extralight">
+              <FontAwesomeIcon icon={faTag} className='me-1' />Desde <span className='font-normal'>${provider.priceFrom.toLocaleString()}</span>
             </p>
           )}
         </div>
@@ -72,17 +68,11 @@ export default function ProviderCard({ provider, featured = false }: Props) {
           )}        
 
           <div className="flex-1 text-sky-950/90 dark:text-white/80">
-            <h3 className="font-semibold">{provider.name}</h3>
-            <FontAwesomeIcon icon={faThumbsUp} className='text-amber-500/70 dark:text-white/70' />
-            <FontAwesomeIcon icon={faMedal} className='text-amber-500/70 dark:text-white/70' />
-            <FontAwesomeIcon icon={faAward} className='text-amber-500/70 dark:text-white/70' />
-            <FontAwesomeIcon icon={faTrophy} className='text-amber-500/70 dark:text-white/70' />
-            <FontAwesomeIcon icon={faTag} className='text-amber-500/70 dark:text-white/70' />
-            <FontAwesomeIcon icon={faStar} className='text-amber-500/70 dark:text-white/70' />
+            <h3 className="font-semibold"><FontAwesomeIcon icon={faTrophy} className='me-2' />{provider.name}</h3>
             <p className="text-sm text-sky-500 mt-4">{provider.title}</p>
             <p className="mt-1 text-xs text-amber-500/90">{provider.location}</p>
 
-            <div className="mt-3 flex flex-wrap gap-2">
+            <div className="mt-3 mb-4 flex flex-wrap gap-2">
               {provider.services.map(service => (
                 <span
                   key={service}
@@ -94,8 +84,8 @@ export default function ProviderCard({ provider, featured = false }: Props) {
             </div>
 
             {provider.priceFrom && (
-              <p className="mt-4 text-sm font-extralight text-sky-950/90 dark:text-white/90">
-                Desde <span className='text-amber-500 font-normal'>${provider.priceFrom.toLocaleString()}</span>
+              <p className="text-sm font-extralight">
+                <FontAwesomeIcon icon={faTag} className='me-1' />Desde <span className='text-amber-500 font-normal'>${provider.priceFrom.toLocaleString()}</span>
               </p>
             )}
           </div>
