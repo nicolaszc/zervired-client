@@ -9,7 +9,7 @@ export default function Steps({ className = '' }) {
             donde encuentras lo que buscas
             </h2>
 
-            <h1 className="w-full px-6 text-center text-4xl font-semibold mt-3 mb-4 bg-radial from-[#efefef] from-40% to-transparent dark:from-[#041f2f] dark:from-40% dark:to-transparent">
+            <h1 className="w-full px-6 text-center text-3xl md:text-4xl font-semibold mt-3 mb-4 bg-radial from-[#efefef] from-40% to-transparent dark:from-[#041f2f] dark:from-40% dark:to-transparent">
             En solo 3 simples pasos
             </h1>
 
