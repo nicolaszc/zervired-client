@@ -9,7 +9,7 @@ import '@fortawesome/fontawesome-svg-core/styles.css'
 config.autoAddCss = false
 export const metadata: Metadata = {
   title: 'Zervired',
-  description: 'Servicios prestados por personas',
+  description: 'Zervired es el marketplace donde encuentras servicios reales, de personas reales. Explora proveedores confiables en múltiples categorías',
   icons: {
     icon: [
       {
