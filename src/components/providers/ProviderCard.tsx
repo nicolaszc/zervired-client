@@ -29,11 +29,7 @@ export default function ProviderCard({ provider, featured = false }: Props) {
                 {provider.name.charAt(0)}
               </div>
             )} 
-            {provider.priceFrom && (
-            <p className='absolute bottom-6 left-0 w-full font-bold text-xs text-center text-shadow-md text-shadow-sky-950 text-white'>
-              <span className='block font-extralight'>Desde</span> ${provider.priceFrom.toLocaleString()}
-            </p>
-            )}
+            
             <span className='rounded-full bg-white dark:bg-[#041926] absolute top-2 left-2 w-8 h-8 flex justify-center items-center '>
               <FontAwesomeIcon icon={faTrophy} className='text-amber-500/90' />  
             </span> 
@@ -48,7 +44,12 @@ export default function ProviderCard({ provider, featured = false }: Props) {
         <div className="flex-1 text-sky-950/90 dark:text-white/80 text-center mt-3 bg-radial from-[#efefef] from-40% to-transparent dark:from-[#041f2f] dark:from-40% dark:to-transparent">
           <h3 className="font-semibold mb-2">{provider.name}</h3>
           <p className="text-sm text-sky-500">{provider.title}</p>
-          <p className="mt-1 text-xs text-amber-600 dark:text-amber-500/90">{provider.location}</p>
+          <p className="text-xs text-amber-600 dark:text-amber-500/90">{provider.location}</p>
+          {provider.priceFrom && (
+            <p className='font-bold text-xs text-center mt-2'>
+              <span className='font-extralight'>Desde</span> ${provider.priceFrom.toLocaleString()}
+            </p>
+          )}
         </div>
       </article>
     ):(
