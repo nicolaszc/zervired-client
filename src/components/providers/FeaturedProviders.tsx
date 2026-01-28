@@ -18,7 +18,7 @@ export default function FeaturedProviders() {
       </div>
 
       <div className="-mx-6 md:mx-0 overflow-x-auto scrollbar-hide snap-x snap-mandatory md:overflow-visible">
-        <div className="flex gap-6 px-6 md:grid md:grid-cols-6 md:gap-6 md:px-0">
+        <div className="flex gap-6 px-6 md:grid md:grid-cols-5 md:gap-6 md:px-0">
           {featured.map(provider => (
             <div
               key={provider.id}

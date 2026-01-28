@@ -38,13 +38,13 @@ export default function Hero() {
             alt="Hero background"
             fill
             priority
-            className="object-cover mix-blend-multiply opacity-[.4]"
+            className="object-cover mix-blend-multiply opacity-[.7]"
           />
         </motion.div>
       </AnimatePresence>
 
         {/* <div className="absolute w-[100%] top-0 h-[50%] md:left-0 md:w-[50%] md:h-[100%] bg-amber-950/40 dark:bg-sky-950/70 z-1"></div> */}
-        <div className="absolute w-[100%] top-0 h-[100%] bg-amber-500/20 dark:bg-sky-500/40 z-1"></div>
+        <div className="absolute w-[100%] top-0 h-[100%] bg-amber-500/20 dark:bg-sky-950/70 z-1"></div>
         {/* Content */}
         <div className='relative z-10 grid gap-12 mx-auto max-w-7xl px-6 py-10'>
 
@@ -74,7 +74,7 @@ export default function Hero() {
                 Enviar
               </button>
               <button type="button" className="mt-8 text-sky-950 bg-white hover:bg-white/80 focus:ring-4 focus:outline-none focus:ring-[#4285F4]/50 font-extralight rounded-full text-sm px-6 py-1.5 text-center inline-flex items-center justify-center mr-2 mb-2">
-                <Image className="w-6 h-6" width={24} height={24} src="https://www.svgrepo.com/show/475656/google-color.svg" loading="lazy" alt="google logo" />Sign up with Google
+                <Image className="w-6 h-6 me-3" width={24} height={24} src="https://www.svgrepo.com/show/475656/google-color.svg" loading="lazy" alt="google logo" />Sign up with Google
               </button>
             </div>
 
