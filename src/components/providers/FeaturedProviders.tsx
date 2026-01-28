@@ -17,15 +17,18 @@ export default function FeaturedProviders() {
         </span>
       </div>
 
-      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-6">
-        {featured.map(provider => (
-          <ProviderCard
-            key={provider.id}
-            provider={provider}
-            featured
-          />
-        ))}
+      <div className="-mx-6 overflow-x-auto scrollbar-hide snap-x snap-mandatory md:overflow-visible md:mx-0">
+        <div className="flex gap-4 px-6 md:grid md:grid-cols-6 md:gap-6 md:px-0">
+          {featured.map(provider => (
+            <div
+              key={provider.id}
+              className="min-w-[75%] snap-start md:min-w-0">
+              <ProviderCard provider={provider} featured />
+            </div>
+          ))}
+        </div>
       </div>
+
     </section>
   )
 }
