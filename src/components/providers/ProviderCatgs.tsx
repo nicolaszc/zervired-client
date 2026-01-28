@@ -11,7 +11,7 @@ export default function ProviderCatgs() {
       </h2>
 
       <div className="-mx-6 md:mx-0 overflow-x-auto snap-x snap-mandatory scrollbar-hide scroll-px-6">
-        <div className="flex gap-6 px-6 md:grid md:grid-cols-6 md:gap-4 md:px-0">
+        <div className="flex gap-6 px-6 md:grid md:grid-cols-6 md:gap-6 md:px-0">
 
           {Object.entries(CATEGORIES).map(([slug, category]) => {
             const icon = ICON_MAP[category.icon]
