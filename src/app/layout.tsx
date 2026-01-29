@@ -3,7 +3,7 @@ import './globals.css'
 import Header from '@/components/layout/Header'
 import Footer from '@/components/layout/Footer'
 import BackgroundAnimation from '@/components/ui/BackgroundAnimation'
-import {montserrat} from '@/styles/fonts/fonts'
+import {poppins} from '@/styles/fonts/fonts'
 import { config } from '@fortawesome/fontawesome-svg-core'
 import '@fortawesome/fontawesome-svg-core/styles.css'
 config.autoAddCss = false
@@ -31,8 +31,8 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="es" className={`${montserrat.variable}`}>
-      <body className="min-h-screen flex flex-col relative pt-25">
+    <html lang="es" className={`${poppins.variable}`}>
+      <body className="font-sans min-h-screen flex flex-col relative pt-25">
         <BackgroundAnimation />
         <Header />
         <main className="flex-1">{children}</main>

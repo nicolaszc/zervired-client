@@ -12,9 +12,7 @@ export default function FeaturedProviders() {
         <h2 className="text-2xl w-full md:w-auto font-semibold bg-radial from-[#efefef] from-40% to-transparent dark:from-[#041f2f] dark:from-40% dark:to-transparent">
           Proveedores destacados
         </h2>
-        <span className="hidden md:inline-block text-xs text-amber-600 dark:text-sky-500 uppercase tracking-wide bg-radial from-[#efefef] from-40% to-transparent dark:from-[#041f2f] dark:from-40% dark:to-transparent">
-          Recomendados
-        </span>
+        
       </div>
 
       <div className="-mx-6 md:mx-0 overflow-x-auto scrollbar-hide snap-x snap-mandatory md:overflow-visible">

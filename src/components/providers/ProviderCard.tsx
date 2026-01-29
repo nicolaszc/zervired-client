@@ -40,7 +40,7 @@ export default function ProviderCard({ provider, featured = false }: Props) {
         </div>
         <div className="flex-1 text-sky-950/90 dark:text-white/80 text-center mt-3 bg-radial from-[#efefef] from-40% to-transparent dark:from-[#041f2f] dark:from-40% dark:to-transparent">
           <h3 className="font-semibold mb-2"><FontAwesomeIcon icon={faTrophy} className='me-2' />{provider.name}</h3>
-          <p className="text-sm font-light text-amber-500 dark:text-sky-500/75 mb-0">{provider.title}</p>
+          <p className="text-sm font-light text-amber-500 dark:text-sky-500/75 mb-1">{provider.title}</p>
           {provider.priceFrom && (
             <p className="text-sm font-extralight">
               <FontAwesomeIcon icon={faTag} className='me-1' />Desde <span className='font-normal'>${provider.priceFrom.toLocaleString()}</span>
@@ -68,8 +68,8 @@ export default function ProviderCard({ provider, featured = false }: Props) {
           )}        
 
           <div className="flex-1 text-sky-950/90 dark:text-white/80">
-            <h3 className="font-semibold"><FontAwesomeIcon icon={faTrophy} className='me-2' />{provider.name}</h3>
-            <p className="text-sm text-sky-500 mt-4">{provider.title}</p>
+            <h3 className="font-semibold text-lg"><FontAwesomeIcon icon={faTrophy} className='me-2' />{provider.name}</h3>
+            <p className="text-sm text-sky-500 mt-3">{provider.title}</p>
             <p className="mt-1 text-xs text-amber-500/90">{provider.location}</p>
 
             <div className="mt-3 mb-4 flex flex-wrap gap-2">

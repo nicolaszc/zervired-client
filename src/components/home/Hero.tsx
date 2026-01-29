@@ -70,11 +70,12 @@ export default function Hero() {
                 placeholder="********"
                 className="w-full block mb-3 rounded-full bg-white/90 px-4 py-2 placeholder-gray-700 focus:outline-none"
               />
-              <button className="rounded-full bg-sky-950 hover:bg-sky-950/90 dark:bg-amber-500 dark:hover:bg-amber-600 px-6 py-2 text-white cursor-pointer transition">
+              <button className="mt-3 rounded-full bg-sky-950 hover:bg-sky-950/90 dark:bg-amber-500 dark:hover:bg-amber-600 px-12 py-2 text-white cursor-pointer transition">
                 Enviar
               </button>
-              <button type="button" className="mt-8 text-sky-950 bg-white hover:bg-white/80 focus:ring-4 focus:outline-none focus:ring-[#4285F4]/50 font-extralight rounded-full text-sm px-6 py-1.5 text-center inline-flex items-center justify-center mr-2 mb-2">
-                <Image className="w-6 h-6 me-3" width={24} height={24} src="https://www.svgrepo.com/show/475656/google-color.svg" loading="lazy" alt="google logo" />Sign up with Google
+              <span className='block mt-4'>ó</span>
+              <button type="button" className="mt-4 text-white/75 bg-[#041f2f] hover:bg-[#041f2f]/80 font-extralight rounded-full text-sm px-6 py-2 text-center inline-flex items-center justify-center mr-2 mb-2">
+                <Image className="w-5 h-5 me-3" width={20} height={20} src="https://www.svgrepo.com/show/475656/google-color.svg" loading="lazy" alt="google logo" />Sign up with Google
               </button>
             </div>
 
