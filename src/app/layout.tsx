@@ -35,7 +35,7 @@ export default function RootLayout({
       <body className="font-sans min-h-screen flex flex-col relative pt-25">
         <BackgroundAnimation />
         <Header />
-        <main className="flex-1">{children}</main>
+        <main className="flex-1 pb-16 bg-[#efefef] dark:bg-[#041f2f]">{children}</main>
         <Footer />
       </body>
     </html>

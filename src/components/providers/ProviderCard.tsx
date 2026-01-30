@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { Provider } from '@/interfaces/provider'
 import Image from 'next/image'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faThumbsUp, faMedal, faAward, faTrophy, faTag, faStar } from '@fortawesome/free-solid-svg-icons'
+import { faTag } from '@fortawesome/free-solid-svg-icons'
 import { getRankIcon } from '@/lib/rank'
 import { formatPrice } from '@/lib/utils';
 
