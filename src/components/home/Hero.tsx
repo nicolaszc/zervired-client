@@ -73,8 +73,8 @@ export default function Hero() {
               <button className="mt-3 rounded-full bg-sky-950 hover:bg-sky-950/90 dark:bg-amber-500 dark:hover:bg-amber-600 px-12 py-2 text-white cursor-pointer transition">
                 Enviar
               </button>
-              <span className='block mt-4'>ó</span>
-              <button type="button" className="mt-4 text-white/75 bg-[#041f2f] hover:bg-[#041f2f]/80 font-extralight rounded-full text-sm px-6 py-2 text-center inline-flex items-center justify-center mr-2 mb-2">
+              <span className='text-white block mt-4 text-shadow-lg text-shadow-amber-950/50 dark:text-shadow-sky-950/50'>o puedes ingresar con </span>
+              <button type="button" className="mt-4 text-white/75 bg-sky-950 hover:bg-sky-950/80 font-extralight rounded-full text-sm px-6 py-2 text-center inline-flex items-center justify-center mr-2 mb-2">
                 <Image className="w-5 h-5 me-3" width={20} height={20} src="https://www.svgrepo.com/show/475656/google-color.svg" loading="lazy" alt="google logo" />Sign up with Google
               </button>
             </div>

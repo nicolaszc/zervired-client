@@ -1,5 +1,8 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faXTwitter, faLinkedinIn, faInstagram } from '@fortawesome/free-brands-svg-icons'
+import Image from 'next/image'
+import logoWhite from '@/assets/logo/logo-zervired-white.svg'
+import logoBlue from '@/assets/logo/logo-zervired-blue.svg'
 export default function Footer() {
   return (
     <footer className="bg-amber-500 dark:bg-[#041926] mt-16 relative z-1">
@@ -16,7 +19,23 @@ export default function Footer() {
           <a className='w-8 h-8 text-2xl mx-3' aria-label="Instagram de Zervired">
             <FontAwesomeIcon icon={faInstagram} />
           </a>
-        </div>      
+        </div>  
+        <Image
+            src={logoBlue}
+            alt="Logo Zervired"
+            height={60}
+            className="h-15 w-auto text-sky-950 mb-3 opacity-80 dark:hidden"
+            priority
+          />  
+
+        <Image
+          src={logoWhite}
+          alt="Logo Zervired"
+          height={60}
+          className="h-15 w-auto text-sky-950 mb-3 opacity-80 hidden dark:block"
+          priority
+        /> 
+
         <small>© {new Date().getFullYear()} Zervired</small>
       </div>
     </footer>
