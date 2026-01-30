@@ -38,7 +38,7 @@ export default function Header() {
           <input
             type="text"
             placeholder="¿Qué servicio buscas?"
-            className="w-64 rounded-l-full bg-white/90 px-4 py-2 placeholder-gray-700 focus:outline-none"
+            className="w-64 rounded-l-lg bg-white/90 px-4 py-2 placeholder-gray-700 focus:outline-none"
           />
           <button className="rounded-r-full bg-sky-950 hover:bg-sky-950/90 dark:bg-amber-500 dark:hover:bg-amber-600 px-6 py-2 text-white cursor-pointer transition">
             Buscar
@@ -83,7 +83,7 @@ export default function Header() {
             <input
               type="text"
               placeholder="¿Qué servicio buscas?"
-              className="w-full rounded-l-full bg-white/90 px-4 py-2 placeholder-gray-700 focus:outline-none"
+              className="w-full rounded-l-lg bg-white/90 px-4 py-2 placeholder-gray-700 focus:outline-none"
             />
             <button className="rounded-r-full bg-sky-950 hover:bg-sky-950/90 dark:bg-amber-500 dark:hover:bg-amber-600 px-6 py-2 text-white cursor-pointer transition">
               Buscar

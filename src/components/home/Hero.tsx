@@ -63,12 +63,12 @@ export default function Hero() {
               <input
                 type="mail"
                 placeholder="mail@mail.com"
-                className="w-full block mb-3 rounded-full bg-white/90 px-4 py-2 placeholder-gray-700 focus:outline-none"
+                className="w-full block mb-3 rounded-lg bg-white/90 px-4 py-2 placeholder-gray-700 focus:outline-none"
               />
               <input
                 type="password"
                 placeholder="********"
-                className="w-full block mb-3 rounded-full bg-white/90 px-4 py-2 placeholder-gray-700 focus:outline-none"
+                className="w-full block mb-3 rounded-lg bg-white/90 px-4 py-2 placeholder-gray-700 focus:outline-none"
               />
               <button className="mt-3 rounded-full bg-sky-950 hover:bg-sky-950/90 dark:bg-amber-500 dark:hover:bg-amber-600 px-12 py-2 text-white cursor-pointer transition">
                 Enviar
