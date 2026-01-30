@@ -1,11 +1,11 @@
 import Hero from '@/components/home/Hero'
-import ProvidersGrid from '@/components/home/ProvidersGrid'
+import HomeGrid from '@/components/home/HomeGrid'
 
 export default function HomePage() {
   return (
     <>
       <Hero />
-      <ProvidersGrid />
+      <HomeGrid />
     </>
   )
 }

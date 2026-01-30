@@ -1,10 +1,12 @@
 @custom-variant dark (&:where(.dark &));
 @import "tailwindcss";
 
+
 @plugin "tailwind-scrollbar-hide";
 
 :root {
-  --background: #efefef;
+
+  --background: #fda722;
   --foreground: #0f172a;
 }
 
