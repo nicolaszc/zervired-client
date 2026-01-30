@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { CATEGORIES } from '@/constants/categories'
 import { ICON_MAP } from '@/constants/icon-map'
 
-export default function ProviderCatgs() {
+export default function ProviderCategories() {
   return (
     <div className="mx-auto max-w-7xl px-6 pt-8 pb-8">
       <h2 className="inline-block mb-8 text-2xl w-full md:w-auto font-semibold bg-radial from-[#efefef] from-40% to-transparent dark:from-[#041f2f] dark:from-40% dark:to-transparent">
@@ -35,7 +35,7 @@ export default function ProviderCatgs() {
                   icon={icon}
                   className="text-amber-500/70 dark:text-sky-500/70 text-5xl mb-3"
                 />
-                <p className="text-center">{category.label}</p>
+                <p className="text-center font-light">{category.label}</p>
               </Link>
             )
           })}

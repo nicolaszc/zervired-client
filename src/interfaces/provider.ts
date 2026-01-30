@@ -8,5 +8,6 @@ export interface Provider {
   priceFrom?: number
   image?: string | null
   categories: string[]   
-  featured?: boolean     
+  featured?: boolean
+  rank?: 0 | 1 | 2 | 3     
 }

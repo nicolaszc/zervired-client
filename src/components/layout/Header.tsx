@@ -78,13 +78,12 @@ export default function Header() {
           ${open ? 'translate-y-50' : '-translate-y-full pointer-events-none'}
         `}
       >
-        <h4 className='text-2xl font-semibold'>Encuentra lo que buscas aquí</h4>
         <nav className="flex flex-col gap-4 px-6 py-6 justify-center items-center">
-          <div className="flex justify-center items-center text-sm">
+          <div className="flex justify-center items-center text-sm w-full">
             <input
               type="text"
               placeholder="¿Qué servicio buscas?"
-              className="w-64 rounded-l-full bg-white/90 px-4 py-2 placeholder-gray-700 focus:outline-none"
+              className="w-full rounded-l-full bg-white/90 px-4 py-2 placeholder-gray-700 focus:outline-none"
             />
             <button className="rounded-r-full bg-sky-950 hover:bg-sky-950/90 dark:bg-amber-500 dark:hover:bg-amber-600 px-6 py-2 text-white cursor-pointer transition">
               Buscar

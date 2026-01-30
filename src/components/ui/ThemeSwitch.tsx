@@ -32,7 +32,7 @@ export default function ThemeSwitch() {
   return (
     <button
       onClick={toggle}
-      className="rounded-full w-full md:w-9.5 h-9.5 flex justify-center items-center border border-sky-950/40 text-sky-950/80 dark:border-white/20 dark:text-white/80 text-sm backdrop-blur hover:bg-sky-950/10 dark:hover:bg-white/10 transition gap-2 cursor-pointer"
+      className="rounded-full w-full md:w-9.5 h-9.5 flex justify-center items-center  text-sky-950/80  dark:text-white/80 text-sm backdrop-blur bg-sky-950/10 hover:bg-sky-950/20 dark:bg-white/10 dark:hover:bg-white/20 transition gap-2 cursor-pointer"
     >
       
       <span className="text-sky-950/80 dark:text-white/80">
