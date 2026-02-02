@@ -1,7 +1,9 @@
 import type { Metadata } from 'next'
 import './globals.css'
+import { ThemeProvider } from '@/lib/ThemeContext'
 import Header from '@/components/layout/Header'
 import Footer from '@/components/layout/Footer'
+import FloatMenu from '@/components/ui/FloatMenu'
 import BackgroundAnimation from '@/components/ui/BackgroundAnimation'
 import {poppins} from '@/styles/fonts/fonts'
 import { config } from '@fortawesome/fontawesome-svg-core'
@@ -33,10 +35,13 @@ export default function RootLayout({
   return (
     <html lang="es" className={`${poppins.variable}`}>
       <body className="font-sans min-h-screen flex flex-col relative pt-25">
-        <BackgroundAnimation />
-        <Header />
-        <main className="flex-1 pb-16 bg-[#efefef] dark:bg-[#041f2f]">{children}</main>
-        <Footer />
+        <ThemeProvider>       
+          <BackgroundAnimation />
+          <Header />
+          <main className="flex-1 pb-16 bg-[#efefef] dark:bg-[#041f2f]">{children}</main>
+          <FloatMenu />
+          <Footer />
+        </ThemeProvider>
       </body>
     </html>
   )

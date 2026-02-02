@@ -23,7 +23,7 @@ export default function ProviderCard({ provider, featured = false }: Props) {
     services,
     priceFrom: price,
     image,
-    featured: isFeatured,
+    //featured: isFeatured,
     rank = 0,
   } = provider
 
@@ -33,7 +33,7 @@ export default function ProviderCard({ provider, featured = false }: Props) {
     <>
     {featured?(
       <article className="transition cursor-pointer text-center">
-        <div className="relative flex justify-center filter drop-shadow-[0_12px_6px_rgba(0,0,0,0.35)] dark:drop-shadow-[0_12px_6px_rgba(14,165,233,0.35)]">
+        <div className="relative flex justify-center filter drop-shadow-[0_12px_6px_rgba(0,0,0,0.2)] dark:drop-shadow-[0_12px_6px_rgba(14,165,233,0.35)]">
           <div className="relative w-40 rounded-full bg-white dark:bg-[#041926] p-2">
             {image ? (
               <Image
@@ -60,7 +60,7 @@ export default function ProviderCard({ provider, featured = false }: Props) {
         </div>
         <div className="flex-1 text-sky-950/90 dark:text-white/80 text-center mt-3 bg-radial from-[#efefef] from-40% to-transparent dark:from-[#041f2f] dark:from-40% dark:to-transparent">
           <h3 className="font-semibold mb-2 text-lg"><FontAwesomeIcon icon={icon} className='me-2' />{name}</h3>
-          <p className="text-sm font-light text-amber-500 dark:text-sky-500/75">{title}</p>
+          <p className="text-sm font-extralight text-shadow-lg text-shadow-white dark:text-shadow-sky-950 text-amber-500 dark:text-sky-500/75">{title}</p>
           {price && (
             <p className="text-xs font-extralight">
               <FontAwesomeIcon icon={faTag} className='me-1 text-sm' />Desde <span className='font-medium text-base tracking-tight'>${formatPrice(price)}</span>
@@ -70,7 +70,7 @@ export default function ProviderCard({ provider, featured = false }: Props) {
       </article>
     ):(
       <Link href={`/providers/${slug}`}>
-       <article className="rounded-lg bg-white dark:bg-[#041926] p-5 shadow-lg shadow-grey-500/30 dark:shadow-sky-500/30 hover:shadow-xl transition cursor-pointer ">
+       <article className="rounded-lg bg-white dark:bg-[#041926] p-5 shadow-lg shadow-gray-500/30 dark:shadow-sky-500/30 hover:shadow-xl transition cursor-pointer ">
         <div className="flex items-start gap-4">
           {image ? (
             <Image
@@ -89,7 +89,7 @@ export default function ProviderCard({ provider, featured = false }: Props) {
 
           <div className="flex-1 text-sky-950/90 dark:text-white/80">
             <h3 className="font-semibold text-lg"><FontAwesomeIcon icon={icon} className='me-2' />{name}</h3>
-            <p className="text-sm text-sky-500 mt-3 font-normal">{title}</p>
+            <p className="text-sm text-sky-500 mt-3 font-light">{title}</p>
             <p className="text-xs text-amber-500/90 font-light">{location}</p>
 
             <div className="mt-3 mb-4 flex flex-wrap gap-2">

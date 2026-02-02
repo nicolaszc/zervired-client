@@ -4,7 +4,6 @@ import { useState } from 'react'
 import Image from 'next/image'
 import logoLight from '@/assets/logo/logo-zervired-light.svg'
 import logoDark from '@/assets/logo/logo-zervired-dark.svg'
-import ThemeSwitch from '@/components/ui/ThemeSwitch'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBars, faXmark } from '@fortawesome/free-solid-svg-icons'
 import { faXTwitter, faLinkedinIn, faInstagram } from '@fortawesome/free-brands-svg-icons'
@@ -54,9 +53,7 @@ export default function Header() {
             className="rounded-full px-4 py-2 text-white bg-sky-950 hover:bg-sky-950/90 dark:bg-amber-500 hover:dark:bg-amber-500/90"
           >
             Publicar servicio
-          </a>
-
-          <ThemeSwitch />
+          </a>          
         </nav>
 
         <button
@@ -96,9 +93,6 @@ export default function Header() {
           >
             Publicar servicio
           </a>
-
-          <ThemeSwitch />
-
           <div className="mx-auto max-w-7xl px-6 pt-10 pb-2 mt-4 text-sm flex flex-col justify-between items-center dark:opacity-75">
             <p className='text-base'><span className="font-semibold">Zervired</span>, el marketplace de servicios reales, para personas reales.</p>
             <div className='rrss mt-4 mb-8 text-center'>

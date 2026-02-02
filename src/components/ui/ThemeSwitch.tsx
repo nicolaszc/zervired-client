@@ -27,25 +27,24 @@ export default function ThemeSwitch() {
     localStorage.setItem('theme', next ? 'dark' : 'light')
   }
 
+  const ICONS = {
+    dark: <FontAwesomeIcon icon={faMoon} />,
+    light: <SunIcon className="w-5 h-5" />,
+  }
+
   if (!mounted) return null // 🔑 CLAVE ABSOLUTA
 
   return (
-    <button
-      onClick={toggle}
-      className="rounded-full w-full md:w-9.5 h-9.5 flex justify-center items-center  text-sky-950/80  dark:text-white/80 text-sm backdrop-blur bg-sky-950/10 hover:bg-sky-950/20 dark:bg-white/10 dark:hover:bg-white/20 transition gap-2 cursor-pointer"
-    >
-      
-      <span className="text-sky-950/80 dark:text-white/80">
-        {dark ? (
-  <FontAwesomeIcon icon={faMoon} />
-) : (
-  <SunIcon className="w-5 h-5 text-sky-950 dark:text-white" />
-)}
-
-      </span>
-      <span className='md:hidden'>
-        {dark ? 'Dark Mode' : 'Light Mode'}
-      </span>
-    </button>
+    <>
+      <button onClick={toggle} className="w-6 h-19 flex flex-col items-center justify-center gap-2 border-b border-sky-950/30 dark:border-white/20">    
+        <span className={`${dark ? 'opacity-100' : 'opacity-40 hover:opacity-100 hover:text-sky-500 cursor-pointer'}`}>
+          {ICONS.dark}
+        </span>
+        <span className={`${!dark ? 'opacity-100' : 'opacity-40 hover:opacity-100 hover:text-amber-500 cursor-pointer'}`}>
+          {ICONS.light}
+        </span>
+      </button>
+    </>
+    
   )
 }
