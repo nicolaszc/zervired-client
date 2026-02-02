@@ -65,7 +65,7 @@ export default function FloatMenu() {
         const delta = current - lastScroll.current
         lastScroll.current = current
 
-        const raw = delta * 0.9
+        const raw = delta * 0.5
         velocity.current = velocity.current * 0.7 + raw * 0.3
 
         setOffset(o => Math.max(-40, Math.min(40, o + velocity.current)))
