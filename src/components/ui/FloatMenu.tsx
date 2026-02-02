@@ -36,8 +36,8 @@ export default function FloatMenu() {
     const animate = useCallback(() => {
         const step = () => {
         setOffset(o => {
-            const k = 0.14
-            const damping = 0.82
+            const k = 0.05
+            const damping = 0.85
 
             const force = -k * o
             velocity.current = (velocity.current + force) * damping
