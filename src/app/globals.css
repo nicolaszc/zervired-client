@@ -30,3 +30,13 @@ body {
   color: var(--foreground);
   font-weight: 200;
 }
+
+@keyframes float-heartbeat {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.25); opacity: 0.25; }
+}
+
+.heartbeat {
+  animation: float-heartbeat 2s ease-in-out infinite;
+  animation-delay: 2s;
+}

@@ -22,7 +22,7 @@ export default function Hero() {
   }, [])
 
   return (
-    <section className="relative overflow-hidden bg-amber-500 dark:bg-sky-500 z-1">
+    <section id="hero" data-hero className="relative overflow-hidden bg-amber-500 dark:bg-sky-500 z-1">
       {/* Background slideshow */}
       <AnimatePresence>
         <motion.div
