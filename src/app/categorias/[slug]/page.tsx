@@ -31,6 +31,7 @@ export default async function CategoryPage({ params }: Props) {
   return (
     <section className="relative z-1">
       <ProvidersGrid
+      key={slug}
       providers={filteredProviders}
       title={category.label}
     />

@@ -18,7 +18,7 @@ export default function ProvidersGrid({
   title,
   }: Props) {   
 
-  const INITIAL = 5
+const INITIAL = 5
 const STEP = 6
 
 const computeNextVisible = (current: number) => {
@@ -44,16 +44,15 @@ const getInitialVisible = () => {
 const [visible, setVisible] = useState(getInitialVisible)
 
 
-
-  const shown = providers.slice(0, visible)
-  const remaining = providers.length - visible
-  const hasMore = remaining > 1
+const shown = providers.slice(0, visible)
+const remaining = providers.length - visible
+const hasMore = remaining > 1
 
   return (
     <div className="mx-auto max-w-7xl px-6 pt-8 pb-16 flex flex-wrap">
       
       {title && (
-        <h2 className="inline-block mb-8  basis-full md:hidden w-full md:w-auto text-2xl font-semibold bg-radial from-[#efefef] from-40% to-transparent dark:from-[#041f2f] dark:from-40% dark:to-transparent">
+        <h2 className="inline-block mb-8  basis-full w-full md:w-auto text-2xl font-semibold bg-radial from-[#efefef] from-40% to-transparent dark:from-[#041f2f] dark:from-40% dark:to-transparent">
           {title} ({providers.length})
         </h2>
       )}

@@ -2,25 +2,39 @@ import ProvidersGrid from '@/components/providers/ProvidersGrid'
 import { providers } from '@/data/providers'
 
 interface Props {
-  searchParams: {
+  searchParams: Promise<{
     q?: string
-  }
+  }>
 }
 
-export default function SearchPage({ searchParams }: Props) {
-  const query = (searchParams.q || '').toLowerCase()
+export default async function SearchPage({ searchParams }: Props) {
+  const normalize = (value: unknown) =>
+  String(value ?? '')
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
 
-  const results = providers.filter(p =>
-    p.name.toLowerCase().includes(query) ||
-    p.categories.some(c => c.toLowerCase().includes(query)) ||
-    p.description?.toLowerCase().includes(query)
+  const params = await searchParams
+  const rawQuery = Array.isArray(params.q)
+  ? params.q[0]
+  : params.q ?? ''
+
+  const query = normalize(rawQuery)
+
+  const results = providers.filter(p => 
+    normalize(p.name).includes(query) || 
+    normalize(p.title).includes(query) || 
+    normalize(p.description).includes(query) || 
+    p.services.some(s => normalize(s).includes(query)) || 
+    p.categories.some(c => normalize(c).includes(query)) 
   )
 
   return (
     <section className="relative z-1 mt-16">
       <ProvidersGrid
+        key={query}
         providers={results}
-        title={`Resultados para "${searchParams.q}"`}
+        title={`Resultados para "${params.q}"`}
       />
     </section>
   )

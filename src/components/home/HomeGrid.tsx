@@ -21,6 +21,7 @@ export default function HomeGrid() {
 
         <section className="relative z-1">
           <ProvidersGrid
+            key="home"
             providers={providers}
             title="Servicios disponibles"
           />
