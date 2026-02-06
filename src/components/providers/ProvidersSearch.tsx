@@ -111,7 +111,7 @@ export default function ProvidersSearch({
         onChange={(e) => setTerm(e.target.value)}
         onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
         placeholder="¿Qué servicio buscas?"
-        className={cn("flex-1 md:min-w-64 rounded-l-lg bg-white/90 px-4 py-2 placeholder-gray-700 focus:outline-none  text-sky-950",
+        className={cn("w-full md:flex-1 md:min-w-64 rounded-l-lg bg-white/90 px-4 py-2 placeholder-gray-700 focus:outline-none  text-sky-950",
           variant === "floating" && "ml-4"
         )}      
       />
@@ -128,7 +128,10 @@ export default function ProvidersSearch({
         >
           {/* Servicios */}
           {suggestions.services.length > 0 && (
-            <div className="border-b border-amber-950/15 dark:border-white/10">
+            <div className={cn("",
+               dropdownDirection === 'down' && "border-b border-amber-950/15 dark:border-white/10" )}
+               >
+           
               <div className="px-4 py-2 text-xs opacity-60">Servicios</div>
               {suggestions.services.map(s => (
                 <div
@@ -159,6 +162,7 @@ export default function ProvidersSearch({
           )}
 
           {/* Providers */}
+          <div>
           <div className="px-4 py-2 text-xs opacity-60">Especialistas</div>
           {suggestions.providers.map(p => (
             <div
@@ -169,8 +173,8 @@ export default function ProvidersSearch({
               <div className="font-semibold leading-tight">{p.name}</div>
               <div className="text-xs opacity-60 truncate">{p.title}</div>
             </div>
-          ))}
-
+            ))}
+          </div>
           {/* CTA Ver todos */}
           <div className="border-t border-amber-950/10 dark:border-white/10">
             <button
@@ -190,6 +194,7 @@ export default function ProvidersSearch({
             >
               Ver todos
             </button>
+            
           </div>
 
         </div>

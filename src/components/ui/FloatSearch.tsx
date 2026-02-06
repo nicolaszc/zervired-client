@@ -17,16 +17,16 @@ export default function FloatingSearch({ className, intersect }: Props) {
 
   const map = useIntersection(
   intersect?.map(r => r.target) ?? [],
-  { threshold: 0.25 }
+  { threshold: 1 }
 )
 
-const visible = intersect
-  ? intersect.some(rule =>
-      rule.when === 'in'
-        ? map[rule.target]
-        : !map[rule.target]
-    )
-  : true
+  const visible = intersect
+    ? intersect.some(rule =>
+        rule.when === 'in'
+          ? map[rule.target]
+          : !map[rule.target]
+      )
+    : true
 
   return (
     <div
@@ -43,8 +43,6 @@ const visible = intersect
         className="
         mx-auto
         max-w-4xl
-        shadow-[0_-8px_20px_rgba(0,0,0,0.15)]
-        backdrop-blur
         bg-amber-500
         dark:bg-[#041926]/90
         py-4

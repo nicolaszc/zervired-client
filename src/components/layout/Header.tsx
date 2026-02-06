@@ -76,7 +76,7 @@ export default function Header() {
 
           <a
             href="#"
-            className="w-full md:w-auto rounded-full px-4 py-2 mb-12 text-white bg-sky-950 hover:bg-sky-950/90 dark:bg-amber-500 hover:dark:bg-amber-500/90"
+            className="w-full md:w-auto rounded-full px-4 py-2 mb-4 text-white bg-sky-950 hover:bg-sky-950/90 dark:bg-amber-500 hover:dark:bg-amber-500/90"
           >
             Login / Publicar servicio
           </a>

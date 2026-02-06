@@ -4,14 +4,35 @@ import { useState, useEffect, useRef, useCallback } from 'react'
 import { useTheme } from '@/context/ThemeContext'
 import { cn } from '@/lib/utils'
 import ThemeSwitch from '@/components/ui/ThemeSwitch'
+import { useIntersection } from '@/hooks/useIntersection'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEllipsisV, faAngleUp } from '@fortawesome/free-solid-svg-icons'
 import { faEnvelope } from '@fortawesome/free-regular-svg-icons'
 import { faWhatsapp} from '@fortawesome/free-brands-svg-icons'
+interface Rule {
+  target: string
+  when: 'in' | 'out'
+}
+interface Props {
+  intersect?: Rule[]
+}
 
-export default function FloatMenu() {
+export default function FloatMenu({ intersect }: Props) {
+
+    const map = useIntersection(
+      intersect?.map(r => r.target) ?? [],
+      { threshold: 1 }
+    )
+    
+      const visible = intersect
+        ? intersect.some(rule =>
+            rule.when === 'in'
+              ? map[rule.target]
+              : !map[rule.target]
+          )
+        : true
     const [open, setOpen] = useState(false)
-    const [onHero, setOnHero] = useState(true)
+    //const [onHero, setOnHero] = useState(true)
     const [offset, setOffset] = useState(0)
     const [mounted, setMounted] = useState(false)
 
@@ -74,7 +95,7 @@ export default function FloatMenu() {
         velocity.current = velocity.current * 0.7 + raw * 0.3
 
         setOffset(o => Math.max(-40, Math.min(40, o + velocity.current)))
-    }, [open])
+    }, [open, setOpen])
 
     // Mount
    useEffect(() => {
@@ -96,7 +117,7 @@ export default function FloatMenu() {
         }
 
     }, [mounted, animate, onScroll, isMobile])
-
+/* 
     // Detect hero
     useEffect(() => {
         const hero = document.querySelector('[data-hero]')
@@ -109,7 +130,7 @@ export default function FloatMenu() {
 
         observer.observe(hero)
         return () => observer.disconnect()
-    }, [])
+    }, []) */
 
     return (
     <div
@@ -117,7 +138,7 @@ export default function FloatMenu() {
         style={mounted && !isMobile ? { transform: `translateY(${offset}px)` } : undefined}
         className={cn(
             'fixed bottom-[50%] translate-y-1/2 md:translate-y-2/5 end-0 px-3.5 py-2 z-30 rounded-l-lg gap-2 text-sky-950/80 dark:text-white/80 text-sm backdrop-blur bg-sky-950/10 dark:bg-white/10 transition-all duration-200 ease-out',
-            onHero && !dark && 'bg-white/50'
+            visible && !dark && 'bg-white/50'
         )}
     >
         {/* SUBMENU */}
