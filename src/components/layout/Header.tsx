@@ -1,9 +1,11 @@
 'use client'
 
+import Link from 'next/link'
 import { useState } from 'react'
 import Image from 'next/image'
 import logoLight from '@/assets/logo/logo-zervired-light.svg'
 import logoDark from '@/assets/logo/logo-zervired-dark.svg'
+import ProvidersSearch from '@/components/providers/ProvidersSearch'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBars, faXmark } from '@fortawesome/free-solid-svg-icons'
 import { faXTwitter, faLinkedinIn, faInstagram } from '@fortawesome/free-brands-svg-icons'
@@ -14,9 +16,10 @@ export default function Header() {
   return (
     <header className="bg-amber-500 dark:bg-[#041926] fixed z-20 w-full top-0">
       <div className="mx-auto max-w-7xl px-6 py-2.5 flex items-center justify-between bg-amber-500 dark:bg-[#041926] relative z-2">
-
+        
         {/* Logo */}
         <div className="h-20 me-51.5">
+          <Link href="/">
           <Image
             src={logoLight}
             alt="Logo Zervired"
@@ -31,18 +34,11 @@ export default function Header() {
             className="h-20 w-auto hidden dark:block"
             priority
           />
+          </Link>
         </div>
 
-        <div className="hidden md:flex justify-center items-center text-sm">
-          <input
-            type="text"
-            placeholder="¿Qué servicio buscas?"
-            className="w-64 rounded-l-lg bg-white/90 px-4 py-2 placeholder-gray-700 focus:outline-none"
-          />
-          <button className="rounded-r-full bg-sky-950 hover:bg-sky-950/90 dark:bg-amber-500 dark:hover:bg-amber-600 px-6 py-2 text-white cursor-pointer transition">
-            Buscar
-          </button>
-        </div>
+        <ProvidersSearch />
+
 
         {/* Nav */}
         <nav className="hidden md:flex justify-end items-center gap-6 text-sm w-80">
@@ -74,25 +70,24 @@ export default function Header() {
           transition-all duration-300 ease-out
           ${open ? 'translate-y-50' : '-translate-y-full pointer-events-none'}
         `}
+        data-mobile-menu
       >
         <nav className="flex flex-col gap-4 px-6 py-6 justify-center items-center">
-          <div className="flex justify-center items-center text-sm w-full">
-            <input
-              type="text"
-              placeholder="¿Qué servicio buscas?"
-              className="w-full rounded-l-lg bg-white/90 px-4 py-2 placeholder-gray-700 focus:outline-none"
-            />
-            <button className="rounded-r-full bg-sky-950 hover:bg-sky-950/90 dark:bg-amber-500 dark:hover:bg-amber-600 px-6 py-2 text-white cursor-pointer transition">
-              Buscar
-            </button>
-          </div>
 
           <a
             href="#"
             className="w-full md:w-auto rounded-full px-4 py-2 mb-12 text-white bg-sky-950 hover:bg-sky-950/90 dark:bg-amber-500 hover:dark:bg-amber-500/90"
           >
-            Publicar servicio
+            Login / Publicar servicio
           </a>
+
+         <a
+            href="#"
+            className="w-full md:w-auto rounded-full px-4 py-2 mb-12 text-white bg-sky-950 hover:bg-sky-950/90 dark:bg-amber-500 hover:dark:bg-amber-500/90"
+          >
+            Registrarse
+          </a>
+
           <div className="mx-auto max-w-7xl px-6 pt-10 pb-2 mt-4 text-sm flex flex-col justify-between items-center dark:opacity-75">
             <p className='text-base'><span className="font-semibold">Zervired</span>, el marketplace de servicios reales, para personas reales.</p>
             <div className='rrss mt-4 mb-8 text-center'>

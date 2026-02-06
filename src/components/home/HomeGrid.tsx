@@ -1,6 +1,7 @@
 import ProvidersGrid from '@/components/providers/ProvidersGrid'
 import ProviderCategories from '@/components/providers/ProviderCategories'
 import FeaturedProviders from '@/components/providers/FeaturedProviders'
+import { providers } from '@/data/providers'
 import Steps from '@/components/sections/Steps'
 export default function HomeGrid() {
   return (
@@ -19,7 +20,11 @@ export default function HomeGrid() {
         </section>
 
         <section className="relative z-1">
-          <ProvidersGrid />
+          <ProvidersGrid
+            key="home"
+            providers={providers}
+            title="Servicios disponibles"
+          />
         </section>
 
     </>  

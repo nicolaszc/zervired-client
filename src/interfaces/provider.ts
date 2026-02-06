@@ -9,5 +9,6 @@ export interface Provider {
   image?: string | null
   categories: string[]   
   featured?: boolean
-  rank?: 0 | 1 | 2 | 3     
+  rank?: 0 | 1 | 2 | 3  
+  description: string   
 }

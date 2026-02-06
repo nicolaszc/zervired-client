@@ -1,0 +1,60 @@
+'use client'
+
+import { cn } from '@/lib/utils'
+import ProvidersSearch from '@/components/providers/ProvidersSearch'
+import { useIntersection } from '@/hooks/useIntersection'
+
+interface Rule {
+  target: string
+  when: 'in' | 'out'
+}
+
+interface Props {
+  className?: string
+  intersect?: Rule[]
+}
+export default function FloatingSearch({ className, intersect }: Props) {
+
+  const map = useIntersection(
+  intersect?.map(r => r.target) ?? [],
+  { threshold: 0.25 }
+)
+
+const visible = intersect
+  ? intersect.some(rule =>
+      rule.when === 'in'
+        ? map[rule.target]
+        : !map[rule.target]
+    )
+  : true
+
+  return (
+    <div
+      className={cn(
+        "fixed bottom-0 left-0 right-0 z-50 pb-[env(safe-area-inset-bottom)] md:hidden",
+        "transition-all duration-500 ease-out",
+        visible
+        ? "translate-y-0 opacity-100"
+        : "translate-y-full opacity-0 pointer-events-none",
+        className
+      )}
+    >
+      <div
+        className="
+        mx-auto
+        max-w-4xl
+        shadow-[0_-8px_20px_rgba(0,0,0,0.15)]
+        backdrop-blur
+        bg-amber-500
+        dark:bg-[#041926]/90
+        py-4
+        "
+      >
+        <ProvidersSearch
+          variant="floating"
+          dropdownDirection="up"
+        />
+      </div>
+    </div>
+  )
+}

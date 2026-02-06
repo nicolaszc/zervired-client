@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect, useRef, useCallback } from 'react'
-import { useTheme } from '@/lib/ThemeContext'
+import { useTheme } from '@/context/ThemeContext'
 import { cn } from '@/lib/utils'
 import ThemeSwitch from '@/components/ui/ThemeSwitch'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -15,10 +15,6 @@ export default function FloatMenu() {
     const [offset, setOffset] = useState(0)
     const [mounted, setMounted] = useState(false)
 
-    useEffect(() => {
-    Promise.resolve().then(() => setMounted(true))
-    }, [])
-
     const velocity = useRef(0)
     const lastScroll = useRef(0)
     const raf = useRef<number | null>(null)
@@ -26,11 +22,20 @@ export default function FloatMenu() {
     const { theme } = useTheme()
     const dark = theme === 'dark'
 
+    const [isMobile] = useState(() => {
+        if (typeof window === 'undefined') return false
+        return window.matchMedia('(max-width: 640px)').matches
+    })   
+
     useEffect(() => {
-    if (window.matchMedia('(min-width: 640px)').matches) {
+        Promise.resolve().then(() => setMounted(true))
+    }, [])
+
+    useEffect(() => {
+    if (!isMobile) {
         Promise.resolve().then(() => setOpen(true))
     }
-    }, [])
+    }, [isMobile])
 
     // Resorte (loop)
     const animate = useCallback(() => {
@@ -72,19 +77,25 @@ export default function FloatMenu() {
     }, [open])
 
     // Mount
-    useEffect(() => {
+   useEffect(() => {
         if (!mounted) return
 
         lastScroll.current = window.scrollY
-        animate()
 
-        window.addEventListener('scroll', onScroll, { passive: true })
+        if (!isMobile) {
+            animate()
+            window.addEventListener('scroll', onScroll, { passive: true })
+        } else {
+            const close = () => setOpen(false)
+            window.addEventListener('scroll', close, { passive: true })
+        }
+
         return () => {
             window.removeEventListener('scroll', onScroll)
             if (raf.current) cancelAnimationFrame(raf.current)
         }
-    }, [mounted, animate, onScroll])
 
+    }, [mounted, animate, onScroll, isMobile])
 
     // Detect hero
     useEffect(() => {
@@ -103,7 +114,7 @@ export default function FloatMenu() {
     return (
     <div
         suppressHydrationWarning
-        style={mounted ? { transform: `translateY(${offset}px)` } : undefined}
+        style={mounted && !isMobile ? { transform: `translateY(${offset}px)` } : undefined}
         className={cn(
             'fixed bottom-[50%] translate-y-1/2 md:translate-y-2/5 end-0 px-3.5 py-2 z-30 rounded-l-lg gap-2 text-sky-950/80 dark:text-white/80 text-sm backdrop-blur bg-sky-950/10 dark:bg-white/10 transition-all duration-200 ease-out',
             onHero && !dark && 'bg-white/50'
