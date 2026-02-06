@@ -1,9 +1,10 @@
 import type { Metadata } from 'next'
 import './globals.css'
-import { ThemeProvider } from '@/lib/ThemeContext'
+import { ThemeProvider } from '@/context/ThemeContext'
 import Header from '@/components/layout/Header'
 import Footer from '@/components/layout/Footer'
 import FloatMenu from '@/components/ui/FloatMenu'
+import FloatSearch from '@/components/ui/FloatSearch'
 import BackgroundAnimation from '@/components/ui/BackgroundAnimation'
 import {poppins} from '@/styles/fonts/fonts'
 import { config } from '@fortawesome/fontawesome-svg-core'
@@ -40,8 +41,15 @@ export default function RootLayout({
           <Header />
           <main className="flex-1 pb-16 bg-[#efefef] dark:bg-[#041f2f]">{children}</main>
           <FloatMenu />
+          <FloatSearch
+            intersect={[
+              { target: '[data-hero]', when: 'out' },
+              { target: '[data-mobile-menu]', when: 'in' }
+            ]}
+          />
+
           <Footer />
-        </ThemeProvider>
+        </ThemeProvider >
       </body>
     </html>
   )

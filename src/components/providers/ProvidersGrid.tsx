@@ -22,6 +22,7 @@ const INITIAL = 5
 const STEP = 6
 
 const computeNextVisible = (current: number) => {
+  
   const remaining = providers.length - current
 
   if (remaining <= STEP + 1) {
@@ -57,17 +58,6 @@ const hasMore = remaining > 1
         </h2>
       )}
 
-      <div className="flex justify-center items-center mb-8 text-sm rounded-l-lg rounded-r-full bg-white dark:bg-[#041f2f] sticky top-35 basis-full md:hidden">
-        <input
-          type="text"
-          placeholder="¿Qué servicio buscas?"
-          className="w-full rounded-l-lg bg-white/90 px-4 py-2 placeholder-gray-700 focus:outline-none"
-        />
-        <button className="rounded-r-full bg-sky-950 hover:bg-sky-950/90 dark:bg-amber-500 dark:hover:bg-amber-600 px-6 py-2 text-white cursor-pointer transition">
-          Buscar
-        </button>
-      </div>
-
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 basis-full">
 
         {/* PROVIDERS */}
@@ -81,7 +71,8 @@ const hasMore = remaining > 1
             onClick={() => setVisible(v => computeNextVisible(v))}
             className="
               rounded-lg
-              bg-amber-500 dark:bg-sky-500
+              bg-linear-to-b from-amber-500 from-20% to-amber-300 
+              dark:bg-linear-to-b dark:from-[#041926] dark:from-20% dark:to-sky-950
               p-5
               shadow-lg shadow-gray-500/30 dark:shadow-sky-500/30
               hover:shadow-xl hover:scale-[1.025]
