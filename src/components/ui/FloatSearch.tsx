@@ -17,7 +17,7 @@ export default function FloatingSearch({ className, intersect }: Props) {
 
   const map = useIntersection(
   intersect?.map(r => r.target) ?? [],
-  { threshold: 1 }
+  { threshold: .2 }
 )
 
   const visible = intersect
