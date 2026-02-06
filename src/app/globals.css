@@ -6,13 +6,14 @@
 
 :root {
 
-  --background: #fda722;
-  --foreground: #0f172a;
+  --background: var(--color-amber-500);
+  --foreground: var(--color-sky-950);
 }
 
 /* Dark mode controlado por clase */
 .dark {
-  --background: #041f2f;
+  /*--background: #041f2f;*/
+  --background: : var(--color-sky-950);
   --foreground: #ededed;
 }
 
