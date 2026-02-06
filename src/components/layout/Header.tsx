@@ -14,7 +14,7 @@ export default function Header() {
   const [open, setOpen] = useState(false)
 
   return (
-    <header className="bg-amber-500 dark:bg-[#041926] fixed z-20 w-full top-0">
+    <header className="bg-amber-500 dark:bg-[#041926] fixed z-40 w-full top-0">
       <div className="mx-auto max-w-7xl px-6 py-2.5 flex items-center justify-between bg-amber-500 dark:bg-[#041926] relative z-2">
         
         {/* Logo */}
@@ -66,7 +66,9 @@ export default function Header() {
         className={`
           md:hidden
           absolute z-1 -top-full left-0 w-full h-[calc(100vh-100px)] pt-12.5 text-center
-          bg-amber-500 dark:bg-[#041926]
+           bg-linear-to-b
+        from-amber-500 via-amber-400 to-[#ffa900] to-80%
+        dark:from-[#041926] dark:via-sky-950 dark:to-[#062031] dark:to-80%
           transition-all duration-300 ease-out
           ${open ? 'translate-y-50' : '-translate-y-full pointer-events-none'}
         `}
