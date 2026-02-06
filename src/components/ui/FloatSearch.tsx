@@ -44,7 +44,7 @@ export default function FloatingSearch({ className, intersect }: Props) {
         mx-auto
         max-w-4xl
         bg-amber-500
-        dark:bg-[#041926]/90
+        dark:bg-sky-950
         py-4
         "
       >
