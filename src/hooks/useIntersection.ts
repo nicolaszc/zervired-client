@@ -9,8 +9,8 @@ export function useIntersection(
   selectors: string | string[],
   options: Options = {}
 ) {
-const [map, setMap] = useState<Record<string, boolean>>({})
-const selectorsKey = JSON.stringify(selectors)
+  const [map, setMap] = useState<Record<string, boolean>>({})
+  const selectorsKey = JSON.stringify(selectors)
 
 // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
