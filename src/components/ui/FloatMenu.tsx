@@ -86,16 +86,17 @@ export default function FloatMenu({ intersect }: Props) {
     // Scroll: estira + cierra
     const onScroll = useCallback(() => {
         if (open) setOpen(false)
+            if (!isMobile) {
+                const current = window.scrollY
+                const delta = current - lastScroll.current
+                lastScroll.current = current
 
-        const current = window.scrollY
-        const delta = current - lastScroll.current
-        lastScroll.current = current
+                const raw = delta * 0.5
+                velocity.current = velocity.current * 0.7 + raw * 0.3
 
-        const raw = delta * 0.5
-        velocity.current = velocity.current * 0.7 + raw * 0.3
-
-        setOffset(o => Math.max(-40, Math.min(40, o + velocity.current)))
-    }, [open, setOpen])
+                setOffset(o => Math.max(-40, Math.min(40, o + velocity.current)))
+            }
+    }, [open, setOpen, isMobile])
 
     // Mount
    useEffect(() => {
@@ -117,20 +118,7 @@ export default function FloatMenu({ intersect }: Props) {
         }
 
     }, [mounted, animate, onScroll, isMobile])
-/* 
-    // Detect hero
-    useEffect(() => {
-        const hero = document.querySelector('[data-hero]')
-        if (!hero) return
 
-        const observer = new IntersectionObserver(
-        ([entry]) => setOnHero(entry.isIntersecting),
-        { threshold: 0.9 }
-        )
-
-        observer.observe(hero)
-        return () => observer.disconnect()
-    }, []) */
 
     return (
     <div

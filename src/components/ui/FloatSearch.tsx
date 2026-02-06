@@ -17,8 +17,10 @@ export default function FloatingSearch({ className, intersect }: Props) {
 
   const map = useIntersection(
   intersect?.map(r => r.target) ?? [],
-  { threshold: .2 }
-)
+    { threshold: .2 }
+  )
+
+  //let dataComponent = null;
 
   const visible = intersect
     ? intersect.some(rule =>
@@ -43,8 +45,9 @@ export default function FloatingSearch({ className, intersect }: Props) {
         className="
         mx-auto
         max-w-4xl
-        bg-amber-500
-        dark:bg-sky-950
+        bg-linear-to-b
+        from-[#ffa900] to-amber-500 
+        dark:from-[#062031] dark:to-[#041926] 
         py-4
         "
       >

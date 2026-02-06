@@ -112,7 +112,7 @@ export default function ProvidersSearch({
         onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
         placeholder="¿Qué servicio buscas?"
         className={cn("w-full md:flex-1 md:min-w-64 rounded-l-lg bg-white/90 px-4 py-2 placeholder-gray-700 focus:outline-none  text-sky-950",
-          variant === "floating" && "ml-4"
+          variant === "floating" && "ml-6"
         )}      
       />
 
@@ -210,7 +210,7 @@ export default function ProvidersSearch({
       <button
         onClick={handleSearch}
         className={cn("rounded-r-full bg-sky-950 hover:bg-sky-950/90  dark:bg-amber-500  dark:hover:bg-amber-600  px-6  py-2  text-white  cursor-pointer  transition",
-        variant === "floating" && "mr-4"
+        variant === "floating" && "mr-6"
         )}
       >
         Buscar
