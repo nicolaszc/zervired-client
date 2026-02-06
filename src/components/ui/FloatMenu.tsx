@@ -20,17 +20,17 @@ interface Props {
 export default function FloatMenu({ intersect }: Props) {
 
     const map = useIntersection(
-      intersect?.map(r => r.target) ?? [],
-      { threshold: 1 }
+    intersect?.map(r => r.target) ?? [],
+    { threshold: .9}
     )
-    
-      const visible = intersect
-        ? intersect.some(rule =>
-            rule.when === 'in'
-              ? map[rule.target]
-              : !map[rule.target]
-          )
-        : true
+
+    const visible = intersect
+    ? intersect.some(rule =>
+        rule.when === 'in'
+            ? map[rule.target]
+            : !map[rule.target]
+        )
+    : true
     const [open, setOpen] = useState(false)
     //const [onHero, setOnHero] = useState(true)
     const [offset, setOffset] = useState(0)

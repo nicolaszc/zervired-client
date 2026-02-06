@@ -121,15 +121,17 @@ export default function ProvidersSearch({
         
         <div
           className={cn(
-            'absolute w-full left-0 bg-linear-to-b shadow-[0_16px_16px_-2px_rgba(0,0,0,0.15)] overflow-hidden z-50',
-            dropdownDirection === 'down' && 'top-full mt-4 rounded-b-lg from-amber-500 from-20% to-amber-300 dark:from-[#041926] dark:from-20% dark:to-sky-950',
-            dropdownDirection === 'up' && 'bottom-full mb-4 flex flex-col-reverse from-amber-300 from-20% to-amber-500 dark:from-sky-950 dark:from-20% dark:to-[#041926]'
+            'absolute w-full left-0 bg-linear-to-b overflow-hidden z-50',
+            dropdownDirection === 'down' && 'top-full mt-4 rounded-b-lg from-amber-500 from-20% to-amber-300 dark:from-[#041926] dark:from-20% dark:to-sky-950 shadow-[0_16px_16px_-2px_rgba(0,0,0,0.15)]',
+            dropdownDirection === 'up' && 'bottom-full mb-4 flex flex-col-reverse from-amber-300 from-20% to-amber-500 dark:from-sky-950 dark:from-20% dark:to-[#041926] shadow-[0_-16px_16px_-2px_rgba(0,0,0,0.15)] '
           )}
         >
           {/* Servicios */}
           {suggestions.services.length > 0 && (
             <div className={cn("",
-               dropdownDirection === 'down' && "border-b border-amber-950/15 dark:border-white/10" )}
+               dropdownDirection === 'down' && "border-b border-amber-950/15 dark:border-white/10",
+                dropdownDirection === 'up' && "border-t border-amber-950/15 dark:border-white/10",
+              )}
                >
            
               <div className="px-4 py-2 text-xs opacity-60">Servicios</div>
@@ -147,7 +149,11 @@ export default function ProvidersSearch({
 
           {/* Ubicaciones */}
           {suggestions.locations.length > 0 && (
-            <div className="border-b border-amber-950/15 dark:border-white/10">
+            <div className={cn("",
+               dropdownDirection === 'down' && "border-b border-amber-950/15 dark:border-white/10",
+                dropdownDirection === 'up' && "border-t border-amber-950/15 dark:border-white/10",
+              )}
+              >
               <div className="px-4 py-2 text-xs opacity-60">Ubicaciones</div>
               {suggestions.locations.map(l => (
                 <div
