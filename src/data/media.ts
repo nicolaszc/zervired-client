@@ -18,17 +18,15 @@ export const providerMedia: ProviderMedia[] = [
       { src: 'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=1200' },
       { src: 'https://images.unsplash.com/photo-1505693314120-0d443867891c?w=1200' },
       { src: 'https://images.unsplash.com/photo-1487014679447-9f8336841d58?w=1200' },
-      { src: 'https://images.unsplash.com/photo-1505693314120-0d443867891c?w=1200' },
-      { src: 'https://images.unsplash.com/photo-1487014679447-9f8336841d58?w=1200' },
-      { src: 'https://images.unsplash.com/photo-1487014679447-9f8336841d58?w=1200' },
-      
-    
-      
-      
-      
+      { src: 'https://images.unsplash.com/photo-1505691938895-1758d7feb511?w=1200' },
+      { src: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=1200' },
+      { src: 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=1200' },
+      { src: 'https://images.unsplash.com/photo-1507089947368-19c1da9775ae?w=1200' },
+      { src: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=1200' },
+      { src: 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=1200' },
+      { src: 'https://images.unsplash.com/photo-1507089947368-19c1da9775ae?w=1200' },      
     ]
   },
-
   {
     providerId: 2,
     media: [

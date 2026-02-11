@@ -61,16 +61,24 @@ export default function RootLayout({
           }} */
         />
       </head>
+
       <body className="font-sans min-h-screen flex flex-col relative pt-25">
-        <ThemeProvider>       
+        <ThemeProvider>
+
           <BackgroundAnimation />
+
           <Header />
+
           <main className="flex-1 pb-16">{children}</main>
+
           <FloatMenu 
           intersect={[
               { target: '[data-hero]', when: 'in' }
             ]}
           />
+
+          <div className='search-overlay'></div>
+
           <FloatSearch
             intersect={[
               { target: '[data-hero]', when: 'out' },
@@ -79,7 +87,9 @@ export default function RootLayout({
           />
 
           <Footer />
+
         </ThemeProvider >
+        
       </body>
     </html>
   )
