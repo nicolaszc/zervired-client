@@ -38,7 +38,7 @@ export default function FloatingSearch({ className, intersect }: Props) {
       <div
         id="float-search"
         className={cn(
-          "fixed bottom-0 left-0 right-0 pb-[env(safe-area-inset-bottom)] md:hidden max-w-4xl py-4",
+          "fixed bottom-0 inset-x-0 max-w-full overflow-x-clip pb-[env(safe-area-inset-bottom)] py-4",
           "transition-all duration-500 ease-out",
           "bg-linear-to-t gradient via-none", 
           visible

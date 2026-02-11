@@ -150,14 +150,14 @@ export default function ProvidersSearch({
       </button>
       {hasResults && (     
       <div 
-        className={cn('search-open absolute w-full left-0 z-60 search-high bg-linear-to-b gradient',
+        className={cn('search-results-box absolute w-full left-0 z-60 bg-linear-to-b gradient',
           dropdownDirection === 'down' && 'top-full mt-4 rounded-b-lg theme-search-shadow',
           dropdownDirection === 'up' && 'bottom-full mb-4 snap-mandatory snap-y',        
           dropdownDirection === 'down' && totalResults === 1 && 'to-300%',
           dropdownDirection === 'up' && totalResults === 1 && 'via-70% to-100%'
         )}
       >
-        
+
         <div
           className={cn(
             '',
