@@ -83,8 +83,8 @@
   /* Shadow */
   .theme-shadow{
     @apply filter 
-      drop-shadow-[0_12px_6px_rgba(0,0,0,0.2)] hover:drop-shadow-[0_12px_10px_rgba(0,0,0,0.4)] 
-      dark:drop-shadow-[0_12px_6px_rgba(14,165,233,0.2)] dark:hover:drop-shadow-[0_12px_10px_rgba(14,165,233,0.4)];
+      drop-shadow-[0_6px_6px_rgba(0,0,0,0.2)] hover:drop-shadow-[0_6px_10px_rgba(0,0,0,0.4)] 
+      dark:drop-shadow-[0_6px_6px_rgba(14,165,233,0.2)] dark:hover:drop-shadow-[0_6px_10px_rgba(14,165,233,0.4)];
   }
 
   .theme-search-shadow{
@@ -169,23 +169,24 @@
   }
 
   /* search */
-  .search-high{
+  .search-results-box{
     @apply max-h-[calc(100vh-(172px))]
       overflow-y-scroll
       scrollbar-hide;
   } 
 
-  body:has(.search-open){
+  body:has(.search-results-box){
     @apply overflow-y-clip;
   }
 
-  body:has(.search-open) header{
+  body:has(.search-results-box) header{
     @apply pointer-events-none md:pointer-events-auto;
   }
 
-  body:has(.search-open) .mobile-menu-btn{
+  body:has(.search-results-box) .mobile-menu-btn{
     @apply hidden;
   }
+
   .search-overlay{
     @apply bg-black/0 dark:bg-white/0
        fixed z-50 
@@ -193,7 +194,7 @@
        left-0 top-0;
   }
 
-  body:has(.search-open) .search-overlay{
+  body:has(.search-results-box) .search-overlay{
     @apply backdrop-blur-xs
       h-[calc(100vh-(100px))]
       top-25;
@@ -207,7 +208,8 @@
       text-(--primary-d)
       z-1;     
   }
-  body:has(.search-open) .close-search-btn{
+
+  body:has(.search-results-box) .close-search-btn{
     @apply flex;
   }
 

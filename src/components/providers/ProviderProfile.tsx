@@ -78,11 +78,11 @@ const slides = chunkSlides(
               <div>
                 <h1 className="text-3xl font-semibold bg-s-fade"><FontAwesomeIcon icon={icon} className='me-2' />{name}</h1>
                 <p className="mt-1 text-lg text-(--highlight-d) font-light bg-s-fade">{title}</p>
-                <p className="mt-2 text-sm text-(--primary-l)/90 font-light bg-s-fade">{location}</p>
+                <p className="text-sm text-(--primary-l)/90 font-light bg-s-fade">{location}</p>
 
                 {provider.priceFrom && (
                   <p className="mt-4 text-sm font-extralight bg-s-fade">
-                    <FontAwesomeIcon icon={faTag} className='me-1 text-lg' />Desde <span className='font-medium text-2xl tracking-tight text-amber-500'>${formatPrice(price)}</span>
+                    <FontAwesomeIcon icon={faTag} className='me-1 text-lg' />Desde <span className='font-semibold text-2xl tracking-tight text-amber-500'>${formatPrice(price)}</span>
                   </p>
                 )}
               </div>

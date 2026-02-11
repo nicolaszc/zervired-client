@@ -30,7 +30,7 @@ export default async function SearchPage({ searchParams }: Props) {
   )
 
   return (
-    <section className="relative z-1 mt-16">
+    <section className="relative z-1">
       <ProvidersGrid
         key={query}
         providers={results}
