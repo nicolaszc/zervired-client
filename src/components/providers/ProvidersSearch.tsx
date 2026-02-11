@@ -176,7 +176,7 @@ export default function ProvidersSearch({
               {suggestions.services.map(s => (
                 <div
                   key={s}
-                  onClick={() => router.push(`/search?q=${encodeURIComponent(s)}`)}
+                  onMouseDown={() => router.push(`/search?q=${encodeURIComponent(s)}`)}
                   className="px-8 py-2 cursor-pointer hover:bg-(--lowlight-l)/10 dark:hover:bg-white/10"
                 >
                   {s}
@@ -196,7 +196,7 @@ export default function ProvidersSearch({
               {suggestions.locations.map(l => (
                 <div
                   key={l}
-                  onClick={() => router.push(`/search?q=${encodeURIComponent(l)}`)}
+                  onMouseDown={() => router.push(`/search?q=${encodeURIComponent(l)}`)}
                   className="px-10 py-2 cursor-pointer hover:bg-(--lowlight-l)/10 dark:hover:bg-white/10"
                 >
                   {l}
@@ -214,7 +214,7 @@ export default function ProvidersSearch({
               {suggestions.providers.map(p => (
                 <div
                   key={p.id}
-                  onClick={() => router.push(`/providers/${p.slug}`)}
+                  onMouseDown={() => router.push(`/providers/${p.slug}`)}
                   className="px-10 py-2 cursor-pointer hover:bg-(--lowlight-l)/10 dark:hover:bg-white/10"
                 >
                   <div className="font-semibold leading-tight">{p.name}</div>
@@ -226,7 +226,7 @@ export default function ProvidersSearch({
           {/* CTA Ver todos */}
           <div className="">
             <button
-              onClick={handleSearch}
+              onMouseDown={handleSearch}
               className={cn(
                 'w-full text-center uppercase px-4 py-3 font-semibold cursor-pointer', 
                 'bg-(--lowlight-l)/10 dark:bg-(--highlight-d)/20', 
