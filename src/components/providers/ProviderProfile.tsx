@@ -1,3 +1,4 @@
+'use client'
 import { Provider } from '@/interfaces/provider'
 import RelatedProviders from '@/components/providers/RelatedProviders'
 import { formatPrice } from '@/lib/utils';
@@ -6,6 +7,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTag } from '@fortawesome/free-solid-svg-icons'
 import { getRankIcon } from '@/lib/rank'
 import Steps from '@/components/sections/Steps'
+import { getMediaByProvider } from '@/lib/getProviderMedia'
+import Gallery from '@/components/ui/Gallery'
+import useIsMobile from '@/hooks/useIsMobile'
+import { getGalleryEngine, chunkSlides } from '@/lib/galleryEngine'
+import { cn } from '@/lib/utils'
 interface Props {
   provider: Provider
 }
@@ -25,6 +31,23 @@ export default function ProviderProfile({ provider }: Props) {
   } = provider
 
   const icon = getRankIcon(rank)
+  const media = getMediaByProvider(provider.id)
+
+
+const isMobile = useIsMobile()
+console.log(!isMobile)
+const galleryEngine = getGalleryEngine(
+  media.length,
+  isMobile
+  
+)
+
+const slides = chunkSlides(
+  media,
+  galleryEngine.perSlide,
+  galleryEngine.maxSlides
+)
+
 
   return (
     <>
@@ -71,7 +94,7 @@ export default function ProviderProfile({ provider }: Props) {
                 {services.map(service => (
                   <li
                     key={service}
-                    className="tag"
+                    className="tag py-2"
                   >
                     {service}
                   </li>
@@ -109,45 +132,42 @@ export default function ProviderProfile({ provider }: Props) {
       
       <section className="relative z-1 mt-16 bg-s-blend">
 
-        <div className="grid md:grid-cols-2">
+        <div className={cn(
+          'grid',
+          galleryEngine.dense ? 'md:grid-cols-3' : 'md:grid-cols-2'
+        )}>
 
-          {/* ===== Gallery ===== */}
-          <div className="grid grid-cols-2 md:grid-cols-3">
 
-            {[
-              "photo-1505691938895-1758d7feb511",
-              "photo-1497366216548-37526070297c",
-              "photo-1522708323590-d24dbb6b0267",
-              "photo-1507089947368-19c1da9775ae",
-              "photo-1519710164239-da123dc03ef4",
-              "photo-1484154218962-a197022b5858",
-            ].map((id) => (
-              <div key={id} className="relative aspect-4/3">
-                <Image
-                  src={`https://images.unsplash.com/${id}?auto=format&fit=crop&w=800&q=60`}
-                  alt=""
-                  fill
-                  sizes="(max-width:768px) 50vw, 33vw"
-                  className="object-cover blend cursor-pointer"
+          <div className={cn(
+            galleryEngine.dense ? 'md:col-span-2' : 'md:col-span-1'
+          )}>
+
+            {/* ===== Gallery ===== */}
+          <Gallery
+  slides={slides}
+  cols={galleryEngine.cols}
+  rows={galleryEngine.rows}
+/>
+
+
+          </div>
+
+          <div className="md:col-span-1">
+            {/* ===== Map ===== */}
+            <div className="relative min-h-80 md:min-h-full">
+              <div className='blend cursor-pointer'>
+                <iframe
+                  src="https://maps.google.com/maps?q=-33.0245,-71.5518&z=13&output=embed"
+                  className="absolute inset-0 w-full h-full border-0"
+                  loading="lazy"
                 />
               </div>
-            ))}
-
-          </div>
-
-          {/* ===== Map ===== */}
-          <div className="relative min-h-80 md:min-h-full">
-            <div className='blend cursor-pointer'>
-              <iframe
-                src="https://maps.google.com/maps?q=-33.0245,-71.5518&z=13&output=embed"
-                className="absolute inset-0 w-full h-full border-0"
-                loading="lazy"
-              />
             </div>
-          </div>
+
+          </div>  
+
 
         </div>
-
       </section>
 
       <section className='relative z-1 mt-16'>

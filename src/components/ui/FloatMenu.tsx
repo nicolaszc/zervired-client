@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect/* , useRef */, useCallback } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useTheme } from '@/context/ThemeContext'
 import { cn } from '@/lib/utils'
 import ThemeSwitch from '@/components/ui/ThemeSwitch'

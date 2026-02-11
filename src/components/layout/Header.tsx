@@ -9,12 +9,14 @@ import ProvidersSearch from '@/components/providers/ProvidersSearch'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBars, faXmark } from '@fortawesome/free-solid-svg-icons'
 import { faXTwitter, faLinkedinIn, faInstagram } from '@fortawesome/free-brands-svg-icons'
+import useIsMobile from '@/hooks/useIsMobile'
 
 export default function Header() {
   const [open, setOpen] = useState(false)
+  const isMobile = useIsMobile()
 
   return (
-    <header className="bg-(--primary-l) dark:bg-(--secondary-d) fixed z-40 w-full top-0">
+    <header className="bg-(--primary-l) dark:bg-(--secondary-d) fixed z-40 md:z-60 w-full top-0">
       <div className="mx-auto max-w-7xl px-6 py-2.5 flex items-center justify-between bg-(--primary-l) dark:bg-(--secondary-d) relative z-2">
         
         {/* Logo */}
@@ -37,9 +39,10 @@ export default function Header() {
           </Link>
         </div>
 
-        <ProvidersSearch />
-
-
+        {!isMobile && ( 
+          <ProvidersSearch />
+        
+        )}
         {/* Nav */}
         <nav className="hidden md:flex justify-end items-center gap-6 text-sm w-80">
           
