@@ -196,8 +196,8 @@
 
   body:has(.search-results-box) .search-overlay{
     @apply backdrop-blur-xs
-      h-[calc(100vh-(100px))]
-      top-25;
+      inset-0
+      top-0;
   }
 
   .close-search-btn{
@@ -232,13 +232,40 @@ body {
   font-weight: 200;
 }
 
+/* Animations */
+.heartbeat {
+  animation: float-heartbeat 2s ease-in-out infinite;
+  animation-delay: 2s;
+}
+
 @keyframes float-heartbeat {
   0%, 20%, 60%, 100% { transform: scale(1); opacity: 1; }
   10%, 30% { transform: scale(1.35); opacity: 0.25; }
 
 }
 
-.heartbeat {
-  animation: float-heartbeat 2s ease-in-out infinite;
-  animation-delay: 2s;
+.shake-element {
+  /* Apply the animation */
+  animation: shake 0.2s cubic-bezier(.36,.07,.19,.97) both;
+  animation-iteration-count: 20;
+  /* Ensure smooth rendering */
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  perspective: 1000px;
 }
+
+/* Define the keyframes */
+@keyframes shake {
+  0% { transform: translate(0, 0) rotate(0deg); }
+  10% { transform: translate(3px, 3px) rotate(3deg); }
+  20% { transform: translate(0, 0) rotate(0eg); }
+  30% { transform: translate(-3px, 3px) rotate(-3deg); }
+  40% { transform: translate(0, 0) rotate(0deg); }
+  50% { transform: translate(3px, 3px) rotate(3deg); }
+  60% { transform: translate(0, 0) rotate(0eg); }
+  70% { transform: translate(-3px, 3px) rotate(-3deg); }
+  80% { transform: translate(0, 0) rotate(0eg); }
+  90% { transform: translate(-3px, 3px) rotate(-3deg); }
+  100% { transform: translate(0, 0) rotate(0deg); }
+}
+

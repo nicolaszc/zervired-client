@@ -87,6 +87,7 @@ const hasMore = remaining > 1
               items-center justify-center
               min-h-48
               text-sm
+              shake-element
             "
           >
             <Image
