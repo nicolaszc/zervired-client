@@ -1,17 +1,30 @@
+/*
+  WISHLIST — Related Providers
+
+  □ Avoid showing providers already seen in session
+  □ Session-based memory diversification
+  □ Weighted shuffle when ranking exists
+  □ Ranking-aware selection before shuffle
+  □ Context-aware recommendations (category/location blend)
+
+*/
+
 import ProviderCard from '@/components/providers/ProviderCard'
 import { providers } from '@/data/providers'
-import SectionTitle  from '@/components/ui/SectionTitle'
 
-export default function FeaturedProviders() {
+export default function RelatedProviders() {
   const featured = providers.filter(p => p.featured).slice(0, 6)
 
   if (featured.length === 0) return null
 
   return (
-    <div className="mx-auto max-w-7xl px-6 pt-16 pb-8">
+    <div className="mx-auto max-w-7xl px-6 pb-8">
       
-      <div className="flex items-center justify-between">
-        <SectionTitle className={''} title={'Especialistas destacados'} />
+      <div className="mb-6 flex items-center justify-between">
+        <h2 className="text-2xl w-full md:w-full font-semibold  bg-s-fade text-center">
+          Otros Especialistas Relacionados
+        </h2>
+        
       </div>
 
       <div className="-mx-6 md:mx-0 overflow-x-auto scrollbar-hide snap-x snap-mandatory md:overflow-visible">

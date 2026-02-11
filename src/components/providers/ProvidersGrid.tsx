@@ -7,6 +7,7 @@ import type { Provider } from '@/interfaces/provider'
 import Image from 'next/image'
 import logoWhite from '@/assets/logo/logo-zervired-white.svg'
 import logoBlue from '@/assets/logo/logo-zervired-blue.svg'
+import SectionTitle  from '@/components/ui/SectionTitle'
 
 interface Props {
   providers: Provider[],
@@ -52,12 +53,21 @@ const hasMore = remaining > 1
   return (
     <div className="mx-auto max-w-7xl px-6 pt-8 pb-16 flex flex-wrap">
       
-      {title && (
-        <h2 className="inline-block mb-8  basis-full w-full md:w-auto text-2xl font-semibold bg-radial from-[#efefef] from-40% to-transparent dark:from-[#041f2f] dark:from-40% dark:to-transparent">
+      {/* {title && (
+        <h2 className="inline-block mb-8  basis-full w-full md:w-auto text-2xl font-semibold bg-s-fade">
           {title} ({providers.length})
         </h2>
-      )}
-
+      )} */}
+      <SectionTitle className={''} title={
+          <>
+            {title}
+            <span className="opacity-60 ml-1">
+              ({providers.length})
+            </span>
+          </>
+        } 
+      />
+      
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 basis-full">
 
         {/* PROVIDERS */}
@@ -70,19 +80,13 @@ const hasMore = remaining > 1
           <button
             onClick={() => setVisible(v => computeNextVisible(v))}
             className="
-              rounded-lg
-              bg-linear-to-b from-amber-500 from-20% to-amber-300 
-              dark:bg-linear-to-b dark:from-[#041926] dark:from-20% dark:to-sky-950
-              p-5
-              shadow-lg shadow-gray-500/30 dark:shadow-sky-500/30
-              hover:shadow-xl hover:scale-[1.025]
-              transition-all duration-500
-              text-left
-              flex flex-col items-center
-              justify-center
-              font-semibold
-              cursor-pointer
+              bg-linear-to-t gradient via-none
+              theme-shadow
+              theme-card
+              flex flex-col 
+              items-center justify-center
               min-h-48
+              text-sm
             "
           >
             <Image

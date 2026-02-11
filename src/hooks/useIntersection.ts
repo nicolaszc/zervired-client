@@ -1,3 +1,12 @@
+/*
+  WISHLIST — FloatSearch
+
+  □ Threshold per intersect rule
+  □ Expose active intersection target
+  □ Motion polish when switching context
+  □ Optional elevation mode override
+*/
+
 import { useEffect, useState } from 'react'
 
 interface Options {

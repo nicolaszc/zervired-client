@@ -1,5 +1,6 @@
 'use client'
 
+//import { useState, useCallback } from 'react'
 import { cn } from '@/lib/utils'
 import ProvidersSearch from '@/components/providers/ProvidersSearch'
 import { useIntersection } from '@/hooks/useIntersection'
@@ -31,30 +32,26 @@ export default function FloatingSearch({ className, intersect }: Props) {
     : true
 
   return (
-    <div
-      className={cn(
-        "fixed bottom-0 left-0 right-0 z-50 pb-[env(safe-area-inset-bottom)] md:hidden",
-        "transition-all duration-500 ease-out",
-        visible
-        ? "translate-y-0 opacity-100"
-        : "translate-y-full opacity-0 pointer-events-none",
-        className
-      )}
-    >
+    <div className='search-overlay'>
       <div
-        className="
-        mx-auto
-        max-w-4xl
-        bg-linear-to-b
-        from-[#ffa900] to-amber-500 
-        dark:from-[#062031] dark:to-[#041926] 
-        py-4
-        "
+        id="float-search"
+        className={cn(
+          "fixed bottom-0 left-0 right-0 pb-[env(safe-area-inset-bottom)] md:hidden max-w-4xl py-4",
+          "transition-all duration-500 ease-out",
+          "bg-linear-to-t gradient via-none", 
+          visible
+          ? "translate-y-0 opacity-100"
+          : "translate-y-full opacity-0 pointer-events-none",
+          className
+        )}
       >
+        
         <ProvidersSearch
           variant="floating"
           dropdownDirection="up"
+          className='z-50'       
         />
+        
       </div>
     </div>
   )

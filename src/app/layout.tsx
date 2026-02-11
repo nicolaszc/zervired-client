@@ -65,7 +65,7 @@ export default function RootLayout({
         <ThemeProvider>       
           <BackgroundAnimation />
           <Header />
-          <main className="flex-1 pb-16 bg-[#efefef] dark:bg-[#041f2f]">{children}</main>
+          <main className="flex-1 pb-16">{children}</main>
           <FloatMenu 
           intersect={[
               { target: '[data-hero]', when: 'in' }
