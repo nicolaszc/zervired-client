@@ -4,6 +4,7 @@
 import { cn } from '@/lib/utils'
 import ProvidersSearch from '@/components/providers/ProvidersSearch'
 import { useIntersection } from '@/hooks/useIntersection'
+import useIsMobile from '@/hooks/useIsMobile'
 
 interface Rule {
   target: string
@@ -15,6 +16,7 @@ interface Props {
   intersect?: Rule[]
 }
 export default function FloatingSearch({ className, intersect }: Props) {
+  const isMobile = useIsMobile()
 
   const map = useIntersection(
   intersect?.map(r => r.target) ?? [],
@@ -45,13 +47,13 @@ export default function FloatingSearch({ className, intersect }: Props) {
           className
         )}
       >
-        
+      {isMobile && ( 
         <ProvidersSearch
           variant="floating"
           dropdownDirection="up"
           className='z-50'       
         />
-        
+      )}
       </div>
     </div>
   )
