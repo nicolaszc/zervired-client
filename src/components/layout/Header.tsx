@@ -14,24 +14,24 @@ export default function Header() {
   const [open, setOpen] = useState(false)
 
   return (
-    <header className="bg-amber-500 dark:bg-[#041926] fixed z-40 w-full top-0">
-      <div className="mx-auto max-w-7xl px-6 py-2.5 flex items-center justify-between bg-amber-500 dark:bg-[#041926] relative z-2">
+    <header className="bg-(--primary-l) dark:bg-(--secondary-d) fixed z-40 w-full top-0">
+      <div className="mx-auto max-w-7xl px-6 py-2.5 flex items-center justify-between bg-(--primary-l) dark:bg-(--secondary-d) relative z-2">
         
         {/* Logo */}
-        <div className="h-20 me-51.5">
+        <div className="h-20 md:me-51.5">
           <Link href="/">
           <Image
             src={logoLight}
             alt="Logo Zervired"
             height={80}
-            className="h-20 w-auto dark:hidden"
+            className="h-20 dark:hidden"
             priority
           />
           <Image
             src={logoDark}
             alt="Logo Zervired"
             height={80}
-            className="h-20 w-auto hidden dark:block"
+            className="h-20 hidden dark:block"
             priority
           />
           </Link>
@@ -46,7 +46,7 @@ export default function Header() {
 
           <a
             href="#"
-            className="rounded-full px-4 py-2 text-white bg-sky-950 hover:bg-sky-950/90 dark:bg-amber-500 hover:dark:bg-amber-500/90"
+            className="cta cta-bg"
           >
             Publicar servicio
           </a>          
@@ -54,7 +54,7 @@ export default function Header() {
 
         <button
           onClick={() => setOpen(!open)}
-          className="md:hidden text-xl"
+          className="mobile-menu-btn md:hidden text-xl"
           aria-label="Toggle menu"
         >
           <FontAwesomeIcon icon={open ? faXmark : faBars} />
@@ -66,9 +66,7 @@ export default function Header() {
         className={`
           md:hidden
           absolute z-1 -top-full left-0 w-full h-[calc(100vh-100px)] pt-12.5 text-center
-           bg-linear-to-b
-        from-amber-500 via-amber-400 to-[#ffa900] to-80%
-        dark:from-[#041926] dark:via-sky-950 dark:to-[#062031] dark:to-80%
+          gradient
           transition-all duration-300 ease-out
           ${open ? 'translate-y-50' : '-translate-y-full pointer-events-none'}
         `}
@@ -78,14 +76,14 @@ export default function Header() {
 
           <a
             href="#"
-            className="w-full md:w-auto rounded-full px-4 py-2 mb-4 text-white bg-sky-950 hover:bg-sky-950/90 dark:bg-amber-500 hover:dark:bg-amber-500/90"
+            className="w-full md:w-auto cta cta-bg"
           >
             Login / Publicar servicio
           </a>
 
          <a
             href="#"
-            className="w-full md:w-auto rounded-full px-4 py-2 mb-12 text-white bg-sky-950 hover:bg-sky-950/90 dark:bg-amber-500 hover:dark:bg-amber-500/90"
+            className="w-full md:w-auto cta cta-ol bg-transparent"
           >
             Registrarse
           </a>

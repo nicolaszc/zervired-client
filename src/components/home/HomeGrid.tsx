@@ -7,19 +7,19 @@ export default function HomeGrid() {
   return (
     <>
     
-        <section className='relative z-1 mt-16'>
+        <section className='relative mt-8 z-1'>
           <Steps />
         </section>
 
-        <section className='relative z-1'>
+        <section className='relative mt-8 z-1'>
           <FeaturedProviders />
         </section>
 
-        <section className='relative z-1'>         
+        <section className='relative mt-8 z-1'>         
           <ProviderCategories />
         </section>
 
-        <section className="relative z-1">
+        <section className="relative mt-8 z-1">
           <ProvidersGrid
             key="home"
             providers={providers}

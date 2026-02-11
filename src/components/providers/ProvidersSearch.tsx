@@ -1,3 +1,13 @@
+/*
+  WISHLIST — FloatSearch
+
+  □ Add explicit close button (setHasResults(false))
+  □ Support ESC to close dropdown
+  □ Toggle collapse/visibility for full search UI
+  □ Persist collapsed state (localStorage)
+
+*/
+
 'use client'
 
 import { useState, useMemo } from 'react'
@@ -5,6 +15,8 @@ import { useRouter } from 'next/navigation'
 import { cn } from '@/lib/utils'
 import { providers } from '@/data/providers'
 import type { Provider } from '@/interfaces/provider'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCircleXmark } from '@fortawesome/free-solid-svg-icons'
 
 interface Props {
   variant?: 'header' | 'mobile' | 'floating'
@@ -23,7 +35,6 @@ export default function ProvidersSearch({
   dropdownDirection = 'down',
   className,
 }: Props) {
-
   const router = useRouter()
   const [term, setTerm] = useState('')
 
@@ -32,6 +43,7 @@ export default function ProvidersSearch({
       .toLowerCase()
       .normalize('NFD')
       .replace(/[\u0300-\u036f]/g, '')
+      
 
   const suggestions: PredictiveSuggestions = useMemo(() => {
 
@@ -96,8 +108,11 @@ export default function ProvidersSearch({
   suggestions.locations.length > 0 ||
   suggestions.providers.length > 0
 
+  
+
+  const totalResults = suggestions.services.length + suggestions.locations.length + suggestions.providers.length 
   return (
-    <div className={cn(containerStyles[variant], 'relative', className)}
+    <div className={cn(containerStyles[variant], 'search-box relative cta rounded-none py-0 md:px-0', className)}
     onBlur={(e) => {
       if (!e.currentTarget.contains(e.relatedTarget)) {
         setTerm('')
@@ -111,35 +126,55 @@ export default function ProvidersSearch({
         onChange={(e) => setTerm(e.target.value)}
         onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
         placeholder="¿Qué servicio buscas?"
-        className={cn("w-full md:flex-1 md:min-w-64 rounded-l-lg bg-white/90 px-4 py-2 placeholder-gray-700 focus:outline-none  text-sky-950",
-          variant === "floating" && "ml-6"
+        className={cn("input rounded-r-none"
         )}      
       />
 
-      {hasResults && (
-
+      <button
+        onClick={() => {setTerm('')}}
+        className={cn("close-search-btn cta"
+        )}
+      >
+        <FontAwesomeIcon icon={faCircleXmark} />
+      </button>
+      
+      <button
+        onClick={handleSearch}
+        className={cn("cta cta-bg rounded-l-none"
+        )}
+      >
+        Buscar
+      </button>
+      {hasResults && (     
+      <div 
+        className={cn('search-open absolute w-full left-0 z-60 mobile-search-high bg-linear-to-b gradient',
+          dropdownDirection === 'down' && 'top-full mt-4 rounded-b-lg theme-search-shadow',
+          dropdownDirection === 'up' && 'bottom-full mb-4 snap-mandatory snap-y',
+        )}
+      >
         
         <div
           className={cn(
-            'absolute w-full left-0 bg-linear-to-b overflow-hidden z-50',
-            dropdownDirection === 'down' && 'top-full mt-4 rounded-b-lg from-amber-500 from-20% to-amber-300 dark:from-[#041926] dark:from-20% dark:to-sky-950 shadow-[0_16px_16px_-2px_rgba(0,0,0,0.15)]',
-            dropdownDirection === 'up' && 'bottom-full mb-4 flex flex-col-reverse from-amber-300 from-20% to-amber-500 dark:from-sky-950 dark:from-20% dark:to-[#041926] shadow-[0_-16px_16px_-2px_rgba(0,0,0,0.15)] '
+            '',
+            dropdownDirection === 'down' && 'theme-search-shadow',
+            dropdownDirection === 'up' && 'flex flex-col-reverse',
+            dropdownDirection === 'down' && totalResults === 1 && 'to-300%',
+            dropdownDirection === 'up' && totalResults === 1 && 'via-70% to-100%'
           )}
         >
           {/* Servicios */}
           {suggestions.services.length > 0 && (
             <div className={cn("",
-               dropdownDirection === 'down' && "border-b border-amber-950/15 dark:border-white/10",
-                dropdownDirection === 'up' && "border-t border-amber-950/15 dark:border-white/10",
+                dropdownDirection === 'down' && totalResults > 1 && "border-b border-(--lowlight-l)/10 dark:border-white/10",
               )}
                >
            
-              <div className="px-4 py-2 text-xs opacity-60">Servicios</div>
+              <div className="px-6 py-2 text-xs opacity-60">Servicios</div>
               {suggestions.services.map(s => (
                 <div
                   key={s}
                   onClick={() => router.push(`/search?q=${encodeURIComponent(s)}`)}
-                  className="px-4 py-2 cursor-pointer hover:bg-amber-950/10 dark:hover:bg-white/10"
+                  className="px-8 py-2 cursor-pointer hover:bg-(--lowlight-l)/10 dark:hover:bg-white/10"
                 >
                   {s}
                 </div>
@@ -150,16 +185,16 @@ export default function ProvidersSearch({
           {/* Ubicaciones */}
           {suggestions.locations.length > 0 && (
             <div className={cn("",
-               dropdownDirection === 'down' && "border-b border-amber-950/15 dark:border-white/10",
-                dropdownDirection === 'up' && "border-t border-amber-950/15 dark:border-white/10",
+               dropdownDirection === 'down' && suggestions.services.length > 0 && suggestions.providers.length > 0 && "border-b border-(--lowlight-l)/10 dark:border-white/10",
+                dropdownDirection === 'up' && totalResults > 1 && "border-b border-(--lowlight-l)/10 dark:border-white/10",
               )}
               >
-              <div className="px-4 py-2 text-xs opacity-60">Ubicaciones</div>
+              <div className="px-6 py-2 text-xs opacity-60">Ubicaciones</div>
               {suggestions.locations.map(l => (
                 <div
                   key={l}
                   onClick={() => router.push(`/search?q=${encodeURIComponent(l)}`)}
-                  className="px-4 py-2 cursor-pointer hover:bg-amber-950/10 dark:hover:bg-white/10"
+                  className="px-10 py-2 cursor-pointer hover:bg-(--lowlight-l)/10 dark:hover:bg-white/10"
                 >
                   {l}
                 </div>
@@ -168,35 +203,32 @@ export default function ProvidersSearch({
           )}
 
           {/* Providers */}
-          <div>
-          <div className="px-4 py-2 text-xs opacity-60">Especialistas</div>
-          {suggestions.providers.map(p => (
-            <div
-              key={p.id}
-              onClick={() => router.push(`/providers/${p.slug}`)}
-              className="px-4 py-3 cursor-pointer hover:bg-amber-950/10 dark:hover:bg-white/10"
-            >
-              <div className="font-semibold leading-tight">{p.name}</div>
-              <div className="text-xs opacity-60 truncate">{p.title}</div>
+          {suggestions.providers.length > 0 && (
+            <div className={cn("",
+                dropdownDirection === 'up' && totalResults > 1 && "border-b border-(--lowlight-l)/10 dark:border-white/10",
+              )}>
+              <div className="px-6 py-2 text-xs opacity-60">Especialistas</div>
+              {suggestions.providers.map(p => (
+                <div
+                  key={p.id}
+                  onClick={() => router.push(`/providers/${p.slug}`)}
+                  className="px-10 py-2 cursor-pointer hover:bg-(--lowlight-l)/10 dark:hover:bg-white/10"
+                >
+                  <div className="font-semibold leading-tight">{p.name}</div>
+                  <div className="text-xs opacity-60 truncate">{p.title}</div>
+                </div>
+                ))}
             </div>
-            ))}
-          </div>
+          )}
           {/* CTA Ver todos */}
-          <div className="border-t border-amber-950/10 dark:border-white/10">
+          <div className="">
             <button
               onClick={handleSearch}
-              className="
-                w-full
-                text-center
-                uppercase
-                px-4 py-3
-                font-semibold
-                cursor-pointer
-              bg-amber-950/10
-              dark:bg-white/10
-              hover:bg-amber-950/15
-              dark:hover:bg-white/15
-              "
+              className={cn(
+                'w-full text-center uppercase px-4 py-3 font-semibold cursor-pointer', 
+                'bg-(--lowlight-l)/10 dark:bg-(--highlight-d)/20', 
+                'hover:bg-(--lowlight-l)/15 dark:hover:bg-(--highlight-d)/50'
+              )}
             >
               Ver todos
             </button>
@@ -204,17 +236,9 @@ export default function ProvidersSearch({
           </div>
 
         </div>
-        
+       </div> 
       )}
-
-      <button
-        onClick={handleSearch}
-        className={cn("rounded-r-full bg-sky-950 hover:bg-sky-950/90  dark:bg-amber-500  dark:hover:bg-amber-600  px-6  py-2  text-white  cursor-pointer  transition",
-        variant === "floating" && "mr-6"
-        )}
-      >
-        Buscar
-      </button>
+      
     </div>
   )
 }

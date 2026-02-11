@@ -22,36 +22,36 @@ export default function Hero() {
   }, [])
 
   return (
-    <section id="hero" data-hero className="relative overflow-hidden bg-amber-500 dark:bg-sky-500 z-1">
+    <section id="hero" data-hero className="relative overflow-hidden bg-s-blend z-1">
       {/* Background slideshow */}
       <AnimatePresence>
         <motion.div
           key={index}
           initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
+          animate={{ opacity: .75 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 1.5, ease: 'easeInOut' }}
-          className="absolute inset-0 z-0"
+          className="absolute inset-0 z-0 mix-blend-multiply"
         >
           <Image
             src={backgrounds[index]}
             alt="Hero background"
             fill
             priority
-            className="object-cover mix-blend-multiply opacity-[.7]"
+            className="object-cover"
           />
         </motion.div>
       </AnimatePresence>
 
-        {/* <div className="absolute w-[100%] top-0 h-[50%] md:left-0 md:w-[50%] md:h-[100%] bg-amber-950/40 dark:bg-sky-950/70 z-1"></div> */}
-        <div className="absolute w-full top-0 h-full bg-amber-500/20 dark:bg-sky-950/70 z-1"></div>
+        {/* <div className="absolute w-[100%] top-0 h-[50%] md:left-0 md:w-[50%] md:h-[100%] bg-amber-950/40 dark:bg-(--primary-dar)/70 z-1"></div> 
+        <div className="absolute w-full top-0 h-full bg-(--primary-l)/50 dark:bg-(--primary-dar)/70 z-1"></div>*/}
         {/* Content */}
         <div className='relative z-10 grid gap-12 mx-auto max-w-7xl px-6 py-10'>
 
           
 
           <div className="flex flex-col row-span-1 h-full justify-center items-center">
-            <h1 className="text-center text-4xl font-semibold tracking-normal text-shadow-lg text-shadow-amber-950/50 dark:text-shadow-sky-950/50 mt-3 text-white">
+            <h1 className="text-center text-4xl font-semibold tracking-normal text-shadow-lg text-shadow-amber-950/50 dark:text-shadow-(--primary-dar)/50 mt-3 text-white">
               Inscríbete como proveedor
             </h1>
 
@@ -63,18 +63,18 @@ export default function Hero() {
               <input
                 type="mail"
                 placeholder="mail@mail.com"
-                className="w-full block mb-3 rounded-lg bg-white/90 px-4 py-2 placeholder-gray-700 focus:outline-none"
+                className="input mb-3"
               />
               <input
                 type="password"
                 placeholder="********"
-                className="w-full block mb-3 rounded-lg bg-white/90 px-4 py-2 placeholder-gray-700 focus:outline-none"
+                className="input mb-4"
               />
-              <button className="mt-3 rounded-full bg-sky-950 hover:bg-sky-950/90 dark:bg-amber-500 dark:hover:bg-amber-600 px-12 py-2 text-white cursor-pointer transition">
+              <button className="cta cta-bg">
                 Enviar
               </button>
-              <span className='text-white block mt-4 text-shadow-lg text-shadow-amber-950/50 dark:text-shadow-sky-950/50'>o puedes ingresar con </span>
-              <button type="button" className="mt-4 text-white/75 bg-sky-950 hover:bg-sky-950/80 font-extralight rounded-full text-sm px-6 py-2 text-center inline-flex items-center justify-center mr-2 mb-2">
+              <span className='text-white block mt-4 text-shadow-lg text-shadow-(--lowlight-l)/50 dark:text-shadow-(--primary-d)/50'>o puedes ingresar con </span>
+              <button type="button" className="mt-4 cta text-(--primary-d) bg-(--primary-l) hover:bg-(--hover-d) dark:bg-(--primary-d) dark:hover:bg-(--hover-l) dark:text-white/750 inline-flex items-center justify-center mr-2 mb-2 cursor-pointer">
                 <Image className="w-5 h-5 me-3" width={20} height={20} src="https://www.svgrepo.com/show/475656/google-color.svg" loading="lazy" alt="google logo" />Sign up with Google
               </button>
             </div>

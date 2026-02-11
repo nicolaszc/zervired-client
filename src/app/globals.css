@@ -4,17 +4,36 @@
 
 @plugin "tailwind-scrollbar-hide";
 
-:root {
+@theme{
+  /* ajuste paleta sky */
+  --color-sky-950: #05253a;
+  --color-sky-900: #072f4a;
 
-  --background: var(--color-amber-500);
-  --foreground: var(--color-sky-950);
-}
+   /* <main> background colors */
+  --bg-l: var(--color-gray-50);
+  --bg-d: var(--color-sky-950); 
+  
+  --primary-l: var(--color-amber-500); /* Header + footter + gradients */
+  --primary-d:  var(--color-sky-950); /* gradients textos */
 
-/* Dark mode controlado por clase */
-.dark {
-  /*--background: #041f2f;*/
-  --background: : var(--color-sky-950);
-  --foreground: #ededed;
+  --secondary-l:  var(--color-amber-400);
+  --secondary-d: #041926; /* Header + footter + cards */
+
+  --hover-l: var(--color-sky-800);
+  --hover-d:  var(--color-amber-400);
+
+  --highlight-l: var(--color-amber-300); 
+  --highlight-d: var(--color-sky-500);
+
+  --lowlight-l: var(--color-amber-950);
+  --lowlight-d: var(--color-sky-700);
+
+  --contrast-low-l: var(--color-amber-100);
+  --contrast-low-d: var(--color-sky-800);
+
+  --via-l: var(--color-amber-300);
+  --via-d: var(--color-sky-700)
+
 }
 
 @theme inline {
@@ -23,11 +42,186 @@
 
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+}
+
+@layer components {
+  
+  main{
+    @apply bg-(--bg-l) dark:bg-(--bg-d);
+  }
+
+  /* Background */
+  .bg-s-fade {
+    @apply bg-radial
+      from-40%  
+      from-(--bg-l) to-transparent
+      dark:from-(--bg-d) dark:to-transparent;
+  }
+
+  .bg-s-blend{
+    @apply bg-(--primary-l)/70 
+      dark:bg-(--highlight-d)/70;
+  }
+
+  .blend{
+    @apply mix-blend-multiply 
+      opacity-75
+      hover:mix-blend-normal 
+      hover:opacity-100
+      transition-all duration-500;
+  }
+
+  .gradient{
+    @apply bg-(--primary-l) dark:bg-(--primary-d)
+      bg-linear-to-b    
+      from-(--primary-l) via-(--via-l) to-(--secondary-l)
+      dark:from-(--secondary-d) dark:via-(--via-d) dark:to-(--lowlight-d)/30
+      to-80%;
+  }
+
+  /* Shadow */
+  .theme-shadow{
+    @apply filter 
+      drop-shadow-[0_12px_6px_rgba(0,0,0,0.2)] hover:drop-shadow-[0_12px_10px_rgba(0,0,0,0.4)] 
+      dark:drop-shadow-[0_12px_6px_rgba(14,165,233,0.2)] dark:hover:drop-shadow-[0_12px_10px_rgba(14,165,233,0.4)];
+  }
+
+  .theme-search-shadow{
+    @apply shadow-[0_16px_16px_-2px_rgba(0,0,0,0.15)];
+  }
+
+  /* Text */
+  .txt-sm{
+
+  }
+  .txt{
+    @apply text-(--primary-d) 
+    dark:text-white/80 
+      leading-relaxed ;
+  }
+
+  .txt-lg{
+
+  }
+
+  .section-title{
+    @apply inline-block 
+      mb-8
+      text-(--bg-d) dark:text-(--bg-l)/70 text-2xl
+      font-semibold; 
+  }
+
+  /* Btns */
+  .cta{
+    @apply px-6 py-2 
+      rounded-full 
+      font-light
+      cursor-pointer
+      transition-all duration-500
+      hover:scale-[1.025];
+  }
+
+  .cta-bg{
+    @apply bg-(--primary-d) dark:bg-(--primary-l)
+      hover:bg-(--hover-l) hover:dark:bg-(--hover-d) 
+      text-white dark:text-(--primary-d) ;
+  }
+
+  .cta-ol{
+    @apply bg-(--bg-l) dark:bg-(--bg-d)
+      hover:bg-(--hover-l)/10 dark:hover:bg-(--hover-d)/10
+      border border-(--primary-d) dark:border-(--primary-l)
+      hover:border-(--hover-l) hover:dark:border-(--hover-d) 
+      text-(--primary-d) dark:text-(--primary-l) 
+      hover:text-(--hover-l) dark:hover:text-(--hover-d) ;
+  }
+
+  /* Tags */
+  .tag{
+    @apply rounded-sm 
+      px-4 py-1
+      text-xs text-white dark:text-(--primary-d) font-light
+      bg-(--primary-d) dark:bg-(--highlight-d);
+  }
+  
+  /* Card */
+  .theme-card{
+    @apply rounded-lg
+      p-5 
+      bg-white dark:bg-(--secondary-d)
+      font-light
+      cursor-pointer
+      transition-all duration-500
+      hover:scale-[1.025]; 
+  }
+
+  /* input */
+  .input{
+    @apply w-full md:flex-1 md:min-w-64 
+      rounded-lg 
+      bg-white/90 
+      px-4 py-2.5 md:py-2 
+      placeholder-(--primary-d)/50
+      text-(--primary-d)/90 text-sm
+      font-light
+      focus:outline-none; 
+  }
+
+  /* search */
+  .mobile-search-high{
+    @apply max-h-[calc(100vh-(172px))] md:max-h-none
+      overflow-y-scroll;
+  } 
+
+  body:has(.search-open){
+    @apply overflow-y-clip md:overflow-y-auto;
+  }
+
+  body:has(.search-open) header{
+    @apply pointer-events-none;
+  }
+
+  body:has(.search-open) .mobile-menu-btn{
+    @apply hidden;
+  }
+  .search-overlay{
+    @apply md:hidden bg-black/50
+       fixed z-50 
+       w-full 
+       left-0 top-0;
+  }
+
+  body:has(.search-open) .search-overlay{
+    @apply md:backdrop-blur-xs
+      md:h-[calc(100vh-(100px))]
+      md:top-25;
+  }
+
+  .close-search-btn{
+    @apply  hidden
+      absolute right-[30%]
+      rounded-none 
+      text-xl      
+  }
+  body:has(.search-open) .close-search-btn{
+    @apply flex;
+  }
 
 }
 
+:root {
+  --background: var(--primary-l);
+  --foreground: var(--primary-d);
+}
+
+/* Dark mode controlado por clase */
+.dark {
+  --background: var(--primary-d);
+  --foreground: var(--bg-l)
+}
+
 body {
-  background: var(--background);
+  background-color: var(--background);
   color: var(--foreground);
   font-weight: 200;
 }
