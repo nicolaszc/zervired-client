@@ -10,7 +10,7 @@
 
 'use client'
 
-import { useState, useMemo, useEffect } from 'react'
+import { useState, useMemo, useEffect} from 'react'
 import { useRouter, usePathname } from 'next/navigation'
 import { cn } from '@/lib/utils'
 import { providers } from '@/data/providers'
@@ -40,7 +40,11 @@ export default function ProvidersSearch({
   const pathname = usePathname()
   const [term, setTerm] = useState('')
 
-  
+  useEffect(() => {
+    const clearOnPathChange = () => setTerm('')
+    clearOnPathChange()
+  }, [pathname])
+
   const normalize = (value: unknown) =>
     String(value ?? '')
       .toLowerCase()
