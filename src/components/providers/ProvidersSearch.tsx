@@ -10,7 +10,7 @@
 
 'use client'
 
-import { useState, useMemo, useEffect} from 'react'
+import { useState, useMemo, useEffect, useDeferredValue} from 'react'
 import { useRouter, usePathname } from 'next/navigation'
 import { cn } from '@/lib/utils'
 import { providers } from '@/data/providers'
@@ -39,6 +39,7 @@ export default function ProvidersSearch({
   const router = useRouter()
   const pathname = usePathname()
   const [term, setTerm] = useState('')
+  const deferredTerm = useDeferredValue(term)
 
   useEffect(() => {
     const clearOnPathChange = () => setTerm('')
@@ -54,11 +55,11 @@ export default function ProvidersSearch({
 
 const suggestions: PredictiveSuggestions = useMemo(() => {
 
-  const q = normalize(term)
+  const q = normalize(deferredTerm)
 
   const EMPTY = { services: [], locations: [], providers: [] }
 
-  if (q.length <= 3) {
+  if (q.length <= 1) {
     return EMPTY
   }
 
@@ -95,7 +96,7 @@ const suggestions: PredictiveSuggestions = useMemo(() => {
     providers: matchedProviders,
   }
 
-}, [term])
+}, [deferredTerm])
 
 
   const handleSearch = () => {
