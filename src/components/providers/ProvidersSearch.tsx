@@ -52,9 +52,9 @@ export default function ProvidersSearch({
       .normalize('NFD')
       .replace(/[\u0300-\u036f]/g, '')
       
-
 const suggestions: PredictiveSuggestions = useMemo(() => {
-  const EMPTY = { services: [], locations: [], providers: [] }
+const EMPTY = { services: [], locations: [], providers: [] }
+  
   if (deferredTerm.length <= 2) {
     return EMPTY
   }
@@ -152,7 +152,7 @@ const suggestions: PredictiveSuggestions = useMemo(() => {
       >
         Buscar
       </button>
-      {hasResults && (     
+      {hasResults && term.length >= 2 &&(     
       <div 
         className={cn('search-results-box absolute w-full left-0 z-3 ',
           dropdownDirection === 'down' && 'top-full mt-4 rounded-b-lg theme-search-shadow',
