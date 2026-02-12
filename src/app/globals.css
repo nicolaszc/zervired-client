@@ -170,22 +170,10 @@
 
   /* search */
   .search-results-box{
-    @apply max-h-[calc(100vh-(172px))]
+    @apply max-h-[calc(100vh-(72px))]
       overflow-y-scroll
       scrollbar-hide;
   } 
-
-  body:has(.search-results-box){
-    @apply overflow-y-clip;
-  }
-
-  body:has(.search-results-box) header{
-    @apply pointer-events-none md:pointer-events-auto;
-  }
-
-  body:has(.search-results-box) .mobile-menu-btn{
-    @apply hidden;
-  }
 
   .search-overlay{
     @apply bg-black/0 dark:bg-white/0
@@ -196,7 +184,7 @@
 
   body:has(.search-results-box) .search-overlay{
     @apply backdrop-blur-xs
-      inset-0
+      md:inset-0
       top-0;
   }
 
@@ -209,10 +197,11 @@
       z-1;     
   }
 
-  body:has(.search-results-box) .close-search-btn, #float-search:focus-within  .close-search-btn{
+  .search-box:has(.search-input:focus) .close-search-btn{
     @apply flex;
   }
 
+  
    
 }
 
@@ -231,6 +220,14 @@ body {
   background-color: var(--background);
   color: var(--foreground);
   font-weight: 200;
+}
+
+body:has(.search-input:focus) #float-search, body:has(.search-results-box) #float-search{
+  top:0
+}
+
+body:has(.search-input:focus), body:has(.search-results-box){
+  overflow-y:clip;
 }
 
 /* Animations */

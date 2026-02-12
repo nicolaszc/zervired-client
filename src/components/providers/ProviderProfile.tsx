@@ -70,7 +70,7 @@ const slides = chunkSlides(
                   className="h-30 w-30 md:h-40 md:w-40 rounded-full object-cover mask-radial-at-top-left mask-radial-[40px]"
                 />
               ) : (
-                <div className="h-40 w-40 rounded-full bg-gray-200/60 dark:bg-gray-200/10 flex items-center justify-center text-4xl font-semibold">
+                <div className="h-30 w-30 md:h-40 md:w-40 min-h-30 min-w-30 rounded-full bg-gray-200/60 dark:bg-gray-200/10 flex items-center justify-center text-4xl font-semibold">
                   {name.charAt(0)}
                 </div>
               )} 

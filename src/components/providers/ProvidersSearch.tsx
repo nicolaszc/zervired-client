@@ -10,8 +10,8 @@
 
 'use client'
 
-import { useState, useMemo } from 'react'
-import { useRouter } from 'next/navigation'
+import { useState, useMemo, useEffect } from 'react'
+import { useRouter, usePathname } from 'next/navigation'
 import { cn } from '@/lib/utils'
 import { providers } from '@/data/providers'
 import type { Provider } from '@/interfaces/provider'
@@ -20,7 +20,7 @@ import { faCircleXmark } from '@fortawesome/free-solid-svg-icons'
 
 interface Props {
   variant?: 'header' | 'mobile' | 'floating'
-  dropdownDirection?: 'down' | 'up'
+  dropdownDirection?: 'down' | 'up' // reserved — currently unused
   className?: string
   ProvidersSearch?: React.ReactNode
 }
@@ -37,8 +37,10 @@ export default function ProvidersSearch({
   className,
 }: Props) {
   const router = useRouter()
+  const pathname = usePathname()
   const [term, setTerm] = useState('')
 
+  
   const normalize = (value: unknown) =>
     String(value ?? '')
       .toLowerCase()
@@ -52,7 +54,7 @@ export default function ProvidersSearch({
 
   const EMPTY = { services: [], locations: [], providers: [] }
 
-  if (q.length <= 1) {
+  if (q.length <= 0) {
     return EMPTY
   }
 
@@ -114,13 +116,8 @@ export default function ProvidersSearch({
   const totalResults = suggestions.services.length + suggestions.locations.length + suggestions.providers.length 
   return (
   <>
-    <div className='search-overlay'></div> 
+    <div className='search-overlay' onMouseDown={() => {setTerm('')}}></div> 
     <div className={cn(containerStyles[variant], 'search-box relative z-2 cta rounded-none py-0 md:px-0', className)}
-    onBlur={(e) => {
-      if (!e.currentTarget.contains(e.relatedTarget)) {
-        setTerm('')
-      }
-    }}
     >
 
       <input
@@ -128,13 +125,14 @@ export default function ProvidersSearch({
         value={term}
         onChange={(e) => setTerm(e.target.value)}
         onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
+       
         placeholder="¿Qué servicio buscas?"
-        className={cn("input rounded-r-none"
+        className={cn("input rounded-r-none search-input"
         )}      
       />
 
       <button
-        onClick={() => {setTerm('')}}
+        onMouseDown={() => {setTerm('')}}
         className={cn("close-search-btn cta"
         )}
       >
@@ -142,7 +140,7 @@ export default function ProvidersSearch({
       </button>
       
       <button
-        onClick={handleSearch}
+        onMouseDown={() => {handleSearch()}}
         className={cn("cta cta-bg rounded-l-none"
         )}
       >
