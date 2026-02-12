@@ -152,7 +152,7 @@ const EMPTY = { services: [], locations: [], providers: [] }
       >
         Buscar
       </button>
-      {term.length >= 3 && (   hasResults && (   
+      {term.length >= 3 && (   /* hasResults && (   */ 
       <div 
         className={cn('search-results-box absolute w-full left-0 z-3 ',
           dropdownDirection === 'down' && 'top-full mt-4 rounded-b-lg theme-search-shadow',
@@ -245,7 +245,7 @@ const EMPTY = { services: [], locations: [], providers: [] }
 
         </div>
        </div> 
-      ))}
+      /* ) */)}
       
     </div>
   </>  
