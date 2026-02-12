@@ -79,10 +79,10 @@ export default function RootLayout({
           />
 
           <FloatSearch
-            intersect={[
+            /* intersect={[
               { target: '[data-float-trigger]', when: 'out' },
-              { target: '[data-mobile-menu]', when: 'in' }
-            ]}
+              { target: '[data-mobile-menu]', when: 'in' } 
+            ]}*/
           />
 
           <Footer />
