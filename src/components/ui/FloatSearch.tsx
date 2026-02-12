@@ -41,7 +41,7 @@ export default function FloatingSearch({ className, intersect }: Props) {
 
   return (
     <>
-      {isMobile && ( 
+      {!isMobile && ( 
         <div
         id="float-search"
         className={cn(
