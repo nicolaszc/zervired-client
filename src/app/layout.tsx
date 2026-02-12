@@ -68,6 +68,7 @@ export default function RootLayout({
           <BackgroundAnimation />
 
           <Header />
+          <div id="float-trigger" className="h-px opacity-0" data-float-trigger/>
 
           <main className="flex-1 pb-16">{children}</main>
 
@@ -79,7 +80,7 @@ export default function RootLayout({
 
           <FloatSearch
             intersect={[
-              { target: '[data-hero]', when: 'out' },
+              { target: '[data-float-trigger]', when: 'out' },
               { target: '[data-mobile-menu]', when: 'in' }
             ]}
           />
