@@ -54,14 +54,15 @@ export default function ProvidersSearch({
       
 
 const suggestions: PredictiveSuggestions = useMemo(() => {
-
-  const q = normalize(deferredTerm)
-
   const EMPTY = { services: [], locations: [], providers: [] }
-
-  if (q.length <= 1) {
+  if (deferredTerm.length <= 2) {
     return EMPTY
   }
+  const q = normalize(deferredTerm)
+
+  
+
+  
 
   // Servicios únicos
   const matchedServices = Array.from(
