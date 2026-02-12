@@ -170,7 +170,7 @@
 
   /* search */
   .search-results-box{
-    @apply max-h-[calc(100vh-(72px))]
+    @apply max-h-[calc(100dvh-(72px))]
       overflow-y-scroll
       scrollbar-hide;
   } 
@@ -182,7 +182,7 @@
        top-0;
   }
 
-  body:has(.search-results-box) .search-overlay{
+  .search-overlay.active{
     @apply backdrop-blur-xs
       md:inset-0
       top-0;
