@@ -55,19 +55,20 @@ export default function FloatMenu({ intersect }: Props) {
         if (!mounted) return
 
         
-        window.addEventListener('scroll', onScroll)
+       
         if(!isMobile) {
+            window.addEventListener('scroll', onScroll)
             console.log('desktop')
             const open = () => setOpen(true)
             open()
+            return () => {
+                window.removeEventListener('scroll', onScroll)          
+            }
         }else{
             console.log('mobile')
         }
 
-        return () => {
-            window.removeEventListener('scroll', onScroll)
-            
-        }
+        
 
     }, [mounted, onScroll, isMobile])
 
