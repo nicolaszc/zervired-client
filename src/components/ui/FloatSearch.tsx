@@ -20,7 +20,8 @@ export default function FloatingSearch({ className, intersect }: Props) {
   const isMobile = useIsMobile()
   const { height } = useViewportSize()
   const rootMargin = `${Math.round(height * 0.5)}px 0px 0px 0px`
-const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(false)
+  
   const map = useIntersection(
   intersect?.map(r => r.target) ?? [],
      {

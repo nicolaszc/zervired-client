@@ -17,7 +17,7 @@ import { providers } from '@/data/providers'
 import type { Provider } from '@/interfaces/provider'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCircleXmark } from '@fortawesome/free-solid-svg-icons'
-
+import useIsMobile from '@/hooks/useIsMobile'
 interface Props {
   variant?: 'header' | 'mobile' | 'floating'
   dropdownDirection?: 'down' | 'up' // reserved — currently unused
@@ -40,6 +40,8 @@ export default function ProvidersSearch({
   const pathname = usePathname()
   const [term, setTerm] = useState('')
   const deferredTerm = useDeferredValue(term)
+  const [open, setOpen] = useState(false)
+  const isMobile = useIsMobile()
 
   useEffect(() => {
     const clearOnPathChange = () => setTerm('')
@@ -53,12 +55,13 @@ export default function ProvidersSearch({
       .replace(/[\u0300-\u036f]/g, '')
       
 const suggestions: PredictiveSuggestions = useMemo(() => {
-const EMPTY = { services: [], locations: [], providers: [] }
+  const EMPTY = { services: [], locations: [], providers: [] }
+  const q = normalize(deferredTerm)
   
-  if (deferredTerm.length <= 2) {
+  if (q.length <= 1) {
     return EMPTY
   }
-  const q = normalize(deferredTerm)
+  
 
   
 
@@ -115,30 +118,36 @@ const EMPTY = { services: [], locations: [], providers: [] }
   const hasResults =
   suggestions.services.length > 0 ||
   suggestions.locations.length > 0 ||
-  suggestions.providers.length > 0
-
-  
+  suggestions.providers.length > 0 
 
   const totalResults = suggestions.services.length + suggestions.locations.length + suggestions.providers.length 
+
+  const toggleClass = () => {
+      setOpen(!open); 
+      setTerm('') 
+  };
+
+  const dynamicClassName = open ? 'active' : 'inactive';
+
   return (
   <>
-    <div className='search-overlay' onMouseDown={() => {setTerm('')}}></div> 
-    <div className={cn(containerStyles[variant], 'search-box relative z-2 cta rounded-none py-0 md:px-0', className)}
-    >
+     
+    {!isMobile  && hasResults && (<div className={cn('search-overlay', dynamicClassName)} onClick={toggleClass}></div>)}
+    <div className={cn(containerStyles[variant], 'search-box relative z-2 cta rounded-none py-0 md:px-0', className, dynamicClassName)}
+    onClick={toggleClass}>
 
       <input
         type="text"
         value={term}
         onChange={(e) => setTerm(e.target.value)}
-        onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
-       
+        onKeyDown={(e) => e.key === 'Enter' && handleSearch()}      
         placeholder="¿Qué servicio buscas?"
         className={cn("input rounded-r-none search-input"
         )}      
       />
 
       <button
-        onMouseDown={() => {setTerm('')}}
+        onClick={() => {toggleClass}}
         className={cn("close-search-btn cta"
         )}
       >
@@ -146,19 +155,19 @@ const EMPTY = { services: [], locations: [], providers: [] }
       </button>
       
       <button
-        onMouseDown={() => {handleSearch()}}
+        onClick={() => {handleSearch()}}
         className={cn("cta cta-bg rounded-l-none"
         )}
       >
         Buscar
       </button>
-      {term.length >= 3 && (   /* hasResults && (   */ 
+      {hasResults && (   /* term.length >= 3 && hasResults && (   */ 
       <div 
         className={cn('search-results-box absolute w-full left-0 z-3 ',
           dropdownDirection === 'down' && 'top-full mt-4 rounded-b-lg theme-search-shadow',
-          dropdownDirection === 'up' && 'bottom-full mb-4 snap-mandatory snap-y',        
+          //dropdownDirection === 'up' && 'bottom-full mb-4 snap-mandatory snap-y',        
           dropdownDirection === 'down' && totalResults === 1 && 'to-300%',
-          dropdownDirection === 'up' && totalResults === 1 && 'via-70% to-100%',
+          //dropdownDirection === 'up' && totalResults === 1 && 'via-70% to-100%',
           variant === 'header' && 'bg-linear-to-b gradient'
         )}
       >
@@ -167,7 +176,7 @@ const EMPTY = { services: [], locations: [], providers: [] }
           className={cn(
             '',
             dropdownDirection === 'down' && 'theme-search-shadow',
-            dropdownDirection === 'up' && 'flex flex-col-reverse',
+            //dropdownDirection === 'up' && 'flex flex-col-reverse',
           )}
         >
           {/* Servicios */}
@@ -181,7 +190,7 @@ const EMPTY = { services: [], locations: [], providers: [] }
               {suggestions.services.map(s => (
                 <div
                   key={s}
-                  onMouseDown={() => router.push(`/search?q=${encodeURIComponent(s)}`)}
+                  onClick={() => router.push(`/search?q=${encodeURIComponent(s)}`)}
                   className="px-8 py-2 cursor-pointer hover:bg-(--lowlight-l)/10 dark:hover:bg-white/10"
                 >
                   {s}
@@ -194,14 +203,14 @@ const EMPTY = { services: [], locations: [], providers: [] }
           {suggestions.locations.length > 0 && (
             <div className={cn("",
                dropdownDirection === 'down' && suggestions.services.length > 0 && suggestions.providers.length > 0 && "border-b border-(--lowlight-l)/10 dark:border-white/10",
-                dropdownDirection === 'up' && totalResults > 1 && "border-b border-(--lowlight-l)/10 dark:border-white/10",
+                //dropdownDirection === 'up' && totalResults > 1 && "border-b border-(--lowlight-l)/10 dark:border-white/10",
               )}
               >
               <div className="px-6 py-2 text-xs opacity-60">Ubicaciones</div>
               {suggestions.locations.map(l => (
                 <div
                   key={l}
-                  onMouseDown={() => router.push(`/search?q=${encodeURIComponent(l)}`)}
+                  onClick={() => router.push(`/search?q=${encodeURIComponent(l)}`)}
                   className="px-10 py-2 cursor-pointer hover:bg-(--lowlight-l)/10 dark:hover:bg-white/10"
                 >
                   {l}
@@ -213,13 +222,13 @@ const EMPTY = { services: [], locations: [], providers: [] }
           {/* Providers */}
           {suggestions.providers.length > 0 && (
             <div className={cn("",
-                dropdownDirection === 'up' && totalResults > 1 && "border-b border-(--lowlight-l)/10 dark:border-white/10",
+                //dropdownDirection === 'up' && totalResults > 1 && "border-b border-(--lowlight-l)/10 dark:border-white/10",
               )}>
               <div className="px-6 py-2 text-xs opacity-60">Especialistas</div>
               {suggestions.providers.map(p => (
                 <div
                   key={p.id}
-                  onMouseDown={() => router.push(`/providers/${p.slug}`)}
+                  onClick={() => router.push(`/providers/${p.slug}`)}
                   className="px-10 py-2 cursor-pointer hover:bg-(--lowlight-l)/10 dark:hover:bg-white/10"
                 >
                   <div className="font-semibold leading-tight">{p.name}</div>
@@ -231,7 +240,7 @@ const EMPTY = { services: [], locations: [], providers: [] }
           {/* CTA Ver todos */}
           <div className="">
             <button
-              onMouseDown={handleSearch}
+              onClick={handleSearch}
               className={cn(
                 'w-full text-center uppercase px-4 py-3 font-semibold cursor-pointer', 
                 'bg-(--lowlight-l)/10 dark:bg-(--highlight-d)/20', 
