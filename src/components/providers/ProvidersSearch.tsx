@@ -107,7 +107,7 @@ const EMPTY = { services: [], locations: [], providers: [] }
   }
 
   const containerStyles = {
-    header: 'flex justify-center items-center text-sm',
+    header: 'hidden md:flex justify-center items-center text-sm',
     mobile: 'flex w-full',
     floating: 'flex w-full items-center',
   }
