@@ -77,8 +77,6 @@ export default function RootLayout({
             ]}
           />
 
-          <div className='search-overlay'></div>
-
           <FloatSearch
             intersect={[
               { target: '[data-hero]', when: 'out' },

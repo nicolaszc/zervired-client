@@ -34,10 +34,12 @@ export default function FloatingSearch({ className, intersect }: Props) {
     : true
 
   return (
-      <div
+    <>
+      {isMobile && ( 
+        <div
         id="float-search"
         className={cn(
-          "fixed bottom-0 inset-x-0 max-w-full overflow-x-clip pb-[env(safe-area-inset-bottom)]",
+          "fixed bottom-0 inset-x-0 max-w-full overflow-x-clip pb-[env(safe-area-inset-bottom)] py-4 z-60 focus-within:top-0",
           "transition-all duration-500 ease-out",
           "bg-linear-to-t gradient via-none", 
           visible
@@ -46,13 +48,15 @@ export default function FloatingSearch({ className, intersect }: Props) {
           className
         )}
       >
-      {isMobile && ( 
+      
         <ProvidersSearch
           variant="floating"
-          dropdownDirection="up"
+          dropdownDirection="down"
           className='z-50'       
         />
-      )}
+      
       </div>
+    )}
+    </>
   )
 }

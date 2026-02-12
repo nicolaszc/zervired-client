@@ -113,9 +113,9 @@ export default function ProvidersSearch({
 
   const totalResults = suggestions.services.length + suggestions.locations.length + suggestions.providers.length 
   return (
-       
-
-    <div className={cn(containerStyles[variant], 'search-box relative cta rounded-none py-0 md:px-0', className)}
+  <>
+    <div className='search-overlay'></div> 
+    <div className={cn(containerStyles[variant], 'search-box relative z-2 cta rounded-none py-0 md:px-0', className)}
     onBlur={(e) => {
       if (!e.currentTarget.contains(e.relatedTarget)) {
         setTerm('')
@@ -150,11 +150,12 @@ export default function ProvidersSearch({
       </button>
       {hasResults && (     
       <div 
-        className={cn('search-results-box absolute w-full left-0 z-60 bg-linear-to-b gradient',
+        className={cn('search-results-box absolute w-full left-0 z-3 ',
           dropdownDirection === 'down' && 'top-full mt-4 rounded-b-lg theme-search-shadow',
           dropdownDirection === 'up' && 'bottom-full mb-4 snap-mandatory snap-y',        
           dropdownDirection === 'down' && totalResults === 1 && 'to-300%',
-          dropdownDirection === 'up' && totalResults === 1 && 'via-70% to-100%'
+          dropdownDirection === 'up' && totalResults === 1 && 'via-70% to-100%',
+          variant === 'header' && 'bg-linear-to-b gradient'
         )}
       >
 
@@ -243,6 +244,6 @@ export default function ProvidersSearch({
       )}
       
     </div>
-    
+  </>  
   )
 }
