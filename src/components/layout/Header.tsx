@@ -40,7 +40,7 @@ export default function Header() {
             </Link>
           </div>
 
-          {!isMobile && ( 
+          {isMobile && ( 
               
               <ProvidersSearch />
             
