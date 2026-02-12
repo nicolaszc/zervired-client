@@ -189,9 +189,9 @@
 
   .search-overlay{
     @apply bg-black/0 dark:bg-white/0
-       fixed z-50 
-       w-full 
-       left-0 top-0;
+       fixed z-1 
+       max-w-full 
+       top-0;
   }
 
   body:has(.search-results-box) .search-overlay{
@@ -209,10 +209,11 @@
       z-1;     
   }
 
-  body:has(.search-results-box) .close-search-btn{
+  body:has(.search-results-box) .close-search-btn, #float-search:focus-within  .close-search-btn{
     @apply flex;
   }
 
+   
 }
 
 :root {
