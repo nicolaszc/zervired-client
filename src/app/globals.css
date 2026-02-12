@@ -222,9 +222,9 @@ body {
   font-weight: 200;
 }
 
-body:has(.search-input:focus) #float-search, body:has(.search-results-box) #float-search{
+/* body:has(.search-input:focus) #float-search, body:has(.search-results-box) #float-search{
   top:0
-}
+} */
 
 body:has(.search-input:focus), body:has(.search-results-box){
   overflow-y:clip;

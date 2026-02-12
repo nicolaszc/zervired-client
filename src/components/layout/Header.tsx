@@ -40,7 +40,7 @@ export default function Header() {
             </Link>
           </div>
 
-          {isMobile && ( 
+          {!isMobile && ( 
               
               <ProvidersSearch />
             
@@ -113,7 +113,8 @@ export default function Header() {
           </nav>
         </div>
       </header>
-              
+              <div id="float-trigger" className="h-px opacity-0" data-float-trigger/>
+
    </> 
   )
 }

@@ -6,7 +6,7 @@ import ProvidersSearch from '@/components/providers/ProvidersSearch'
 import { useIntersection } from '@/hooks/useIntersection'
 import useViewportSize from '@/hooks/useViewportSize'
 import useIsMobile from '@/hooks/useIsMobile'
-
+import { useState } from 'react'
 interface Rule {
   target: string
   when: 'in' | 'out'
@@ -20,7 +20,7 @@ export default function FloatingSearch({ className, intersect }: Props) {
   const isMobile = useIsMobile()
   const { height } = useViewportSize()
   const rootMargin = `${Math.round(height * 0.5)}px 0px 0px 0px`
-
+const [open, setOpen] = useState(false)
   const map = useIntersection(
   intersect?.map(r => r.target) ?? [],
      {
@@ -43,6 +43,7 @@ export default function FloatingSearch({ className, intersect }: Props) {
     <>
       {isMobile && ( 
         <div
+        onClick={() => setOpen(!open)}
         id="float-search"
         className={cn(
           "fixed bottom-0 inset-x-0 max-w-full overflow-x-clip pb-[env(safe-area-inset-bottom)] py-4 z-60",
