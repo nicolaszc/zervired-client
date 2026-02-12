@@ -52,13 +52,13 @@ export default function ProvidersSearch({
       .replace(/[\u0300-\u036f]/g, '')
       
 
-  const suggestions: PredictiveSuggestions = useMemo(() => {
+const suggestions: PredictiveSuggestions = useMemo(() => {
 
   const q = normalize(term)
 
   const EMPTY = { services: [], locations: [], providers: [] }
 
-  if (q.length <= 0) {
+  if (q.length <= 3) {
     return EMPTY
   }
 
