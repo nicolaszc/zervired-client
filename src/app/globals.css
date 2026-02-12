@@ -200,7 +200,9 @@
   .search-box:has(.search-input:focus) .close-search-btn{
     @apply flex;
   }
-
+#float-search.active{
+  @apply top-0
+}
   
    
 }

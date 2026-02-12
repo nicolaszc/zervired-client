@@ -28,8 +28,12 @@ const [open, setOpen] = useState(false)
     rootMargin: rootMargin
     }
   )
-
+// Conditionally apply a class name
   //let dataComponent = null;
+const toggleClass = () => {
+    setOpen(!open);
+  };
+  const dynamicClassName = open ? 'active' : 'inactive';
 
   const visible = intersect
     ? intersect.some(rule =>
@@ -43,7 +47,7 @@ const [open, setOpen] = useState(false)
     <>
       {isMobile && ( 
         <div
-        onClick={() => setOpen(!open)}
+        onClick={toggleClass}
         id="float-search"
         className={cn(
           "fixed bottom-0 inset-x-0 max-w-full overflow-x-clip pb-[env(safe-area-inset-bottom)] py-4 z-60",
@@ -52,7 +56,8 @@ const [open, setOpen] = useState(false)
           visible
           ? "translate-y-0 opacity-100"
           : "translate-y-full opacity-0 pointer-events-none",
-          className
+          className,
+          dynamicClassName
         )}
       >
       
