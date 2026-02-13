@@ -177,15 +177,12 @@
 
   .search-overlay{
     @apply bg-black/0 dark:bg-white/0
-       fixed z-1 
-       max-w-full 
-       top-0;
-  }
+      fixed z-1 
+      max-w-full 
+      top-0
+      backdrop-blur-xs
+      inset-0
 
-  .search-overlay.active{
-    @apply backdrop-blur-xs
-      md:inset-0
-      top-0;
   }
 
   .close-search-btn{
@@ -197,14 +194,17 @@
       z-1;     
   }
 
-  .search-box:has(.search-input:focus) .close-search-btn{
+  body.open-search .close-search-btn{
     @apply flex;
   }
-#float-search.active{
-  @apply top-0
-}
+
+  body.open-search #float-search{
+    @apply top-0
+  }
   
-   
+  body.open-search{
+    @apply overflow-y-clip;
+  }
 }
 
 :root {
@@ -228,9 +228,6 @@ body {
   top:0
 } */
 
-body:has(.search-input:focus), body:has(.search-results-box){
-  overflow-y:clip;
-}
 
 /* Animations */
 .heartbeat {

@@ -6,7 +6,7 @@ import ProvidersSearch from '@/components/providers/ProvidersSearch'
 import { useIntersection } from '@/hooks/useIntersection'
 import useViewportSize from '@/hooks/useViewportSize'
 import useIsMobile from '@/hooks/useIsMobile'
-import { useState } from 'react'
+import { useState, useEffect} from 'react'
 interface Rule {
   target: string
   when: 'in' | 'out'
@@ -21,7 +21,7 @@ export default function FloatingSearch({ className, intersect }: Props) {
   const { height } = useViewportSize()
   const rootMargin = `${Math.round(height * 0.5)}px 0px 0px 0px`
   const [open, setOpen] = useState(false)
-  
+
   const map = useIntersection(
   intersect?.map(r => r.target) ?? [],
      {
@@ -29,12 +29,20 @@ export default function FloatingSearch({ className, intersect }: Props) {
     rootMargin: rootMargin
     }
   )
-// Conditionally apply a class name
-  //let dataComponent = null;
-const toggleClass = () => {
+
+  //const hasClass = document.body.classList.contains('open-search') || false
+
+  const toggleClass = () => {
     setOpen(!open);
   };
-  const dynamicClassName = open ? 'active' : 'inactive';
+
+  useEffect(() => {
+    if (open) {
+      document.body.classList.add('open-search');
+    } else {
+      document.body.classList.remove('open-search');
+    }
+  },[open])
 
   const visible = intersect
     ? intersect.some(rule =>
@@ -58,13 +66,11 @@ const toggleClass = () => {
           ? "translate-y-0 opacity-100"
           : "translate-y-full opacity-0 pointer-events-none",
           className,
-          dynamicClassName
         )}
       >
       
         <ProvidersSearch
           variant="floating"
-          dropdownDirection="down"
           className='z-50'       
         />
       
