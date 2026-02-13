@@ -10,7 +10,7 @@
 
 'use client'
 
-import { useState, useMemo, useEffect, useDeferredValue} from 'react'
+import { useState, useMemo, useEffect, useDeferredValue, forwardRef, useImperativeHandle} from 'react'
 import { useRouter, usePathname } from 'next/navigation'
 import { cn } from '@/lib/utils'
 import { providers } from '@/data/providers'
@@ -31,15 +31,16 @@ type PredictiveSuggestions = {
   providers: Provider[]
 }
 
-export default function ProvidersSearch({
-  variant = 'header',
-  //dropdownDirection = 'down', // reserved — currently unused
-  className,
-}: Props) {
+export type ProvidersSearchHandle = {
+  clear: () => void
+}
+
+const ProvidersSearch = forwardRef<ProvidersSearchHandle, Props>(
+({ variant = 'header', className }, ref) => {
+
   const router = useRouter()
   const pathname = usePathname()
   const [term, setTerm] = useState('')
-  const [hasClass, setHasClass] = useState(false)
   const deferredTerm = useDeferredValue(term)
   const isMobile = useIsMobile()
 
@@ -121,9 +122,15 @@ export default function ProvidersSearch({
     }  
   }, [hasResults, isMobile])
   
-  const handleSearch = () => {
-    if (!term.trim()) return
-    router.push(`/search?q=${encodeURIComponent(term)}`)
+ const handleSearch = () => {
+    const clean = term.trim()
+
+    if (!clean) {
+      clearTerm() // 🔥 cerramos UI igual
+      return
+    }
+
+    router.push(`/search?q=${encodeURIComponent(clean)}`)
     clearTerm()
   }
 
@@ -133,28 +140,18 @@ export default function ProvidersSearch({
     setTerm('')
   }
   
+  useImperativeHandle(ref, () => ({
+    clear: clearTerm
+  }))
+
   useEffect(() => {
     // Esto es para en limpiar el campo en cambio de pagina
     console.log('clearTerm on pathChange')
     clearTerm()
   }, [pathname])
-
-  const bodyClass = document?.body.classList.contains('open-search')
-
-  useEffect(() => {
-    // Esto es escucha la clase que se agrega en el FloatSearch
-    if(isMobile){
-      console.log('hasClass useEffect ' + bodyClass) 
-
-      clearTerm()
-      const clearHasClass = () => setHasClass(bodyClass)
-      clearHasClass()
-
-    }
-  },[hasClass, bodyClass, isMobile])
-
+  
   return (
-  <>
+   <>
      
     {!isMobile  && hasResults && (<div className={cn('search-overlay')} onClick={clearTerm}></div>)}
 
@@ -189,96 +186,98 @@ export default function ProvidersSearch({
         Buscar
       </button>
 
-      {hasResults && (   /* term.length >= 3 && hasResults && (   */ 
-      <div 
-        className={cn('search-results-box absolute w-full left-0 z-3 ',
-          'top-full mt-4 rounded-b-lg theme-search-shadow',      
-          totalResults === 1 && 'to-300%',
-          variant === 'header' && 'bg-linear-to-b gradient'
-        )}
-      >
-
-        <div
-          className={cn(
-            'theme-search-shadow',
+      {hasResults && (   
+        <div 
+          className={cn('search-results-box absolute w-full left-0 z-3 ',
+            'top-full mt-4 rounded-b-lg theme-search-shadow',      
+            totalResults === 1 && 'to-300%',
+            variant === 'header' && 'bg-linear-to-b gradient'
           )}
         >
-          {/* Servicios */}
-          {suggestions.services.length > 0 && (
-            <div className={cn("",
-                totalResults > 1 && "border-b border-(--lowlight-l)/10 dark:border-white/10",
-              )}
-               >
-           
-              <div className="px-6 py-2 text-xs opacity-60">Servicios</div>
-              {suggestions.services.map(s => (
-                <div
-                  key={s}
-                  onClick={() => router.push(`/search?q=${encodeURIComponent(s)}`)}
-                  className="px-8 py-2 cursor-pointer hover:bg-(--lowlight-l)/10 dark:hover:bg-white/10"
-                >
-                  {s}
-                </div>
-              ))}
-            </div>
-          )}
 
-          {/* Ubicaciones */}
-          {suggestions.locations.length > 0 && (
-            <div className={cn("",
-               suggestions.services.length > 0 && suggestions.providers.length > 0 && "border-b border-(--lowlight-l)/10 dark:border-white/10",
-              )}
-              >
-              <div className="px-6 py-2 text-xs opacity-60">Ubicaciones</div>
-              {suggestions.locations.map(l => (
-                <div
-                  key={l}
-                  onClick={() => router.push(`/search?q=${encodeURIComponent(l)}`)}
-                  className="px-10 py-2 cursor-pointer hover:bg-(--lowlight-l)/10 dark:hover:bg-white/10"
+          <div
+            className={cn(
+              'theme-search-shadow',
+            )}
+          >
+            {/* Servicios */}
+            {suggestions.services.length > 0 && (
+              <div className={cn("",
+                  totalResults > 1 && "border-b border-(--lowlight-l)/10 dark:border-white/10",
+                )}
                 >
-                  {l}
-                </div>
-              ))}
-            </div>
-          )}
-
-          {/* Providers */}
-          {suggestions.providers.length > 0 && (
-            <div className={cn("",
-              )}>
-              <div className="px-6 py-2 text-xs opacity-60">Especialistas</div>
-              {suggestions.providers.map(p => (
-                <div
-                  key={p.id}
-                  onClick={() => router.push(`/providers/${p.slug}`)}
-                  className="px-10 py-2 cursor-pointer hover:bg-(--lowlight-l)/10 dark:hover:bg-white/10"
-                >
-                  <div className="font-semibold leading-tight">{p.name}</div>
-                  <div className="text-xs opacity-60 truncate">{p.title}</div>
-                </div>
-                ))}
-            </div>
-          )}
-          {/* CTA Ver todos */}
-          <div className="">
-            <button
-              onClick={handleSearch}
-              className={cn(
-                'w-full text-center uppercase px-4 py-3 font-semibold cursor-pointer', 
-                'bg-(--lowlight-l)/10 dark:bg-(--highlight-d)/20', 
-                'hover:bg-(--lowlight-l)/15 dark:hover:bg-(--highlight-d)/50'
-              )}
-            >
-              Ver todos
-            </button>
             
-          </div>
+                <div className="px-6 py-2 text-xs opacity-60">Servicios</div>
+                {suggestions.services.map(s => (
+                  <div
+                    key={s}
+                    onClick={() => router.push(`/search?q=${encodeURIComponent(s)}`)}
+                    className="px-8 py-2 cursor-pointer hover:bg-(--lowlight-l)/10 dark:hover:bg-white/10"
+                  >
+                    {s}
+                  </div>
+                ))}
+              </div>
+            )}
 
-        </div>
-       </div> 
-      /* ) */)}
+            {/* Ubicaciones */}
+            {suggestions.locations.length > 0 && (
+              <div className={cn("",
+                suggestions.services.length > 0 && suggestions.providers.length > 0 && "border-b border-(--lowlight-l)/10 dark:border-white/10",
+                )}
+                >
+                <div className="px-6 py-2 text-xs opacity-60">Ubicaciones</div>
+                {suggestions.locations.map(l => (
+                  <div
+                    key={l}
+                    onClick={() => router.push(`/search?q=${encodeURIComponent(l)}`)}
+                    className="px-10 py-2 cursor-pointer hover:bg-(--lowlight-l)/10 dark:hover:bg-white/10"
+                  >
+                    {l}
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {/* Providers */}
+            {suggestions.providers.length > 0 && (
+              <div className={cn("",
+                )}>
+                <div className="px-6 py-2 text-xs opacity-60">Especialistas</div>
+                {suggestions.providers.map(p => (
+                  <div
+                    key={p.id}
+                    onClick={() => router.push(`/providers/${p.slug}`)}
+                    className="px-10 py-2 cursor-pointer hover:bg-(--lowlight-l)/10 dark:hover:bg-white/10"
+                  >
+                    <div className="font-semibold leading-tight">{p.name}</div>
+                    <div className="text-xs opacity-60 truncate">{p.title}</div>
+                  </div>
+                  ))}
+              </div>
+            )}
+            {/* CTA Ver todos */}
+            <div className="">
+              <button
+                onClick={handleSearch}
+                className={cn(
+                  'w-full text-center uppercase px-4 py-3 font-semibold cursor-pointer', 
+                  'bg-(--lowlight-l)/10 dark:bg-(--highlight-d)/20', 
+                  'hover:bg-(--lowlight-l)/15 dark:hover:bg-(--highlight-d)/50'
+                )}
+              >
+                Ver todos
+              </button>
+              
+            </div>
+
+          </div>
+        </div> 
+      )}
       
     </div>
-  </>  
-  )
-}
+  </> 
+  )}
+)
+ProvidersSearch.displayName = 'ProvidersSearch';
+export default ProvidersSearch

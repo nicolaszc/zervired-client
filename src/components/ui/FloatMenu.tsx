@@ -6,11 +6,11 @@ import { cn } from '@/lib/utils'
 import ThemeSwitch from '@/components/ui/ThemeSwitch'
 import { useIntersection } from '@/hooks/useIntersection'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faEllipsisV, faAngleUp } from '@fortawesome/free-solid-svg-icons'
+import { faEllipsisV, faAngleUp, faSearchPlus } from '@fortawesome/free-solid-svg-icons'
 import { faEnvelope } from '@fortawesome/free-regular-svg-icons'
 import { faWhatsapp} from '@fortawesome/free-brands-svg-icons'
 import useIsMobile from '@/hooks/useIsMobile'
-
+import useViewportSize from '@/hooks/useViewportSize'
 interface Rule {
   target: string
   when: 'in' | 'out'
@@ -21,9 +21,14 @@ interface Props {
 
 export default function FloatMenu({ intersect }: Props) {
     const isMobile = useIsMobile()
+    const { height } = useViewportSize()
+    const rootMargin = `${Math.round(height * 0.5)}px 0px 0px 0px`
     const map = useIntersection(
     intersect?.map(r => r.target) ?? [],
-    { threshold: .9}
+    {
+    threshold: 0.99,
+    rootMargin: rootMargin
+    }
     )
 
     const visible = intersect
@@ -74,63 +79,89 @@ export default function FloatMenu({ intersect }: Props) {
 
 
     return (
-    <div
-        suppressHydrationWarning
-        className={cn(
-            'fixed bottom-[30%] md:bottom-[50%] translate-y-1/2 md:translate-y-1/5 end-0 px-3.5 py-2 z-30 rounded-l-lg gap-2 text-sky-950/80 dark:text-white/80 text-sm backdrop-blur bg-sky-950/10 dark:bg-white/10 transition-all duration-200 ease-out',
-            visible && !dark && 'bg-white/50'
-        )}
-    >
-        {/* SUBMENU */}
+        <div className='fixed bottom-[30%] md:bottom-[50%] translate-y-1/2 md:translate-y-1/5 end-0 z-30'>
         <div
-            className={`
-            grid transition-[grid-template-rows] duration-200 ease-out',
-            ${open ? 'grid-rows-[1fr] delay-300' : 'grid-rows-[0fr] delay-600'}
-            `}
-        >
-            <div
-            className={`
-                overflow-hidden flex flex-col items-center
-                transition-opacity duration-300 ease-out
-                ${open ? 'opacity-100 delay-600' : 'opacity-0 delay-300'}
-            `}
+            suppressHydrationWarning
+            className={cn(
+                'px-3.5 py-2 rounded-l-lg gap-2 text-(--primary-d)/80 dark:text-white/80 text-sm backdrop-blur bg-(--primary-d)/10 dark:bg-white/10 transition-all duration-200 ease-out',
+                visible && !dark && 'bg-white/50'
+            )}
             >
-                <button
-                    className="text-lg w-6 h-9.5 flex justify-center items-center cursor-pointer border-b border-sky-950/20 dark:border-white/20 hover:text-sky-500 dark:hover:text-amber-500"
-                    aria-label="Scroll to top"
+            {/* SUBMENU */}
+            <div
+                className={`
+                grid transition-[grid-template-rows] duration-200 ease-out',
+                ${open ? 'grid-rows-[1fr] delay-300' : 'grid-rows-[0fr] delay-600'}
+                `}
                 >
-                    <FontAwesomeIcon icon={faAngleUp} />
-                </button>
+                <div
+                className={`
+                    overflow-hidden flex flex-col items-center
+                    transition-opacity duration-300 ease-out
+                    ${open ? 'opacity-100 delay-600' : 'opacity-0 delay-300'}
+                    `}
+                    >
+                    <button
+                        className="text-lg w-6 h-9.5 flex justify-center items-center cursor-pointer border-b border-(--primary-d)/20 dark:border-white/20 hover:text-(--highlight-d) dark:hover:text-(--primary-l)"
+                        aria-label="Scroll to top"
+                    >
+                        <FontAwesomeIcon icon={faAngleUp} />
+                    </button>
 
-                <ThemeSwitch />
+                    <ThemeSwitch />
 
-                <button
-                    className="text-lg w-6 h-9.5 flex justify-center items-center cursor-pointer border-b border-sky-950/20 dark:border-white/20 hover:text-sky-500 dark:hover:text-amber-500"
-                    aria-label="Contact"
-                >
-                    <FontAwesomeIcon icon={faEnvelope} />
-                </button>
+                    <button
+                        className="text-lg w-6 h-9.5 flex justify-center items-center cursor-pointer border-b border-(--primary-d)/20 dark:border-white/20 hover:text-(--highlight-d) dark:hover:text-(--primary-l)"
+                        aria-label="Contact"
+                    >
+                        <FontAwesomeIcon icon={faEnvelope} />
+                    </button>
 
-                <button
-                    className="text-lg w-6 h-9.5 flex justify-center items-center cursor-pointer border-b border-sky-950/20 dark:border-white/20 hover:text-sky-500 dark:hover:text-amber-500"
-                    aria-label="Contact"
-                >
-                    <FontAwesomeIcon icon={faWhatsapp} />
-                </button>
-            </div>      
+                    <button
+                        className="text-lg w-6 h-9.5 flex justify-center items-center cursor-pointer border-b border-(--primary-d)/20 dark:border-white/20 hover:text-(--highlight-d) dark:hover:text-(--primary-l)"
+                        aria-label="Contact"
+                    >
+                        <FontAwesomeIcon icon={faWhatsapp} />
+                    </button>
+                </div>      
+            </div>
+
+            {/* TOGGLE */}
+            <button
+                onClick={() => setOpen(!open)}
+                className={cn(
+                    "text-lg w-6 h-9.5 flex justify-center items-center cursor-pointer hover:text-(--highlight-d) dark:hover:text-(--primary-l)",
+                    !open && "heartbeat"
+                )}
+                aria-label="Toggle float menu"
+            >
+                <FontAwesomeIcon icon={faEllipsisV} />
+            </button>
         </div>
 
-        {/* TOGGLE */}
-        <button
-            onClick={() => setOpen(!open)}
-            className={cn(
-                "text-lg w-6 h-9.5 flex justify-center items-center cursor-pointer hover:text-sky-500 dark:hover:text-amber-500",
-                !open && "heartbeat"
-            )}
-            aria-label="Toggle float menu"
-        >
-            <FontAwesomeIcon icon={faEllipsisV} />
-        </button>
+        {isMobile && (   
+
+            <button className={cn(
+            "rounded-l-lg py-2 mt-2",
+            "gap-2 text-(--primary-d)/80 dark:text-white/80",
+            "backdrop-blur bg-(--primary-d)/10 dark:bg-white/10)",
+            "translate-y-0 translate-x-[calc(100vw-((--spacing)*12))]",
+            "px-3.5 py-2 h-13.5 w-13 z-30",
+            "bg-(--primary-d)/10 dark:bg-white/10",
+            "text-lg ",
+            "flex justify-center items-center",
+            " hover:text-(--highlight-d) dark:hover:text-(--primary-l)",
+            "cursor-pointer",
+            "transition-all duration-500 ease-out",
+            visible
+            ? "translate-x-none opacity-100"
+            : "translate-x-full opacity-0 pointer-events-none",
+            )} 
+            aria-label="Toggle float menu">
+            <FontAwesomeIcon icon={faSearchPlus} className='w-6 h-9.5'/>
+            </button>
+
+        )}
     </div>
   )
 }
