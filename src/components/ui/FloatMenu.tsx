@@ -156,6 +156,7 @@ export default function FloatMenu({ intersect }: Props) {
             visible
             ? "translate-x-none opacity-100"
             : "translate-x-full opacity-0 pointer-events-none",
+            visible && !dark && 'bg-white/50'
             )} 
             aria-label="Toggle float menu">
             <FontAwesomeIcon icon={faSearchPlus} className='w-6 h-9.5'/>
