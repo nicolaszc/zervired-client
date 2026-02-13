@@ -29,10 +29,10 @@
   --lowlight-d: var(--color-sky-700);
 
   --contrast-low-l: var(--color-amber-100);
-  --contrast-low-d: var(--color-sky-800);
+  --contrast-low-d: var(--color-sky-900);
 
   --via-l: var(--color-amber-300);
-  --via-d: var(--color-sky-700)
+  --via-d: var(--color-sky-800)
 
 }
 
@@ -73,11 +73,11 @@
   }
 
   .gradient{
-    @apply bg-(--primary-l) dark:bg-(--primary-d)
+    @apply bg-(--primary-l) dark:bg-(--secondary-d)
       bg-linear-to-b    
-      from-(--primary-l) via-(--via-l) to-(--secondary-l)
-      dark:from-(--secondary-d) dark:via-(--via-d) dark:to-(--lowlight-d)/30
-      to-80%;
+      from-(--primary-l) to-(--secondary-l)
+      via-(--via-l) dark:via-(--via-d)
+      dark:from-(--secondary-d) dark:to-(--primary-d)/80
   }
 
   /* Shadow */
@@ -177,15 +177,12 @@
 
   .search-overlay{
     @apply bg-black/0 dark:bg-white/0
-       fixed z-1 
-       max-w-full 
-       top-0;
-  }
+      fixed z-1 
+      max-w-full 
+      top-0
+      backdrop-blur-xs
+      inset-0
 
-  .search-overlay.active{
-    @apply backdrop-blur-xs
-      md:inset-0
-      top-0;
   }
 
   .close-search-btn{
@@ -197,14 +194,17 @@
       z-1;     
   }
 
-  .search-box:has(.search-input:focus) .close-search-btn{
+  body.open-search .close-search-btn{
     @apply flex;
   }
-#float-search.active{
-  @apply top-0
-}
+
+  body.open-search #float-search{
+    @apply top-0
+  }
   
-   
+  body.open-search{
+    @apply overflow-y-clip;
+  }
 }
 
 :root {
@@ -222,14 +222,6 @@ body {
   background-color: var(--background);
   color: var(--foreground);
   font-weight: 200;
-}
-
-/* body:has(.search-input:focus) #float-search, body:has(.search-results-box) #float-search{
-  top:0
-} */
-
-body:has(.search-input:focus), body:has(.search-results-box){
-  overflow-y:clip;
 }
 
 /* Animations */
