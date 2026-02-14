@@ -3,7 +3,7 @@ import './globals.css'
 import { ThemeProvider } from '@/context/ThemeContext'
 import Header from '@/components/layout/Header'
 import Footer from '@/components/layout/Footer'
-import FloatMenu from '@/components/ui/FloatMenu'
+import Dock from '@/components/ui/Dock'
 import FloatSearch from '@/components/ui/FloatSearch'
 import BackgroundAnimation from '@/components/ui/BackgroundAnimation'
 import {poppins} from '@/styles/fonts/fonts'
@@ -72,9 +72,10 @@ export default function RootLayout({
 
           <main className="flex-1 pb-16">{children}</main>
 
-          <FloatMenu 
+          <Dock 
           intersect={[
-              { target: '[data-hero]', when: 'in' }
+              { target: '[data-float-trigger]', when: 'out' },
+              //{ target: '[data-hero]', when: 'in' }
             ]}
           />
 

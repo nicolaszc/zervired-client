@@ -61,7 +61,7 @@ export default function FloatingSearch({ className, intersect }: Props) {
 
         <div
         onClick={toggleClass}
-        id="float-search"
+        id="search"
         className={cn(
           "fixed bottom-0 inset-x-0 max-w-full overflow-x-clip pb-[env(safe-area-inset-bottom)] py-4 z-60",
           "transition-all duration-500 ease-out",
@@ -70,7 +70,7 @@ export default function FloatingSearch({ className, intersect }: Props) {
           ? "translate-y-0 opacity-100"
           : "translate-y-full opacity-0 pointer-events-none",
           open 
-          ? "via-d":"",
+          ? "via-d top-0":"",
           className,
         )}
       >

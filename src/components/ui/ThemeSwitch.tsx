@@ -3,9 +3,11 @@
 import { useEffect, useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMoon } from '@fortawesome/free-solid-svg-icons'
-import { SunIcon } from './SunIcon'
+import { SunIcon } from './LightModeIcon'
+import { cn } from '@/lib/utils'
 
-export default function ThemeSwitch() {
+
+export default function ThemeSwitch({className, ...props}:React.ButtonHTMLAttributes<HTMLButtonElement>) {
   const [mounted, setMounted] = useState(false)
   const [dark, setDark] = useState(false)
 
@@ -28,19 +30,19 @@ export default function ThemeSwitch() {
   }
 
   const ICONS = {
-    dark: <FontAwesomeIcon icon={faMoon} />,
-    light: <SunIcon className="w-5 h-5" />,
+    dark: <FontAwesomeIcon icon={faMoon} className={cn(dark ? 'text-(--highlight-d)' : '' )}/>,
+    light: <SunIcon className={cn(dark ? '' : 'text-(--primary-l)')} />,
   }
 
   if (!mounted) return null // 🔑 CLAVE ABSOLUTA
 
   return (
     <>
-      <button onClick={toggle} className="w-6 h-19 flex flex-col items-center justify-center gap-2 border-b border-sky-950/30 dark:border-white/20">    
-        <span className={`${dark ? 'opacity-100' : 'opacity-40 hover:opacity-100 hover:text-sky-500 cursor-pointer'}`}>
+      <button onClick={toggle} className={cn("flex-col translate-x-full", className)}  {...props} aria-label='dark mode'>    
+        <span>
           {ICONS.dark}
         </span>
-        <span className={`${!dark ? 'opacity-100' : 'opacity-40 hover:opacity-100 hover:text-amber-500 cursor-pointer'}`}>
+        <span>
           {ICONS.light}
         </span>
       </button>

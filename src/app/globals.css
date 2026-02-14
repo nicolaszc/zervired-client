@@ -197,14 +197,32 @@
   body.open-search .close-search-btn{
     @apply flex;
   }
-
-  body.open-search #float-search{
-    @apply top-0
-  }
   
   body.open-search{
     @apply overflow-y-clip;
   }
+
+  #dock, #dock .grid, #dock .flex{
+    @apply transition-all
+    gap-y-2;
+  }
+
+  #dock button{
+    @apply flex justify-center items-center
+    px-4 py-4 
+    w-13 min-h-13
+    rounded-l-lg
+    bg-(--primary-d)/10 dark:bg-white/10 backdrop-blur
+    hover:text-(--highlight-d) dark:hover:text-(--primary-l)
+    transition-all
+    cursor-pointer;
+  }
+
+  #dock button svg{
+    @apply w-5 h-5
+
+  }
+
 }
 
 :root {
@@ -221,7 +239,7 @@
 body {
   background-color: var(--background);
   color: var(--foreground);
-  font-weight: 200;
+  overflow-y: clip;
 }
 
 /* Animations */
