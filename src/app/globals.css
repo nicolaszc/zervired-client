@@ -239,7 +239,7 @@
 body {
   background-color: var(--background);
   color: var(--foreground);
-  overflow-y: clip;
+  overflow-x: clip;
 }
 
 /* Animations */
