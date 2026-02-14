@@ -82,7 +82,7 @@ export default function Dock({ intersect }: Props) {
     //const search_transition_duration = useRef(500);
 
 
-    const triggerEl = document.querySelector<HTMLButtonElement>('.trigger');
+   /*  const triggerEl = document.querySelector<HTMLButtonElement>('.trigger');
     const targetEl = document.querySelector<HTMLButtonElement>('.target');
 
     const dockIsLeaving = triggerEl?.getAttribute('data-is-leaving');
@@ -116,7 +116,7 @@ export default function Dock({ intersect }: Props) {
       }
 
       
-    }, [visible, open, dockIsLeaving, targetDirection]); 
+    }, [visible, open, dockIsLeaving, targetDirection]);  */
 
 return (
 
