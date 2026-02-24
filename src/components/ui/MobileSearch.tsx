@@ -66,7 +66,7 @@ export default function MobileSearch({ className }: Props) {
       id="search"
       onClick={handleBackgroundClick}
       className={cn(
-        "fixed bottom-0 inset-x-0 h-screen max-h-screen max-w-full overflow-x-clip pb-[env(safe-area-inset-bottom) z-60",
+        "fixed bottom-0 inset-x-0 h-dvh max-h-screen max-w-full overflow-x-clip pb-[env(safe-area-inset-bottom) z-60",
         "transition-all duration-500 ease-out",
         "bg-linear-to-t gradient",
         className
