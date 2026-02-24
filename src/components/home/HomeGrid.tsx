@@ -1,3 +1,4 @@
+
 import ProvidersGrid from '@/components/providers/ProvidersGrid'
 import ProviderCategories from '@/components/providers/ProviderCategories'
 import FeaturedProviders from '@/components/providers/FeaturedProviders'
@@ -10,23 +11,24 @@ export default function HomeGrid() {
         <section className='relative mt-8 z-1'>
           <Steps />
         </section>
-
+        
+        
         <section className='relative mt-8 z-1'>
-          <FeaturedProviders />
+          <FeaturedProviders context="section" />
         </section>
 
         <section className='relative mt-8 z-1'>         
-          <ProviderCategories />
+          <ProviderCategories  context="section" />
         </section>
-
-        <section className="relative mt-8 z-1">
+       
+        <section className="relative mt-8 z-1" data-grid-sentinel>
           <ProvidersGrid
             key="home"
             providers={providers}
             title="Servicios disponibles"
           />
         </section>
-
+       
     </>  
     
   )
