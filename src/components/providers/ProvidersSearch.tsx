@@ -165,14 +165,14 @@ const ProvidersSearch = forwardRef<ProvidersSearchHandle, Props>(
         onChange={(e) => setTerm(e.target.value)}
         onKeyDown={(e) => e.key === 'Enter' && handleSearch()} 
         placeholder="¿Qué servicio buscas?"
-        className={cn("input rounded-r-none search-input"
+        className={cn("input rounded-r-none search-input basis-2/3"
         )}      
       />
 
       {isMobile && ( 
       <button
         onClick={() => clearTerm}
-        className={cn("close-search-btn cta"
+        className={cn("close-search-btn p-4"
         )}
       >
         <FontAwesomeIcon icon={faCircleArrowLeft} />
@@ -181,7 +181,7 @@ const ProvidersSearch = forwardRef<ProvidersSearchHandle, Props>(
 
       <button
         onClick={() => {handleSearch()}}
-        className={cn("cta cta-bg rounded-l-none"
+        className={cn("cta cta-bg rounded-l-none  basis-1/3"
         )}
         >
         Buscar
