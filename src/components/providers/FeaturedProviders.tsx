@@ -1,21 +1,25 @@
 import ProviderCard from '@/components/providers/ProviderCard'
 import { providers } from '@/data/providers'
 import SectionTitle  from '@/components/ui/SectionTitle'
-
-export default function FeaturedProviders() {
-  const featured = providers.filter(p => p.featured).slice(0, 6)
+import { cn } from '@/lib/utils'
+interface Props{
+  count?: number
+  context?: string
+}
+export default function FeaturedProviders({count = 5, context}: Props) {
+  const featured = providers.filter(p => p.featured).slice(0, count)
 
   if (featured.length === 0) return null
 
   return (
-    <div className="mx-auto max-w-7xl px-6 pt-16 pb-8">
+    <div className={cn(context == 'section' ? 'mx-auto max-w-7xl pt-16 pb-8 px-6' : '')}>
       
-      <div className="flex items-center justify-between">
+      {context == 'section' && (
         <SectionTitle className={''} title={'Especialistas destacados'} />
-      </div>
+      )}
 
       <div className="-mx-6 md:mx-0 overflow-x-auto scrollbar-hide snap-x snap-mandatory md:overflow-visible">
-        <div className="flex gap-6 px-6 md:grid md:grid-cols-5 md:gap-6 md:px-0">
+        <div className={cn('flex gap-6 px-6 md:grid', count ? 'md:grid-cols-' + count : 'md:grid-cols-5', 'md:gap-6 md:px-0')}>
           {featured.map(provider => (
             <div
               key={provider.id}

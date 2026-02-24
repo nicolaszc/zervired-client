@@ -26,14 +26,15 @@
   --highlight-d: var(--color-sky-500);
 
   --lowlight-l: var(--color-amber-950);
-  --lowlight-d: var(--color-sky-700);
+  --lowlight-d: #013552;
 
   --contrast-low-l: var(--color-amber-100);
   --contrast-low-d: var(--color-sky-900);
 
   --via-l: var(--color-amber-300);
-  --via-d: var(--color-sky-800)
+  --via-d: var(--color-sky-700)
 
+  --mobile-search-translate-y: 72%
 }
 
 @theme inline {
@@ -63,6 +64,7 @@
       dark:bg-(--highlight-d)/70;
   }
 
+
   .blend{
     @apply mix-blend-multiply 
       opacity-75
@@ -73,11 +75,34 @@
   }
 
   .gradient{
-    @apply bg-(--primary-l) dark:bg-(--secondary-d)
+    @apply bg-(--primary-l) dark:bg-(--lowlight-d)
       bg-linear-to-b    
-      from-(--primary-l) to-(--secondary-l)
+      from-(--primary-l) to-(--secondary-l) to-80%
       via-(--via-l) dark:via-(--via-d)
-      dark:from-(--secondary-d) dark:to-(--primary-d)/80
+      dark:from-(--secondary-d) dark:to-(--lowlight-d) 
+  }
+
+  .advanced-search-gradient{
+    @apply bg-(--bg-l) dark:bg-(--bg-d)
+      bg-linear-to-b    
+      from-black/5 from-10% via-black/0 via-40% to-black/0
+      dark:from-black/20 dark:from-10% dark:via-50%
+  }
+
+  .advanced-search-gradient button .btn-close{
+    @apply 
+      bg-linear-to-b    
+      from-(--bg-l) via-(--bg-l)/0 to-(--bg-l)/0 
+      from-50% via-50% to-50%
+      dark:from-(--bg-d) dark:via-(--bg-d)/0 dark:to-(--bg-d)/0
+  }
+
+  .advanced-search-gradient button .btn-close span{
+    @apply 
+      bg-linear-to-b    
+      from-black/5 via-black/0 to-black/0 
+      from-50% via-50% to-50%
+      dark:from-black/20
   }
 
   /* Shadow */
@@ -110,6 +135,11 @@
       mb-8
       text-(--bg-d) dark:text-(--bg-l)/70 text-2xl
       font-semibold; 
+  }
+  #advanced-search .section-title{
+    @apply block
+    mb-0
+    bg-none
   }
 
   /* Btns */
@@ -187,7 +217,7 @@
 
   .close-search-btn{
     @apply  hidden
-      absolute right-[30%] md:right-[22.5%]
+      absolute right-[27%] md:right-[22.5%]
       rounded-none 
       text-xl 
       text-(--primary-d)
@@ -209,10 +239,13 @@
 
   #dock button{
     @apply flex justify-center items-center
-    px-4 py-4 
-    w-13 min-h-13
+    ps-3.75 pe-3 py-4 
+    w-13 min-h-13 max-w-13
+    text-xl
     rounded-l-lg
-    bg-(--primary-d)/10 dark:bg-white/10 backdrop-blur
+    bg-(--primary-d)/15 dark:bg-white/10 backdrop-blur
+    text-(--primary-d)/70 
+    dark:text-white/80 
     hover:text-(--highlight-d) dark:hover:text-(--primary-l)
     transition-all
     cursor-pointer;
@@ -240,6 +273,8 @@ body {
   background-color: var(--background);
   color: var(--foreground);
   overflow-x: clip;
+  font-weight: 200;
+
 }
 
 /* Animations */

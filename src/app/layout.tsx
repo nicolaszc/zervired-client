@@ -1,15 +1,11 @@
 import type { Metadata } from 'next'
 import './globals.css'
 import { ThemeProvider } from '@/context/ThemeContext'
-import Header from '@/components/layout/Header'
-import Footer from '@/components/layout/Footer'
-import Dock from '@/components/ui/Dock'
-import FloatSearch from '@/components/ui/FloatSearch'
-import BackgroundAnimation from '@/components/ui/BackgroundAnimation'
+import { UIProvider } from '@/context/UIContext'
+import LayoutShell from "@/components/layout/LayoutShell"
 import {poppins} from '@/styles/fonts/fonts'
 import { config } from '@fortawesome/fontawesome-svg-core'
 import '@fortawesome/fontawesome-svg-core/styles.css'
-import Script from 'next/script'
 config.autoAddCss = false
 export const metadata: Metadata = {
   title: 'Zervired',
@@ -29,65 +25,19 @@ export const metadata: Metadata = {
   
 }
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+export default function RootLayout(
+  { children }: { children: React.ReactNode}) {
   return (
     <html lang="es" className={`${poppins.variable}`}>
-      <head>
-        <Script
-          /* id="theme-init"
-          strategy="beforeInteractive"
-          dangerouslySetInnerHTML={{
-            __html: `
-              (function() {
-                try {
-                  const theme = localStorage.getItem('theme');
-                  if (theme === 'dark') {
-                    document.documentElement.classList.add('dark');
-                  } else if (theme === 'light') {
-                    document.documentElement.classList.remove('dark');
-                  } else {
-                    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-                    if (prefersDark) {
-                      document.documentElement.classList.add('dark');
-                    }
-                  }
-                } catch (e) {}
-              })();
-            `,
-          }} */
-        />
-      </head>
 
       <body className="font-sans min-h-screen flex flex-col relative pt-25">
+
         <ThemeProvider>
+          <UIProvider>
+        
+            <LayoutShell>{children}</LayoutShell>
 
-          <BackgroundAnimation />
-
-          <Header />
-          <div id="float-trigger" className="h-px opacity-0" data-float-trigger/>
-
-          <main className="flex-1 pb-16">{children}</main>
-
-          <Dock 
-          intersect={[
-              { target: '[data-float-trigger]', when: 'out' },
-              //{ target: '[data-hero]', when: 'in' }
-            ]}
-          />
-
-          <FloatSearch
-            intersect={[
-              { target: '[data-float-trigger]', when: 'out' },
-              { target: '[data-mobile-menu]', when: 'in' }
-            ]}
-          />
-
-          <Footer />
-
+          </UIProvider>
         </ThemeProvider >
         
       </body>

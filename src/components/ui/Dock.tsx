@@ -1,247 +1,154 @@
+// src/components/ui/Dock.tsx
 'use client'
 
-import { useState, useEffect, useCallback, useRef, useMemo } from 'react'
-import { useTheme } from '@/context/ThemeContext'
+import { useEffect, useRef } from 'react'
 import { cn } from '@/lib/utils'
 import ThemeSwitch from '@/components/ui/ThemeSwitch'
-import { useIntersection } from '@/hooks/useIntersection'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEllipsisV, faAngleUp, faSearch } from '@fortawesome/free-solid-svg-icons'
 import { faEnvelope } from '@fortawesome/free-regular-svg-icons'
-import { faWhatsapp} from '@fortawesome/free-brands-svg-icons'
-import useIsMobile from '@/hooks/useIsMobile'
-import useViewportSize from '@/hooks/useViewportSize'
+import { faWhatsapp } from '@fortawesome/free-brands-svg-icons'
+import { useUIVisible, useUI } from '@/context/UIContext'
+
 interface Rule {
   target: string
   when: 'in' | 'out'
+  threshold: number
+  margin: number
 }
 interface Props {
   intersect?: Rule[]
 }
 
 export default function Dock({ intersect }: Props) {
-    const isMobile = useIsMobile()
-    const { height } = useViewportSize()
-    const rootMargin = `${Math.round(height * 0.5)}px 0px 0px 0px`
-    const map = useIntersection(
-    intersect?.map(r => r.target) ?? [],
-    {
-    threshold: 0.99,
-    rootMargin: rootMargin
-    }
-    )
+  const { state, actions } = useUI()
+  const { visible, isMobile } = useUIVisible(intersect)
 
-    const visible = intersect
-    ? intersect.some(rule =>
-        rule.when === 'in'
-            ? map[rule.target]
-            : !map[rule.target]
-        )
-    : true
-    const [open, setOpen] = useState(false)
+  const open = state.dockOpen
 
-    const [mounted, setMounted] = useState(false)
+  // Sentinel: SOLO controla hint (peek) en mobile, con gates anti-flash
+  useEffect(() => {
+    if (!isMobile) return
 
-
-    const { theme } = useTheme()
-    const dark = theme === 'dark'  
-    useEffect(() => {
-        Promise.resolve().then(() => setMounted(true))
-    }, [])
-
-    const onScroll = useCallback(() => {
-         setOpen(false)
-    
-           
-    }, [setOpen])
-
-    // Mount
-   useEffect(() => {
-        if (!mounted) return
-
-        
-       window.addEventListener('scroll', onScroll)
-        if(!isMobile) {
-            
-            console.log('desktop')
-            const open = () => setOpen(true)
-            open()
-           
-            
-        }else{
-            console.log('mobile')
-        }
-
-        return () => {
-            window.removeEventListener('scroll', onScroll)          
-        }
-
-    }, [mounted, onScroll, isMobile])
-
-    const transition_duration = 300;
-    //const search_transition_duration = useRef(500);
-
-
-   /*  const triggerEl = document.querySelector<HTMLButtonElement>('.trigger');
-    const targetEl = document.querySelector<HTMLButtonElement>('.target');
-
-    const dockIsLeaving = triggerEl?.getAttribute('data-is-leaving');
-    const targetDirection = targetEl?.getAttribute('data-direction');
-
-    //const search_transition_duration = useRef(0);
-    const [searchDelay, setSearchDelay] =  useState(0); 
-    useEffect(() => {
-
-      //search_transition_duration.current = 0
-      console.log('entro')
-     
-      if (dockIsLeaving == "true") {
-      
-        if (targetDirection === "down") {
-          // Activar delay solo en este caso
-          //search_transition_duration.current = 500  
-          console.log('bajando')
-          //const searchDelay = () => setSearchDelay( 5000)
-          //searchDelay() 
-          
-        } else {
-          //search_transition_duration.current = 0
-          console.log(('subiendo'))
-          //const searchDelay = () => setSearchDelay(0)
-          //searchDelay() 
-          //return
-        }
-      }else{
-         return
+    if (visible) {
+      if (
+        !state.autoSearchSuppressed &&
+        !state.mobileSearchOpen &&
+        !state.dockOpen &&
+        !state.dockToSearchPending && // ✅ evita flash durante coreografía
+        state.dockSettled
+      ) {
+        actions.setMobileSearchPeek(true)
       }
+    } else {
+      actions.setMobileSearchPeek(false)
+    }
+    
+  }, [
+    isMobile,
+    visible,
+    state.autoSearchSuppressed,
+    state.mobileSearchOpen,
+    state.dockOpen,
+    state.dockToSearchPending,
+    state.dockSettled,
+    actions,
+  ])
 
-      
-    }, [visible, open, dockIsLeaving, targetDirection]);  */
+  const dockRef = useRef<HTMLDivElement>(null)
 
-return (
+  const handleDockTransitionEnd = (e: React.TransitionEvent<HTMLDivElement>) => {
+    if (e.currentTarget !== e.target) return
+    if (e.propertyName !== 'translate' && e.propertyName !== 'transform') return
+    actions.notifyDockSettled()
+  }
 
-  <div
-    id="dock"
-    className={cn(
-      "flex flex-col fixed bottom-[30%] md:bottom-[50%] end-0 z-30",
-      open ? "translate-y-3/5" : "translate-y-2/5"
-    )}
-    style={{
-      transitionDuration: transition_duration * 1 + "ms",
-      transitionDelay: open ? transition_duration * 0 + "ms" : transition_duration * 4 + "ms"
-    }}
-    data-is-leaving={!open ? "false" : "true"}
-  >
+  const transition_duration = 150
+
+  return (
     <div
-      suppressHydrationWarning
-      className={cn("flex flex-col text-(--primary-d)/80 dark:text-white/80")}
+      id="dock"
+      className={cn(
+        'flex flex-col fixed bottom-40 end-0 z-30',
+        'transition-transform ease-out',
+        open && 'translate-y-1/4'
+      )}
+      style={{
+        transitionDuration: transition_duration * 2.5 + 'ms',
+        transitionDelay: open ? transition_duration * 0 + 'ms' : transition_duration * 4 + 'ms',
+      }}
+      ref={dockRef}
+      onTransitionEnd={handleDockTransitionEnd}
     >
-      {/* SUBMENU */}
-      <div
-        className={cn(
-          "grid",
-          open ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
-        )}
-      >
-        <div
-          className="flex flex-col items-center gap-y-2"
-          style={{
-            transitionDuration: transition_duration * 1 + "ms",
-            transitionDelay: !open
-              ? transition_duration * 4 + "ms"
-              : transition_duration * 1 + "ms"
-          }}
-        >
-          <button
-            className={cn("trigger",
-              open ? "translate-x-0" : "translate-x-full cerrando"
-            )}
+      <div suppressHydrationWarning className={cn('flex flex-col text-(--primary-d)/80 dark:text-white/80')}>
+        {/* SUBMENU */}
+        <div className={cn('grid', open ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]')}>
+          <div
+            className="flex flex-col items-center gap-y-2"
             style={{
-              transitionDuration: transition_duration * 1 + "ms",
-              transitionDelay: !open
-                ? transition_duration * 0 + "ms"
-                : transition_duration * 4 + "ms"
+              transitionDuration: transition_duration * 1 + 'ms',
+              transitionDelay: !open ? transition_duration * 4 + 'ms' : transition_duration * 1 + 'ms',
             }}
-            aria-label="Scroll to top"
-            data-is-leaving={!open ? "true" : "false"}
           >
-            <FontAwesomeIcon icon={faAngleUp} />
-          </button>
+            <button
+              className={cn('trigger', open ? 'translate-x-0' : 'translate-x-full cerrando')}
+              style={{
+                transitionDuration: transition_duration * 1 + 'ms',
+                transitionDelay: !open ? transition_duration * 0 + 'ms' : transition_duration * 4 + 'ms',
+              }}
+              aria-label="Scroll to top"
+              data-is-leaving={!open ? 'true' : 'false'}
+            >
+              <FontAwesomeIcon icon={faAngleUp} />
+            </button>
 
-          <ThemeSwitch
-            className={cn(
-              open ? "translate-x-0" : "translate-x-full"
-            )}
-            style={{
-              transitionDuration: transition_duration * 1 + "ms",
-              transitionDelay: !open
-                ? transition_duration * 1 + "ms"
-                : transition_duration * 3 + "ms"
-            }}
-            aria-label="Dark Mode Switch"
-          />
+            <ThemeSwitch
+              className={cn(open ? 'translate-x-0' : 'translate-x-full')}
+              style={{
+                transitionDuration: transition_duration * 1 + 'ms',
+                transitionDelay: !open ? transition_duration * 1 + 'ms' : transition_duration * 3 + 'ms',
+              }}
+              aria-label="Dark Mode Switch"
+            />
 
-          <button
-            className={cn(
-              open ? "translate-x-0 abrio" : "translate-x-full cerro"
-            )}
-            style={{
-              transitionDuration: transition_duration * 1 + "ms",
-              transitionDelay: !open
-                ? transition_duration * 2 + "ms"
-                : transition_duration * 2 + "ms"
-            }}
-            aria-label="Contact"
-          >
-            <FontAwesomeIcon icon={faEnvelope} />
-          </button>
+            <button
+              className={cn('text-[1.15rem]', open ? 'translate-x-0 abrio' : 'translate-x-full cerro')}
+              style={{
+                transitionDuration: transition_duration * 1 + 'ms',
+                transitionDelay: transition_duration * 2 + 'ms',
+              }}
+              aria-label="Contact"
+            >
+              <FontAwesomeIcon icon={faEnvelope} />
+            </button>
 
-          <button
-            className={cn(
-              open ? "translate-x-0" : "translate-x-full"
-            )}
-            style={{
-              transitionDuration: transition_duration * 1 + "ms",
-              transitionDelay: !open
-                ? transition_duration * 3 + "ms"
-                : transition_duration * 1 + "ms"
-            }}
-            aria-label="Whatsapp"
-          >
-            <FontAwesomeIcon icon={faWhatsapp} />
-          </button>
+            <button
+              className={cn(open ? 'translate-x-0' : 'translate-x-full')}
+              style={{
+                transitionDuration: transition_duration * 1 + 'ms',
+                transitionDelay: !open ? transition_duration * 3 + 'ms' : transition_duration * 1 + 'ms',
+              }}
+              aria-label="Whatsapp"
+            >
+              <FontAwesomeIcon icon={faWhatsapp} />
+            </button>
+          </div>
         </div>
+
+        {/* TOGGLE */}
+        <button onClick={() => actions.toggleDock()} aria-label="Toggle Dock">
+          <FontAwesomeIcon icon={faEllipsisV} className={cn(!open && 'heartbeat')} />
+        </button>
       </div>
 
-      {/* TOGGLE */}
-      <button onClick={() => setOpen(!open)} aria-label="Toggle Dock">
-        <FontAwesomeIcon
-          icon={faEllipsisV}
-          className={cn(!open && "heartbeat")}
-        />
-      </button>
-    </div>
-
-    {isMobile && (
+      {/* SEARCH BUTTON (mobile + desktop) */}
       <button
-        className={cn(
-          "target duration-500",
-          !visible
-            ? "translate-x-0 opacity-100"
-            : "translate-x-full opacity-0 pointer-events-none",
-        )}
-         style={{
-              transitionDuration: transition_duration * 1 + "ms",
-              transitionDelay: /* searchDelay */ 0 + "ms"
-            }} 
-        
-        aria-label="Toggle Search"
-        data-direction={visible ? "up" : "down"}
+        className={cn('target duration-500 text-[1rem] translate-x-0 opacity-100')}
+        onClick={() => actions.openSearchFromDock()}
+        aria-label="Open Search"
       >
         <FontAwesomeIcon icon={faSearch} />
       </button>
-      
-    )}
-  </div>
-)
+    </div>
+  )
 }

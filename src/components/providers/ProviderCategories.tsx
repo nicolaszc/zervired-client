@@ -3,12 +3,19 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { CATEGORIES } from '@/constants/categories'
 import { ICON_MAP } from '@/constants/icon-map'
 import SectionTitle  from '@/components/ui/SectionTitle'
+import { cn } from '@/lib/utils'
+interface Props{
+  context?: string
+}
 
-export default function ProviderCategories() {
+export default function ProviderCategories({context}: Props) {
   return (
-    <div className="mx-auto max-w-7xl px-6 pt-8 pb-8">
+    <div className={cn(context == 'section' ? 'mx-auto max-w-7xl pt-8 pb-8 px-6' : '')}>
 
-      <SectionTitle className={''} title={'Categorías de Servicio'} />
+      {context == 'section' && (
+        <SectionTitle className={''} title={'Categorías de Servicio'} />
+      )}
+
       <div className="-mx-6 md:mx-0 overflow-x-auto overflow-y-visible snap-x snap-mandatory scrollbar-hide scroll-px-6">
         <div className="flex gap-6 px-6 md:grid md:grid-cols-6 md:gap-6 md:px-0">
 

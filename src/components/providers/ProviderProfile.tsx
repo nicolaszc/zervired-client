@@ -170,7 +170,7 @@ const slides = chunkSlides(
         </div>
       </section>
 
-      <section className='relative z-1 mt-16'>
+      <section className='relative z-1 mt-16' data-grid-sentinel>
         <RelatedProviders />
       </section>
       

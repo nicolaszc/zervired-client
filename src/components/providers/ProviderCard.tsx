@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { Provider } from '@/interfaces/provider'
 import Image from 'next/image'
+import { cn } from '@/lib/utils'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTag } from '@fortawesome/free-solid-svg-icons'
 import { getRankIcon } from '@/lib/rank'
@@ -10,9 +11,10 @@ import { formatPrice } from '@/lib/utils';
 interface Props {
   provider: Provider
   featured?: boolean
+  background ?: boolean
 }
 
-export default function ProviderCard({ provider, featured = false }: Props) {
+export default function ProviderCard({ provider, featured = false, background = true }: Props) {
  
 
   const {
@@ -58,7 +60,7 @@ export default function ProviderCard({ provider, featured = false }: Props) {
               </span>               
             </div>
           </div>
-          <div className="flex-1 text-(--primary-d)/90 dark:text-white/80 text-center mt-3 bg-s-fade">
+          <div className={cn('flex-1 text-(--primary-d)/90 dark:text-white/80 text-center mt-3', background?'.bg-s-fade':'')}>
             <h3 className="font-semibold mb-2 text-xl"><FontAwesomeIcon icon={icon} className='me-2' />{name}</h3>
             <p className="text-sm font-light text-shadow-lg text-shadow-white dark:text-shadow-(--primary-d) text-(--highlight-d) dark:text-(--highlight-d)/75">{title}</p>
             {price && (

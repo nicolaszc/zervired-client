@@ -10,14 +10,14 @@
 
 'use client'
 
-import { useState, useMemo, useEffect, useDeferredValue, forwardRef, useImperativeHandle} from 'react'
+import { useState, useMemo, useEffect, useDeferredValue, forwardRef, useImperativeHandle, useCallback} from 'react'
 import { useRouter, usePathname } from 'next/navigation'
 import { cn } from '@/lib/utils'
 import { providers } from '@/data/providers'
 import type { Provider } from '@/interfaces/provider'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCircleArrowLeft } from '@fortawesome/free-solid-svg-icons'
-import useIsMobile from '@/hooks/useIsMobile'
+import { useUI } from "@/context/UIContext"
 interface Props {
   variant?: 'header' | 'mobile' | 'floating'
   //dropdownDirection?: 'down' | 'up' // reserved — currently unused
@@ -42,7 +42,8 @@ const ProvidersSearch = forwardRef<ProvidersSearchHandle, Props>(
   const pathname = usePathname()
   const [term, setTerm] = useState('')
   const deferredTerm = useDeferredValue(term)
-  const isMobile = useIsMobile()
+  const { state, actions } = useUI()
+  const isMobile = state.isMobile
 
   const containerStyles = {
     header: 'hidden md:flex justify-center items-center text-sm',
@@ -59,7 +60,6 @@ const ProvidersSearch = forwardRef<ProvidersSearchHandle, Props>(
   const suggestions: PredictiveSuggestions = useMemo(() => {
     const EMPTY = { services: [], locations: [], providers: [] }
     const q = normalize(deferredTerm)
-    
     if (q.length <= 2) {
 
       return EMPTY
@@ -106,12 +106,13 @@ const ProvidersSearch = forwardRef<ProvidersSearchHandle, Props>(
   suggestions.services.length > 0 ||
   suggestions.locations.length > 0 ||
   suggestions.providers.length > 0 
-
+  
   useEffect(() => {
+    
+
     // Esto es para en desktop abrir el overlay mediante clase auxiliar open-search
     // en desktop no se sigue la clase es solo para agregarla o quitarla en base a los resultados
     if(!isMobile){
-    console.log('hasResults useEffect ' + hasResults) 
 
       if (hasResults) {
         document.body.classList.add('open-search');
@@ -134,35 +135,35 @@ const ProvidersSearch = forwardRef<ProvidersSearchHandle, Props>(
     clearTerm()
   }
 
-  const clearTerm = () => { 
+  const clearTerm = useCallback(() => { 
     // Esto es para en limpiar el campo
-    console.log('clearTerm')
     setTerm('')
-  }
+    actions.requestMobileSearch('close')
+  },[actions])
   
+ 
   useImperativeHandle(ref, () => ({
     clear: clearTerm
   }))
 
   useEffect(() => {
     // Esto es para en limpiar el campo en cambio de pagina
-    console.log('clearTerm on pathChange')
     clearTerm()
-  }, [pathname])
+  }, [pathname, clearTerm])
   
   return (
    <>
      
     {!isMobile  && hasResults && (<div className={cn('search-overlay')} onClick={clearTerm}></div>)}
 
-    <div id="search-box" className={cn(containerStyles[variant], 'search-box relative z-2 cta rounded-none py-0 md:px-0', className)}>   
+    <div id="search-box" className={cn(containerStyles[variant], 'search-box relative z-2 cta rounded-none py-0 md:px-0', className)} onClick={(e) => {e.stopPropagation();if(isMobile){actions.requestMobileSearch('open')} }}>   
 
       <input
         id="search-input"
         type="text"
         value={term}
         onChange={(e) => setTerm(e.target.value)}
-        onKeyDown={(e) => e.key === 'Enter' && handleSearch()}      
+        onKeyDown={(e) => e.key === 'Enter' && handleSearch()} 
         placeholder="¿Qué servicio buscas?"
         className={cn("input rounded-r-none search-input"
         )}      
@@ -170,7 +171,7 @@ const ProvidersSearch = forwardRef<ProvidersSearchHandle, Props>(
 
       {isMobile && ( 
       <button
-        onClick={clearTerm}
+        onClick={() => clearTerm}
         className={cn("close-search-btn cta"
         )}
       >
@@ -186,95 +187,99 @@ const ProvidersSearch = forwardRef<ProvidersSearchHandle, Props>(
         Buscar
       </button>
 
-      {hasResults && (   
+       
         <div 
           className={cn('search-results-box absolute w-full left-0 z-3 ',
-            'top-full mt-4 rounded-b-lg theme-search-shadow',      
+            'top-full mt-4 md:rounded-b-lg',      
             totalResults === 1 && 'to-300%',
             variant === 'header' && 'bg-linear-to-b gradient'
           )}
         >
 
-          <div
-            className={cn(
-              'theme-search-shadow',
-            )}
-          >
-            {/* Servicios */}
-            {suggestions.services.length > 0 && (
-              <div className={cn("",
-                  totalResults > 1 && "border-b border-(--lowlight-l)/10 dark:border-white/10",
-                )}
-                >
-            
-                <div className="px-6 py-2 text-xs opacity-60">Servicios</div>
-                {suggestions.services.map(s => (
-                  <div
-                    key={s}
-                    onClick={() => router.push(`/search?q=${encodeURIComponent(s)}`)}
-                    className="px-8 py-2 cursor-pointer hover:bg-(--lowlight-l)/10 dark:hover:bg-white/10"
+          {hasResults && ( 
+            <div
+              className={cn(
+                'theme-search-shadow',
+              )}
+            >
+              {/* Servicios */}
+              {suggestions.services.length > 0 && (
+                <div className={cn("",
+                    totalResults > 1 && "border-b border-(--lowlight-l)/10 dark:border-white/10",
+                  )}
                   >
-                    {s}
-                  </div>
-                ))}
-              </div>
-            )}
-
-            {/* Ubicaciones */}
-            {suggestions.locations.length > 0 && (
-              <div className={cn("",
-                suggestions.services.length > 0 && suggestions.providers.length > 0 && "border-b border-(--lowlight-l)/10 dark:border-white/10",
-                )}
-                >
-                <div className="px-6 py-2 text-xs opacity-60">Ubicaciones</div>
-                {suggestions.locations.map(l => (
-                  <div
-                    key={l}
-                    onClick={() => router.push(`/search?q=${encodeURIComponent(l)}`)}
-                    className="px-10 py-2 cursor-pointer hover:bg-(--lowlight-l)/10 dark:hover:bg-white/10"
-                  >
-                    {l}
-                  </div>
-                ))}
-              </div>
-            )}
-
-            {/* Providers */}
-            {suggestions.providers.length > 0 && (
-              <div className={cn("",
-                )}>
-                <div className="px-6 py-2 text-xs opacity-60">Especialistas</div>
-                {suggestions.providers.map(p => (
-                  <div
-                    key={p.id}
-                    onClick={() => router.push(`/providers/${p.slug}`)}
-                    className="px-10 py-2 cursor-pointer hover:bg-(--lowlight-l)/10 dark:hover:bg-white/10"
-                  >
-                    <div className="font-semibold leading-tight">{p.name}</div>
-                    <div className="text-xs opacity-60 truncate">{p.title}</div>
-                  </div>
-                  ))}
-              </div>
-            )}
-            {/* CTA Ver todos */}
-            <div className="">
-              <button
-                onClick={handleSearch}
-                className={cn(
-                  'w-full text-center uppercase px-4 py-3 font-semibold cursor-pointer', 
-                  'bg-(--lowlight-l)/10 dark:bg-(--highlight-d)/20', 
-                  'hover:bg-(--lowlight-l)/15 dark:hover:bg-(--highlight-d)/50'
-                )}
-              >
-                Ver todos
-              </button>
               
-            </div>
+                  <div className="px-6 py-2 text-xs opacity-60">Servicios</div>
+                  {suggestions.services.map(s => (
+                    <div
+                      key={s}
+                      onClick={() => router.push(`/search?q=${encodeURIComponent(s)}`)}
+                      className="px-8 py-2 cursor-pointer hover:bg-(--lowlight-l)/10 dark:hover:bg-white/10"
+                    >
+                      {s}
+                    </div>
+                  ))}
+                </div>
+              )}
 
-          </div>
+              {/* Ubicaciones */}
+              {suggestions.locations.length > 0 && (
+                <div className={cn("",
+                  suggestions.services.length > 0 && suggestions.providers.length > 0 && "border-b border-(--lowlight-l)/10 dark:border-white/10",
+                  )}
+                  >
+                  <div className="px-6 py-2 text-xs opacity-60">Ubicaciones</div>
+                  {suggestions.locations.map(l => (
+                    <div
+                      key={l}
+                      onClick={() => router.push(`/search?q=${encodeURIComponent(l)}`)}
+                      className="px-10 py-2 cursor-pointer hover:bg-(--lowlight-l)/10 dark:hover:bg-white/10"
+                    >
+                      {l}
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {/* Providers */}
+              {suggestions.providers.length > 0 && (
+                <div className={cn("",
+                  )}>
+                  <div className="px-6 py-2 text-xs opacity-60">Especialistas</div>
+                  {suggestions.providers.map(p => (
+                    <div
+                      key={p.id}
+                      onClick={() => router.push(`/providers/${p.slug}`)}
+                      className="px-10 py-2 cursor-pointer hover:bg-(--lowlight-l)/10 dark:hover:bg-white/10"
+                    >
+                      <div className="font-semibold leading-tight">{p.name}</div>
+                      <div className="text-xs opacity-60 truncate">{p.title}</div>
+                    </div>
+                    ))}
+                </div>
+              )}
+              {/* CTA Ver todos */}
+              <div className="">
+                <button
+                  onClick={handleSearch}
+                  className={cn(
+                    'w-full text-center uppercase px-4 py-3 font-semibold cursor-pointer', 
+                    'bg-(--lowlight-l)/10 dark:bg-(--highlight-d)/20', 
+                    'hover:bg-(--lowlight-l)/15 dark:hover:bg-(--highlight-d)/50'
+                  )}
+                >
+                  Ver todos
+                </button>
+                
+              </div>
+
+            </div>
+          )}
+          {isMobile && (
+          <p className="text-xs p-6 text-center">¿Quieres reactivar el hint de búsqueda? → <button>Reactivar</button></p>
+          )}
         </div> 
-      )}
-      
+           
     </div>
   </> 
   )}

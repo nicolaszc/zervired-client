@@ -59,7 +59,7 @@ export default function Header() {
 
           <button
             onClick={() => setOpen(!open)}
-            className="mobile-menu-btn md:hidden text-xl"
+            className="mobile-menu-btn md:hidden text-xl w-13 h-13 flex items-center justify-center"
             aria-label="Toggle menu"
           >
             <FontAwesomeIcon icon={open ? faXmark : faBars} />

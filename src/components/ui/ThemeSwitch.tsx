@@ -38,7 +38,7 @@ export default function ThemeSwitch({className, ...props}:React.ButtonHTMLAttrib
 
   return (
     <>
-      <button onClick={toggle} className={cn("flex-col translate-x-full", className)}  {...props} aria-label='dark mode'>    
+      <button onClick={toggle} className={cn("flex-col translate-x-full text-[1rem] gap-y-1.75", className)}  {...props} aria-label='dark mode'>    
         <span>
           {ICONS.dark}
         </span>
