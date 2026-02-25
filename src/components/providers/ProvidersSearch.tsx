@@ -60,7 +60,7 @@ const ProvidersSearch = forwardRef<ProvidersSearchHandle, Props>(
   const suggestions: PredictiveSuggestions = useMemo(() => {
     const EMPTY = { services: [], locations: [], providers: [] }
     const q = normalize(deferredTerm)
-    if (q.length <= 2) {
+    if (q.length <= 1) {
 
       return EMPTY
     }
@@ -171,7 +171,7 @@ const ProvidersSearch = forwardRef<ProvidersSearchHandle, Props>(
 
       {isMobile && ( 
       <button
-        onClick={() => clearTerm}
+        onClick={(e) => {e.stopPropagation();clearTerm();actions.requestMobileSearch('close')}}
         className={cn("close-search-btn p-4"
         )}
       >
@@ -190,8 +190,9 @@ const ProvidersSearch = forwardRef<ProvidersSearchHandle, Props>(
        
         <div 
           className={cn('search-results-box absolute w-full left-0 z-3 ',
-            'top-full mt-4 md:rounded-b-lg',      
+            'top-full md:rounded-b-lg',      
             totalResults === 1 && 'to-300%',
+            hasResults && 'mt-4',
             variant === 'header' && 'bg-linear-to-b gradient'
           )}
         >
@@ -276,7 +277,7 @@ const ProvidersSearch = forwardRef<ProvidersSearchHandle, Props>(
             </div>
           )}
           {isMobile && (
-          <p className="text-xs p-6 text-center">¿Quieres reactivar el hint de búsqueda? → <button>Reactivar</button></p>
+          <p className={cn("text-xs text-center pb-6", hasResults &&("pt-6"))}>¿Quieres reactivar el hint de búsqueda? → <button>Reactivar</button></p>
           )}
         </div> 
            
