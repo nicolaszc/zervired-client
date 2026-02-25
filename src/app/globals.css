@@ -148,8 +148,8 @@
       rounded-full 
       font-light
       cursor-pointer
-      transition-all duration-500
-      hover:scale-[1.025];
+      transition-transform duration-500
+      md:hover:scale-[1.025];
   }
 
   .cta-bg{

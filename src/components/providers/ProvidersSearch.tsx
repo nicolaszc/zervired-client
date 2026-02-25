@@ -156,7 +156,7 @@ const ProvidersSearch = forwardRef<ProvidersSearchHandle, Props>(
      
     {!isMobile  && hasResults && (<div className={cn('search-overlay')} onClick={clearTerm}></div>)}
 
-    <div id="search-box" className={cn(containerStyles[variant], 'search-box relative z-2 rounded-none py-0 md:px-0', className)} onClick={(e) => {e.stopPropagation();if(isMobile){actions.requestMobileSearch('open')} }}>   
+    <div id="search-box" className={cn(containerStyles[variant], 'search-box relative z-2 cta rounded-none py-0 md:px-0', className)} onClick={(e) => {e.stopPropagation();if(isMobile){actions.requestMobileSearch('open')} }}>   
 
       <input
         id="search-input"
