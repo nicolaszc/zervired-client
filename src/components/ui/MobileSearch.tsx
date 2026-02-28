@@ -32,7 +32,8 @@ export default function MobileSearch({ className }: Props) {
 
     const ro = new ResizeObserver(measure)
     ro.observe(el)
-
+    console.log(window.innerWidth)
+    console.log(document.documentElement.scrollWidth)
     return () => ro.disconnect()
   }, [])
 
@@ -62,12 +63,13 @@ export default function MobileSearch({ className }: Props) {
   }
 
   return (
+  
     <div
       id="search"
       onClick={handleBackgroundClick}
       className={cn(
-        "fixed bottom-0 inset-x-0 h-dvh max-h-dvh w-full z-60",
-        "transition-all duration-500 ease-out",
+        "fixed bottom-0 h-full max-h-full inset-x-0 z-60",
+        "transition-transform-opacity duration-500 ease-out",
         "bg-linear-to-t gradient",
         className
       )}
@@ -84,19 +86,20 @@ export default function MobileSearch({ className }: Props) {
           actions.setMobileSearchPeek(false)
         }}
         className={cn(
-          "flex items-center justify-center absolute w-13 h-13 -top-6.5 end-0",
+          "flex items-center justify-center absolute w-11 h-13 -top-6.5 end-0",
           open ? "hidden" : ""
         )}
         aria-label="Dismiss hint"
       >
-        <span className="flex items-center justify-center w-7.5! h-7.5! bg-(--secondary-l) dark:bg-(--lowlight-d) verflow-hidden rounded-full"><FontAwesomeIcon icon={faXmark} className="w-3.75! h-3.75!" /></span>
+        <span className="flex items-center justify-center w-7.5! h-7.5! bg-(--secondary-l) dark:bg-(--lowlight-d) overflow-hidden rounded-full"><FontAwesomeIcon icon={faXmark} className="w-3.75! h-3.75!" /></span>
       </button>
 
       {/* ProvidersSearch: cualquier click interno NO debe cerrar */}
-      <div ref={contentRef} onClick={(e) => e.stopPropagation()}>
-        <ProvidersSearch ref={searchRef} variant="floating" className={cn("z-50 py-4", peek && "pt-6.5", open && "pt-4")} />
+      <div ref={contentRef} onClick={(e) => e.stopPropagation()} className="overflow-x-clip min-w-0 w-full max-w-full">
+        <ProvidersSearch ref={searchRef} variant="mobile" className={cn(peek && "pt-6.5", open && "pt-4")} />
       </div>
       
     </div>
+    
   )
 }

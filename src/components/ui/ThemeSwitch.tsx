@@ -31,7 +31,7 @@ export default function ThemeSwitch({className, ...props}:React.ButtonHTMLAttrib
 
   const ICONS = {
     dark: <FontAwesomeIcon icon={faMoon} className={cn(dark ? 'text-(--highlight-d)' : '' )}/>,
-    light: <SunIcon className={cn(dark ? '' : 'text-(--primary-l)')} />,
+    light: <SunIcon className={cn(dark ? '' : 'text-(--primary-l) text-shadow-sm')} />,
   }
 
   if (!mounted) return null // 🔑 CLAVE ABSOLUTA

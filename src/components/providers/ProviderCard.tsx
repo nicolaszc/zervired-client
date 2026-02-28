@@ -54,7 +54,7 @@ export default function ProviderCard({ provider, featured = false, background = 
               )} 
               
               <span
-                className="rounded-full w-12 h-12 flex justify-center items-center leading-1 tracking-1 text-(--primary-d)/90 dark:text-white bg-white dark:bg-[#041926] absolute right-0 bottom-0"
+                className="rounded-full w-12 h-12 flex justify-center items-center text-lg font-medium leading-1 tracking-1 text-(--primary-d)/90 dark:text-white bg-white dark:bg-[#041926] absolute right-0 bottom-0"
               >
                 +
               </span>               

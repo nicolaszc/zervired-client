@@ -4,7 +4,7 @@ import { faUserGear, faAward, faCreditCard } from '@fortawesome/free-solid-svg-i
 export default function Steps({ className = '' }) {
   return (
         <div className={`flex flex-wrap items-center justify-center pt-16 ${className}`}>
-            <h2 className="px-6 text-center text-lg leading-snug  bg-s-fade">
+            <h2 className="px-12 text-center text-lg leading-snug  bg-s-fade">
             <span className="font-semibold">Zervired</span> <span className='opacity-75'>es el marketplace de servicios
             donde encuentras lo que buscas</span>
             </h2>

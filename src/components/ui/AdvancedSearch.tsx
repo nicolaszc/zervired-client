@@ -44,7 +44,7 @@ export default function AdvabcedSearch({ className}: Props) {
       <div className="relative advanced-search-gradient mt-6.5 py-12 "> 
         <button
           className={cn(
-            "flex items-center justify-center absolute w-13 h-13 -top-6.5 end-0 cursor-pointer pointer-events-auto hover:text-sky-500 dark:hover:text-amber-500"
+            "flex items-center justify-center absolute w-11 h-13 -top-6.5 end-0 cursor-pointer pointer-events-auto hover:text-sky-500 dark:hover:text-amber-500"
           )}    
           onClick={(e) => {e.stopPropagation();actions.requestMobileSearch('close');searchRef.current?.clear()}}
           aria-label="Close advanced search"

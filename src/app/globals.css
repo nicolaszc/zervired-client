@@ -148,10 +148,18 @@
       rounded-full 
       font-light
       cursor-pointer
-      transition-transform duration-500
-      md:hover:scale-[1.025];
+      transition-transform duration-200
+      hover:scale-[1.05];
   }
-
+  
+  .header-search-transition{
+    @apply  transition-transform duration-200
+      focus-within:scale-[1.1];
+  }
+  .input-transition{
+    @apply  transition-transform duration-200
+      focus:scale-[1.1];
+  }
   .cta-bg{
     @apply bg-(--primary-d) dark:bg-(--primary-l)
       hover:bg-(--hover-l) hover:dark:bg-(--hover-d) 
@@ -206,17 +214,20 @@
   } 
 
   .search-overlay{
-    @apply bg-black/0 dark:bg-white/0
-      fixed z-1 
+    @apply fixed z-1 
       max-w-full 
       top-0
-      backdrop-blur-xs
       inset-0
-
   }
 
+  .overlay-bg{
+    @apply bg-black/0 dark:bg-white/0
+      backdrop-blur-xs
+      w-full h-full
+      mt-25
+  }
   .close-search-btn{
-    @apply  hidden
+    @apply  inline-flex opacity-0 pointer-events-none
       absolute right-1/3 md:right-[22.5%]
       rounded-none 
       text-xl 
@@ -225,7 +236,7 @@
   }
 
   body.open-search .close-search-btn{
-    @apply flex;
+    @apply opacity-100 pointer-events-auto cursor-pointer 
   }
   
   body.open-search{
@@ -240,14 +251,14 @@
   #dock button{
     @apply flex justify-center items-center
     ps-3.75 pe-3 py-4 
-    w-13 min-h-13 max-w-13
+    w-11 min-h-13 max-w-11
     text-xl
     rounded-l-lg
     bg-(--primary-d)/15 dark:bg-white/10 backdrop-blur
+    hover:bg-(--primary-d)/25 dark:hover:bg-white/20 hover:backdrop-blur-3xl
     text-(--primary-d)/70 
     dark:text-white/80 
     hover:text-(--highlight-d) dark:hover:text-(--primary-l)
-    transition-all
     cursor-pointer;
   }
 
