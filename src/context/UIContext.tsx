@@ -232,14 +232,16 @@ export function UIProvider({ children }: { children: ReactNode }) {
   const [hydrated, setHydrated] = useState(false)
   const [dockSettled, setDockSettled] = useState(true)
   useEffect(() => {
+    console.log('Hydrated')
     const markHydrated = () => setHydrated(true)
     markHydrated()
   }, [])
 
   useEffect(() => {
     if (!hydrated) return
+    console.log('Hydrate')
      const bindDockToDevice = () => {
-      setDockOpen(!isMobile) // desktop open, mobile closed
+      setDockOpen(false)
       setDockSettled(true)   // ✅ estado inicial “en reposo”
     }
     bindDockToDevice()
@@ -253,6 +255,10 @@ export function UIProvider({ children }: { children: ReactNode }) {
 
   // Anti-flash gate (dock -> search)
   const [dockToSearchPending, setDockToSearchPending] = useState(false)
+
+  // 👇 ref "live" para evitar stale closure con transitionend
+  const dockToSearchPendingRef = useRef(false)
+
   const pendingSearchModeRef = useRef<null | "open">(null)
 
   // Dock manda: abrir/toggle esconde hint (peek) momentáneo
@@ -266,6 +272,8 @@ export function UIProvider({ children }: { children: ReactNode }) {
 const closeDock = useCallback(() => {
   setDockSettled(false)
   setDockOpen(false)
+  console.log(pendingSearchModeRef.current)
+  console.log(dockToSearchPendingRef.current)
 }, [])
 
 const toggleDock = useCallback(() => {
@@ -311,8 +319,11 @@ const toggleDock = useCallback(() => {
         setMobileSearchOpen(false)
         setMobileSearchPeek(false)
         setAdvancedSearchOpen(false)
+
+        dockToSearchPendingRef.current = false
         setDockToSearchPending(false)
         pendingSearchModeRef.current = null
+
         return
       }
 
@@ -320,11 +331,10 @@ const toggleDock = useCallback(() => {
       setMobileSearchPeek(false)
 
       if (isMobile) {
-        // Si dock está abierto, solo se abre vía openSearchFromDock() (coreografía)
         if (dockOpen) return
         setMobileSearchOpen(true)
       } else {
-         if (dockOpen) return
+        if (dockOpen) return
         setAdvancedSearchOpen(true)
       }
     },
@@ -341,48 +351,46 @@ const toggleDock = useCallback(() => {
   // - Desktop: abre advanced al tiro
   // - Mobile: cierra dock, espera notifyDockSettled y abre takeover
   const openSearchFromDock = useCallback(() => {
-    
-    setMobileSearchPeek(false) // ✅ evita flash inmediato
+  setMobileSearchPeek(false)
 
-    if (!isMobile) {
-      // Desktop: sin coreografía
-      /* pendingSearchModeRef.current = null
-      setDockToSearchPending(true)
-      setAdvancedSearchOpen(true)
-      return */
-    }
+  // Si dock no está abierto, abre directo
+  if (!dockOpen) {
+    pendingSearchModeRef.current = null
+    dockToSearchPendingRef.current = false
+    setDockToSearchPending(false)
 
-    if (!dockOpen) {
-      pendingSearchModeRef.current = null
-      setDockToSearchPending(false)
-      if (isMobile){
-        setMobileSearchOpen(true)
-      }else{
-        setAdvancedSearchOpen(true)
-      }
-      return
-    }
+    if (isMobile) setMobileSearchOpen(true)
+    else setAdvancedSearchOpen(true)
 
-    // Mobile: coreografía real
-    pendingSearchModeRef.current = "open"
-    setDockToSearchPending(true)
-    closeDock()
-  }, [isMobile, closeDock, dockOpen])
+    return
+  }
 
- const notifyDockSettled = useCallback(() => {
+  // Coreografía real
+  pendingSearchModeRef.current = "open"
+  dockToSearchPendingRef.current = true
+  setDockToSearchPending(true)
+  console.log(pendingSearchModeRef.current)
+  console.log(dockToSearchPendingRef.current)
+  closeDock()
+}, [isMobile, closeDock, dockOpen])
+
+
+const notifyDockSettled = useCallback(() => {
   setDockSettled(true)
+  console.log(pendingSearchModeRef.current)
+  console.log(dockToSearchPendingRef.current)
+  // ✅ gate live
+  if (!dockToSearchPendingRef.current) return
 
-  // Mantén tu lógica existente de coreografía dock->search
-  if (pendingSearchModeRef.current !== "open") return
-  pendingSearchModeRef.current = null
+  // consume
+  dockToSearchPendingRef.current = false
   setDockToSearchPending(false)
 
+  pendingSearchModeRef.current = null
+
   setMobileSearchPeek(false)
-  if (isMobile){
-    setMobileSearchOpen(true)
-  }else{
-    setAdvancedSearchOpen(true)
-  }
+  if (isMobile) setMobileSearchOpen(true)
+  else setAdvancedSearchOpen(true)
 }, [isMobile])
 
   const state = useMemo<UIState>(
@@ -470,7 +478,6 @@ export function useUIVisible(rules?: IntersectRule[]) {
     if (!stableRules.length) return
     actions.registerRules(stableRules)
     return () => actions.unregisterRules(stableRules)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [actions, stableRules])
 
   const visible = useMemo(() => {

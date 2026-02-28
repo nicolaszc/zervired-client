@@ -16,7 +16,7 @@ import { cn } from '@/lib/utils'
 import { providers } from '@/data/providers'
 import type { Provider } from '@/interfaces/provider'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCircleArrowLeft } from '@fortawesome/free-solid-svg-icons'
+import { faCircleArrowDown } from '@fortawesome/free-solid-svg-icons'
 import { useUI } from "@/context/UIContext"
 interface Props {
   variant?: 'header' | 'mobile' | 'floating'
@@ -46,9 +46,9 @@ const ProvidersSearch = forwardRef<ProvidersSearchHandle, Props>(
   const isMobile = state.isMobile
 
   const containerStyles = {
-    header: 'hidden md:flex justify-center items-center text-sm',
-    mobile: 'flex w-full',
-    floating: 'flex w-full items-center',
+    header: 'hidden md:flex justify-center items-center text-sm header-search-transition',
+    mobile: 'flex w-full max-w-full min-w-0 px-6 pb-4 overflow-x-clip z-50',
+    floating: 'flex w-full items-center', //sinnutilizar aún
   }
 
   const normalize = (value: unknown) =>
@@ -107,21 +107,6 @@ const ProvidersSearch = forwardRef<ProvidersSearchHandle, Props>(
   suggestions.locations.length > 0 ||
   suggestions.providers.length > 0 
   
-  useEffect(() => {
-    
-
-    // Esto es para en desktop abrir el overlay mediante clase auxiliar open-search
-    // en desktop no se sigue la clase es solo para agregarla o quitarla en base a los resultados
-    if(!isMobile){
-
-      if (hasResults) {
-        document.body.classList.add('open-search');
-      } else {
-        document.body.classList.remove('open-search');
-      }
-
-    }  
-  }, [hasResults, isMobile])
   
  const handleSearch = () => {
     const clean = term.trim()
@@ -154,9 +139,9 @@ const ProvidersSearch = forwardRef<ProvidersSearchHandle, Props>(
   return (
    <>
      
-    {!isMobile  && hasResults && (<div className={cn('search-overlay')} onClick={clearTerm}></div>)}
+    {!isMobile  && hasResults && (<div className={cn('search-overlay')} onClick={clearTerm}><div className='overlay-bg'></div></div>)}
 
-    <div id="search-box" className={cn(containerStyles[variant], 'search-box relative z-2 cta rounded-none py-0 md:px-0', className)} onClick={(e) => {e.stopPropagation();if(isMobile){actions.requestMobileSearch('open')} }}>   
+    <div id="search-box" className={cn(containerStyles[variant], 'relative z-2', className)} onClick={(e) => {e.stopPropagation();if(isMobile){actions.requestMobileSearch('open')} }}>   
 
       <input
         id="search-input"
@@ -165,23 +150,23 @@ const ProvidersSearch = forwardRef<ProvidersSearchHandle, Props>(
         onChange={(e) => setTerm(e.target.value)}
         onKeyDown={(e) => e.key === 'Enter' && handleSearch()} 
         placeholder="¿Qué servicio buscas?"
-        className={cn("input rounded-r-none search-input basis-2/3"
+        className={cn("input rounded-r-none search-input basis-2/3 text-[16px] placeholder:text-sm pt-1.5 pb-1.75 md:text-sm md:py-2"
         )}      
       />
 
       {isMobile && ( 
       <button
         onClick={(e) => {e.stopPropagation();clearTerm();actions.requestMobileSearch('close')}}
-        className={cn("close-search-btn p-4"
+        className={cn("close-search-btn px-4 py-2.5"
         )}
       >
-        <FontAwesomeIcon icon={faCircleArrowLeft} />
+        <FontAwesomeIcon icon={faCircleArrowDown} />
       </button>
       )}
 
       <button
         onClick={() => {handleSearch()}}
-        className={cn("cta cta-bg rounded-l-none  basis-1/3"
+        className={cn("px-6 py-2 cta-bg rounded-r-full rounded-l-none basis-1/3 cursor-pointer"
         )}
         >
         Buscar
@@ -192,7 +177,7 @@ const ProvidersSearch = forwardRef<ProvidersSearchHandle, Props>(
           className={cn('search-results-box absolute w-full left-0 z-3 ',
             'top-full md:rounded-b-lg',      
             totalResults === 1 && 'to-300%',
-            hasResults && 'mt-4',
+            hasResults && 'pt-4',
             variant === 'header' && 'bg-linear-to-b gradient'
           )}
         >

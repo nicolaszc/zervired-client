@@ -25,7 +25,7 @@ export default function Dock({ intersect }: Props) {
   const { visible, isMobile } = useUIVisible(intersect)
 
   const open = state.dockOpen
-
+  //const searchOpen = state.advancedSearchOpen
   // Sentinel: SOLO controla hint (peek) en mobile, con gates anti-flash
   useEffect(() => {
     if (!isMobile) return
@@ -58,20 +58,29 @@ export default function Dock({ intersect }: Props) {
   const dockRef = useRef<HTMLDivElement>(null)
 
   const handleDockTransitionEnd = (e: React.TransitionEvent<HTMLDivElement>) => {
-    if (e.currentTarget !== e.target) return
-    if (e.propertyName !== 'translate' && e.propertyName !== 'transform') return
-    actions.notifyDockSettled()
-  }
+  if (e.currentTarget !== e.target) return
 
-  const transition_duration = 150
+  // Tailwind v4 translate-* => propiedad "translate"
+  if (e.propertyName !== "translate" && e.propertyName !== "transform" && e.propertyName !== "-webkit-transform")
+    return
+
+  // ✅ solo al cerrar
+  if (state.dockOpen) return
+  console.log('notify')
+
+  actions.notifyDockSettled()
+}
+
+  const transition_duration = 200
 
   return (
     <div
       id="dock"
       className={cn(
-        'flex flex-col fixed bottom-40 end-0 z-30',
+        'flex flex-col fixed bottom-[15%] end-0 z-30',
         'transition-transform ease-out',
-        open && 'translate-y-1/4'
+        open && 'translate-y-[20%]',
+
       )}
       style={{
         transitionDuration: transition_duration * 2.5 + 'ms',
@@ -143,7 +152,7 @@ export default function Dock({ intersect }: Props) {
 
       {/* SEARCH BUTTON (mobile + desktop) */}
       <button
-        className={cn('target duration-500 text-[1rem] translate-x-0 opacity-100')}
+        className={cn('duration-200 text-[1rem] translate-x-0 opacity-100')}
         onClick={() => actions.openSearchFromDock()}
         aria-label="Open Search"
       >

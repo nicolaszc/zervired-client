@@ -9,11 +9,13 @@ import ProvidersSearch from '@/components/providers/ProvidersSearch'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBars, faXmark } from '@fortawesome/free-solid-svg-icons'
 import { faXTwitter, faLinkedinIn, faInstagram } from '@fortawesome/free-brands-svg-icons'
-import useIsMobile from '@/hooks/useIsMobile'
+import { useUI } from "@/context/UIContext"
+
 
 export default function Header() {
+  const { state } = useUI()
   const [open, setOpen] = useState(false)
-  const isMobile = useIsMobile()
+  const isMobile = state.isMobile
 
   return (
     <>
@@ -42,7 +44,7 @@ export default function Header() {
 
           {!isMobile && ( 
               
-              <ProvidersSearch />
+              <ProvidersSearch/>
             
           )}
           {/* Nav */}
