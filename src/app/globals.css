@@ -208,7 +208,7 @@
 
   /* search */
   .search-results-box{
-    @apply max-h-[calc(100dvh-(72px))]
+    @apply max-h-[calc(100svh-(72px))]
       overflow-y-scroll
       scrollbar-hide;
   } 

@@ -9,7 +9,9 @@ import { faEllipsisV, faAngleUp, faSearch } from '@fortawesome/free-solid-svg-ic
 import { faEnvelope } from '@fortawesome/free-regular-svg-icons'
 import { faWhatsapp } from '@fortawesome/free-brands-svg-icons'
 import { useUIVisible, useUI } from '@/context/UIContext'
-
+import { dockMotionStyle } from "@/lib/uiMotion"
+import { dockRootMotionStyle } from "@/lib/uiMotion"
+import { dockPhaseDelayStyle } from "@/lib/uiMotion"
 interface Rule {
   target: string
   when: 'in' | 'out'
@@ -66,12 +68,46 @@ export default function Dock({ intersect }: Props) {
 
   // ✅ solo al cerrar
   if (state.dockOpen) return
-  console.log('notify')
 
   actions.notifyDockSettled()
 }
 
   const transition_duration = 200
+  const stepMs = transition_duration
+  const openSteps = [4, 3, 2, 1]  // top->bottom al abrir
+  const closeSteps = [0, 1, 2, 3] // top->bottom al cerrar
+  const motion = (i: number) =>
+    dockMotionStyle({
+      index: i,
+      open,
+      stepMs,
+      openSteps,
+      closeSteps,
+    })
+
+  const motionY = () =>
+    dockRootMotionStyle({
+      open,
+      stepMs,
+      openDelaySteps: 0,
+      closeDelaySteps: 4,
+      durationMultiplier: 2.5,
+    })
+
+  const phase = () =>
+    dockPhaseDelayStyle({
+      open,
+      stepMs: transition_duration,
+      openSteps: 1,
+      closeSteps: 0,
+  })
+
+  const advancedOpen = state.advancedSearchOpen
+  const dockY = advancedOpen
+  ? "translate-y-[-70%]"         
+  : open
+    ? "translate-y-[20%]"
+    : "translate-y-0"
 
   return (
     <div
@@ -79,13 +115,9 @@ export default function Dock({ intersect }: Props) {
       className={cn(
         'flex flex-col fixed bottom-[15%] end-0 z-30',
         'transition-transform ease-out',
-        open && 'translate-y-[20%]',
-
+        dockY
       )}
-      style={{
-        transitionDuration: transition_duration * 2.5 + 'ms',
-        transitionDelay: open ? transition_duration * 0 + 'ms' : transition_duration * 4 + 'ms',
-      }}
+      style={motionY()}
       ref={dockRef}
       onTransitionEnd={handleDockTransitionEnd}
     >
@@ -94,17 +126,11 @@ export default function Dock({ intersect }: Props) {
         <div className={cn('grid', open ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]')}>
           <div
             className="flex flex-col items-center gap-y-2"
-            style={{
-              transitionDuration: transition_duration * 1 + 'ms',
-              transitionDelay: !open ? transition_duration * 4 + 'ms' : transition_duration * 1 + 'ms',
-            }}
+            style={phase()}
           >
             <button
               className={cn('trigger', open ? 'translate-x-0' : 'translate-x-full cerrando')}
-              style={{
-                transitionDuration: transition_duration * 1 + 'ms',
-                transitionDelay: !open ? transition_duration * 0 + 'ms' : transition_duration * 4 + 'ms',
-              }}
+              style={motion(0)}
               aria-label="Scroll to top"
               data-is-leaving={!open ? 'true' : 'false'}
             >
@@ -113,19 +139,13 @@ export default function Dock({ intersect }: Props) {
 
             <ThemeSwitch
               className={cn(open ? 'translate-x-0' : 'translate-x-full')}
-              style={{
-                transitionDuration: transition_duration * 1 + 'ms',
-                transitionDelay: !open ? transition_duration * 1 + 'ms' : transition_duration * 3 + 'ms',
-              }}
+              style={motion(1)}
               aria-label="Dark Mode Switch"
             />
 
             <button
               className={cn('text-[1.15rem]', open ? 'translate-x-0 abrio' : 'translate-x-full cerro')}
-              style={{
-                transitionDuration: transition_duration * 1 + 'ms',
-                transitionDelay: transition_duration * 2 + 'ms',
-              }}
+              style={motion(2)}
               aria-label="Contact"
             >
               <FontAwesomeIcon icon={faEnvelope} />
@@ -133,10 +153,7 @@ export default function Dock({ intersect }: Props) {
 
             <button
               className={cn(open ? 'translate-x-0' : 'translate-x-full')}
-              style={{
-                transitionDuration: transition_duration * 1 + 'ms',
-                transitionDelay: !open ? transition_duration * 3 + 'ms' : transition_duration * 1 + 'ms',
-              }}
+              style={motion(3)}
               aria-label="Whatsapp"
             >
               <FontAwesomeIcon icon={faWhatsapp} />
