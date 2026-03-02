@@ -36,6 +36,53 @@ export type ProvidersSearchHandle = {
   focus: () => void
 }
 
+function useIOSBoundaryScrollLock(active: boolean) {
+  const ref = useRef<HTMLDivElement | null>(null)
+
+  useEffect(() => {
+    if (!active) return
+    console.log('acive')
+    const el = ref.current
+    if (!el) return
+
+    let startY = 0
+
+    const onTouchStart: EventListener = (e) => {
+      const ev = e as TouchEvent
+      startY = ev.touches[0]?.clientY ?? 0
+      console.log('touch start')
+    }
+
+    const onTouchMove: EventListener = (e) => {
+      const ev = e as TouchEvent
+
+      if (!ev.cancelable) return
+
+      const y = ev.touches[0]?.clientY ?? 0
+      const deltaY = y - startY
+
+      const atTop = el.scrollTop <= 0
+      const atBottom =
+        el.scrollTop + el.clientHeight >= el.scrollHeight - 1
+
+      if ((atTop && deltaY > 0) || (atBottom && deltaY < 0)) {
+        ev.preventDefault()
+      }
+      console.log('touch move')
+    }
+
+    el.addEventListener("touchstart", onTouchStart, { passive: true })
+    el.addEventListener("touchmove", onTouchMove, { passive: false })
+
+    return () => {
+      el.removeEventListener("touchstart", onTouchStart)
+      el.removeEventListener("touchmove", onTouchMove)
+    }
+  }, [active])
+
+  return ref
+}
+
 const ProvidersSearch = forwardRef<ProvidersSearchHandle, Props>(
 ({ variant = 'header', className }, ref) => {
 
@@ -155,6 +202,9 @@ const ProvidersSearch = forwardRef<ProvidersSearchHandle, Props>(
       vv.removeEventListener("scroll", onResize)
     }
   }, [state.isMobile])
+
+  const listRef = useIOSBoundaryScrollLock(state.mobileSearchOpen)
+
   return (
    <>
      
@@ -201,6 +251,7 @@ const ProvidersSearch = forwardRef<ProvidersSearchHandle, Props>(
             variant === 'header' && 'bg-linear-to-b gradient'
           )}
           style={{ height: hasResults && vvh ? `${vvh}px` : undefined}}
+          ref={listRef}
         >
 
           {hasResults && ( 
