@@ -113,11 +113,20 @@ const ProvidersSearch = forwardRef<ProvidersSearchHandle, Props>(
       .normalize('NFD')
       .replace(/[\u0300-\u036f]/g, '')
    
-  const providerIndex = useMemo(() => {
+  const searchIndex = useMemo(() => {
     return providers.map(p => ({
-      p,
+      provider: p,
+
       nameN: normalize(p.name),
       titleN: normalize(p.title),
+
+      location: p.location,
+      locationN: normalize(p.location),
+
+      services: (p.services ?? []).map(s => ({
+        orig: s,
+        norm: normalize(s),
+      })),
     }))
   }, [])
 
