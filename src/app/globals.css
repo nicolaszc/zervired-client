@@ -213,11 +213,7 @@
       overflow-y-scroll
       scrollbar-hide;
   }
-  .search-results-box{
-      overscroll-behavior: contain;
-      -webkit-overflow-scrolling: touch;
-      touch-action: pan-y;    
-  } 
+ 
 
   .search-overlay{
     @apply fixed z-1 
