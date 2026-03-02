@@ -10,7 +10,7 @@
 
 'use client'
 
-import { useState, useMemo, useEffect, useDeferredValue, forwardRef, useImperativeHandle, useCallback, useRef} from 'react'
+import { useState, useMemo, useEffect, forwardRef, useImperativeHandle, useCallback, useRef} from 'react'
 import { useRouter, usePathname } from 'next/navigation'
 import { cn } from '@/lib/utils'
 import { providers } from '@/data/providers'
@@ -35,6 +35,12 @@ export type ProvidersSearchHandle = {
   clear: () => void
   focus: () => void
 }
+
+const normalize = (value: unknown) =>
+    String(value ?? '')
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
 
 function useIOSBoundaryScrollLock(active: boolean) {
   const ref = useRef<HTMLDivElement | null>(null)
@@ -80,14 +86,7 @@ function useIOSBoundaryScrollLock(active: boolean) {
   return ref
 }
 
-function useDebouncedValue<T>(value: T, delay = 100) {
-  const [debounced, setDebounced] = useState(value)
-  useEffect(() => {
-    const id = window.setTimeout(() => setDebounced(value), delay)
-    return () => window.clearTimeout(id)
-  }, [value, delay])
-  return debounced
-}
+
 
 const ProvidersSearch = forwardRef<ProvidersSearchHandle, Props>(
 ({ variant = 'header', className }, ref) => {
@@ -95,8 +94,9 @@ const ProvidersSearch = forwardRef<ProvidersSearchHandle, Props>(
   const router = useRouter()
   const pathname = usePathname()
   const [term, setTerm] = useState('')
-  const debouncedTerm = useDebouncedValue(term, 100)
-  //const deferredTerm = useDeferredValue(term)
+  const [query, setQuery] = useState('') // lo que gatilla suggestions
+
+  
   const { state, actions } = useUI()
   const isMobile = state.isMobile
   const inputRef = useRef<HTMLInputElement>(null)
@@ -107,11 +107,12 @@ const ProvidersSearch = forwardRef<ProvidersSearchHandle, Props>(
     floating: 'flex w-full items-center', //sinnutilizar aún
   }
 
-  const normalize = (value: unknown) =>
-    String(value ?? '')
-      .toLowerCase()
-      .normalize('NFD')
-      .replace(/[\u0300-\u036f]/g, '')
+  useEffect(() => {
+    const id = window.setTimeout(() => setQuery(term), 120) // debounce real
+    return () => window.clearTimeout(id)
+  }, [term])
+
+  
    
   const searchIndex = useMemo(() => {
     return providers.map(p => ({
@@ -133,7 +134,7 @@ const ProvidersSearch = forwardRef<ProvidersSearchHandle, Props>(
   const suggestions: PredictiveSuggestions = useMemo(() => {
   const EMPTY = { services: [], locations: [], providers: [] }
 
-  const q = normalize(debouncedTerm)
+  const q = normalize(query)
   if (!q) return EMPTY
 
   const matchedServices = Array.from(
@@ -164,7 +165,7 @@ const ProvidersSearch = forwardRef<ProvidersSearchHandle, Props>(
     locations: matchedLocations,
     providers: matchedProviders,
   }
-}, [debouncedTerm, searchIndex])
+}, [query, searchIndex])
 
   const totalResults = suggestions.services.length + suggestions.locations.length + suggestions.providers.length 
 
