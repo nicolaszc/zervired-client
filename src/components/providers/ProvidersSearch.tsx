@@ -200,7 +200,7 @@ const ProvidersSearch = forwardRef<ProvidersSearchHandle, Props>(
             hasResults && 'pt-4',
             variant === 'header' && 'bg-linear-to-b gradient'
           )}
-          style={{ height: vvh ? `${vvh}px` : undefined}}
+          style={{ height: hasResults && vvh ? `${vvh}px` : undefined}}
         >
 
           {hasResults && ( 

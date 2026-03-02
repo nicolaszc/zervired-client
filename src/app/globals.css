@@ -113,7 +113,8 @@
   }
 
   .theme-search-shadow{
-    @apply shadow-[0_16px_16px_-2px_rgba(0,0,0,0.15)];
+    @apply shadow-[0_16px_16px_-2px_rgba(0,0,0,0.15)]
+    overflow-y-visible
   }
 
   /* Text */
@@ -208,9 +209,14 @@
 
   /* search */
   .search-results-box{
-    @apply max-h-[calc(100svh-(72px))]
+    @apply max-h-[calc(100dvh-(72px))]
       overflow-y-scroll
       scrollbar-hide;
+  }
+  .search-results-box{
+      overscroll-behavior: contain;
+      -webkit-overflow-scrolling: touch;
+      touch-action: pan-y;    
   } 
 
   .search-overlay{
@@ -240,7 +246,7 @@
   }
   
   body.open-search{
-    @apply overflow-y-clip;
+    @apply overflow-y-hidden;
   }
 
   #dock, #dock .grid, #dock .flex{

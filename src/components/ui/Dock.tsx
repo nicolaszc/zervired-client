@@ -1,7 +1,7 @@
 // src/components/ui/Dock.tsx
 'use client'
 
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { cn } from '@/lib/utils'
 import ThemeSwitch from '@/components/ui/ThemeSwitch'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -72,6 +72,29 @@ export default function Dock({ intersect }: Props) {
   actions.notifyDockSettled()
 }
 
+  function usePrevious<T>(value: T): T | undefined {
+  const [prev, setPrev] = useState<T | undefined>(undefined)
+
+  useEffect(() => {
+    setPrev(value)
+  }, [value])
+
+  return prev
+}
+
+  const advancedOpen = state.advancedSearchOpen
+
+const prevAdvancedOpen = usePrevious(advancedOpen)
+const advancedJustToggled = prevAdvancedOpen !== undefined && prevAdvancedOpen !== advancedOpen
+
+  
+  
+  const dockY = advancedOpen
+  ? "translate-y-[-70%]"         
+  : open
+    ? "translate-y-[20%]"
+    : "translate-y-0"
+
   const transition_duration = 200
   const stepMs = transition_duration
   const openSteps = [4, 3, 2, 1]  // top->bottom al abrir
@@ -92,6 +115,7 @@ export default function Dock({ intersect }: Props) {
       openDelaySteps: 0,
       closeDelaySteps: 4,
       durationMultiplier: 2.5,
+      delayStepsOverride: !open && advancedJustToggled ? 0 : undefined,
     })
 
   const phase = () =>
@@ -101,13 +125,7 @@ export default function Dock({ intersect }: Props) {
       openSteps: 1,
       closeSteps: 0,
   })
-
-  const advancedOpen = state.advancedSearchOpen
-  const dockY = advancedOpen
-  ? "translate-y-[-70%]"         
-  : open
-    ? "translate-y-[20%]"
-    : "translate-y-0"
+  
 
   return (
     <div

@@ -8,7 +8,7 @@ import { useLayoutEffect, useMemo, useRef, useState, useEffect } from "react"
 import { useUI } from "@/context/UIContext"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faXmark } from "@fortawesome/free-solid-svg-icons"
-
+import {useLockBodyScroll} from "@/hooks/useLockBodyScroll"
 interface Props {
   className?: string
 }
@@ -17,6 +17,7 @@ export default function MobileSearch({ className }: Props) {
   const { state, actions } = useUI()
   const peek = state.mobileSearchPeek
   const open = state.mobileSearchOpen
+
 
   const searchRef = useRef<ProvidersSearchHandle>(null)
   const contentRef = useRef<HTMLDivElement>(null)
@@ -27,7 +28,7 @@ export default function MobileSearch({ className }: Props) {
   useEffect(() => {
     if (open) {const tapFocus = () => setNeedsTapToFocus(true); tapFocus()}
   }, [open])
-
+  useLockBodyScroll(open)
   useLayoutEffect(() => {
     const el = contentRef.current
     if (!el) return
@@ -77,14 +78,22 @@ export default function MobileSearch({ className }: Props) {
   }
   
   return (
-  
+    <>
+    {state.hintToast && (
+          <div className="fixed bottom-5 inset-x-3 z-999">
+            <div className="flex items-center gap-2 rounded-lg px-3 py-2 bg-yellow-100 text-yellow-900">
+              <span>⚠️</span>
+              <span className="text-sm">{state.hintToast}</span>
+            </div>
+          </div>
+        )}
     <div
       id="search"
       ref={searchBgRef}
       onClick={handleBackgroundClick}
       onTransitionEnd={handleInputFocus}
       className={cn(
-        "fixed top-0 bottom-0 h-full max-full inset-x-0 z-60 overflow-hidden",
+        "fixed top-0 bottom-0 h-full max-h-full inset-x-0 z-60",
         "transition-transform-opacity duration-500 delay-0 ease-out",
         "bg-linear-to-t gradient",
         className
@@ -100,6 +109,7 @@ export default function MobileSearch({ className }: Props) {
           e.stopPropagation()
           actions.setAutoSearchSuppressed(true)
           actions.setMobileSearchPeek(false)
+          actions.showHintToast("Hint de búsqueda suprimido temporalmente. Puedes reactivarlo desde la búsqueda.")
         }}
         className={cn(
           "flex items-center justify-center absolute z-60 w-11 h-13 -top-6.5 end-0",
@@ -109,6 +119,8 @@ export default function MobileSearch({ className }: Props) {
       >
         <span className="flex items-center justify-center w-7.5! h-7.5! bg-(--secondary-l) dark:bg-(--lowlight-d) overflow-hidden rounded-full"><FontAwesomeIcon icon={faXmark} className="w-3.75! h-3.75!" /></span>
       </button>
+      
+      
 
       {/* ProvidersSearch: cualquier click interno NO debe cerrar */}
       <div ref={contentRef} onClick={(e) => e.stopPropagation()} className="overflow-x-clip min-w-0 w-full max-w-full relative">
@@ -128,6 +140,6 @@ export default function MobileSearch({ className }: Props) {
       </div>
       
     </div>
-    
+    </>
   )
 }
