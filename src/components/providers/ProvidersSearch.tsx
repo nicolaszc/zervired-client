@@ -113,54 +113,58 @@ const ProvidersSearch = forwardRef<ProvidersSearchHandle, Props>(
       .normalize('NFD')
       .replace(/[\u0300-\u036f]/g, '')
    
-  const providerIndex = useMemo(() => {
+  const searchIndex = useMemo(() => {
     return providers.map(p => ({
-      p,
+      provider: p,
+
       nameN: normalize(p.name),
       titleN: normalize(p.title),
+
+      location: p.location,
+      locationN: normalize(p.location),
+
+      services: (p.services ?? []).map(s => ({
+        orig: s,
+        norm: normalize(s),
+      })),
     }))
   }, [])
 
   const suggestions: PredictiveSuggestions = useMemo(() => {
-    const EMPTY = { services: [], locations: [], providers: [] }
-    const q = normalize(debouncedTerm)
-    if (q.length <= 0) {
+  const EMPTY = { services: [], locations: [], providers: [] }
 
-      return EMPTY
-    }
+  const q = normalize(debouncedTerm)
+  if (!q) return EMPTY
 
-    // Servicios únicos
-    const matchedServices = Array.from(
-      new Set(
-        providers
-          .flatMap(p => p.services ?? [])
-          .filter(s => normalize(s).includes(q))
-      )
-    ).slice(0, 5)
+  const matchedServices = Array.from(
+    new Set(
+      searchIndex
+        .flatMap(x => x.services)
+        .filter(s => s.norm.includes(q))
+        .map(s => s.orig)
+    )
+  ).slice(0, 5)
 
-    // Ubicaciones únicas
-    const matchedLocations = Array.from(
-      new Set(
-        providers
-          .map(p => p.location)
-          .filter(loc => normalize(loc).includes(q))
-        )
-    ).slice(0, 5)
+  const matchedLocations = Array.from(
+    new Set(
+      searchIndex
+        .filter(x => x.locationN.includes(q))
+        .map(x => x.location)
+    )
+  ).slice(0, 5)
 
-    // Providers solo desde 3 chars
-    const matchedProviders =
-      providerIndex
-        .filter(x => x.nameN.includes(q) || x.titleN.includes(q))
-        .slice(0, 5)
-        .map(x => x.p)
+  const matchedProviders =
+    searchIndex
+      .filter(x => x.nameN.includes(q) || x.titleN.includes(q))
+      .slice(0, 5)
+      .map(x => x.provider)
 
-    return {
-      services: matchedServices,
-      locations: matchedLocations,
-      providers: matchedProviders,
-    }
-
-  }, [debouncedTerm, providerIndex])
+  return {
+    services: matchedServices,
+    locations: matchedLocations,
+    providers: matchedProviders,
+  }
+}, [debouncedTerm, searchIndex])
 
   const totalResults = suggestions.services.length + suggestions.locations.length + suggestions.providers.length 
 
