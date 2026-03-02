@@ -41,10 +41,16 @@ export function dockRootMotionStyle(args: {
   openDelaySteps?: number
   closeDelaySteps?: number
   durationMultiplier?: number
+  delayStepsOverride?: number
 }): React.CSSProperties {
-  const { open, stepMs, openDelaySteps = 0, closeDelaySteps = 4, durationMultiplier = 2.5 } = args
+  const { open, stepMs, openDelaySteps = 0, closeDelaySteps = 4, durationMultiplier = 2.5, delayStepsOverride } = args
 
-  const delaySteps = open ? openDelaySteps : closeDelaySteps
+  const delaySteps =
+    typeof delayStepsOverride === "number"
+      ? delayStepsOverride
+      : open
+        ? openDelaySteps
+        : closeDelaySteps
 
   return {
     transitionProperty: "translate",

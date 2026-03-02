@@ -43,9 +43,10 @@ type UIState = {
 
   // Hint suppression (solo afecta peek)
   autoSearchSuppressed: boolean
-
+  hintToast: string | null
   // Anti-flash / coreografía dock -> search
   dockToSearchPending: boolean
+
 }
 
 type UIActions = {
@@ -71,6 +72,7 @@ type UIActions = {
 
   // Suppress
   setAutoSearchSuppressed: React.Dispatch<React.SetStateAction<boolean>>
+  showHintToast: (msg:string) => void
 
   // Dock -> Search coreografía
   openSearchFromDock: () => void
@@ -388,6 +390,12 @@ const notifyDockSettled = useCallback(() => {
   else setAdvancedSearchOpen(true)
 }, [isMobile])
 
+  const [hintToast, setHintToast] = useState<string | null>(null)
+  const showHintToast = useCallback((msg: string) => {
+    setHintToast(msg)
+    window.setTimeout(() => setHintToast(null), 5000)
+  }, [])
+
   const state = useMemo<UIState>(
     () => ({
       isMobile,
@@ -400,6 +408,7 @@ const notifyDockSettled = useCallback(() => {
       advancedSearchOpen,
       autoSearchSuppressed,
       dockToSearchPending,
+      hintToast,
     }),
     [
       isMobile,
@@ -413,6 +422,7 @@ const notifyDockSettled = useCallback(() => {
       advancedSearchOpen,
       autoSearchSuppressed,
       dockToSearchPending,
+      hintToast,
     ]
   )
 
@@ -436,6 +446,7 @@ const notifyDockSettled = useCallback(() => {
 
       openSearchFromDock,
       notifyDockSettled,
+      showHintToast,
     }),
     [
       registerRules,
@@ -450,6 +461,7 @@ const notifyDockSettled = useCallback(() => {
       setAutoSearchSuppressed,
       openSearchFromDock,
       notifyDockSettled,
+      showHintToast,
     ]
   )
 
