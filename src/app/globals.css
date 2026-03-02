@@ -277,21 +277,46 @@
 
 :root {
   --background: var(--primary-l);
+
+  /* Ajusta estos valores */
+  --body-top-stop: 200px;     /* header + margen */
+  --body-bottom-stop: 376px;  /* footer + margen */
+
+  --background-image: linear-gradient(
+    180deg,
+    var(--primary-l) 0px,
+    var(--primary-l) var(--body-top-stop),
+    var(--bg-l)      var(--body-top-stop),
+    var(--bg-l)      calc(100% - var(--body-bottom-stop)),
+    var(--primary-l) calc(100% - var(--body-bottom-stop)),
+    var(--primary-l) 100%
+  );
+
   --foreground: var(--primary-d);
 }
 
-/* Dark mode controlado por clase */
+@media (min-width: 768px) {
+  :root {
+    --body-bottom-stop: 264px;
+  }
+}
+/* Dark mode */
 .dark {
   --background: var(--primary-d);
-  --foreground: var(--bg-l)
+  --background-image: none;
+  --foreground: var(--bg-l);
 }
 
-body {
+html{
   background-color: var(--background);
+}
+
+body { 
+  background-image: var(--background-image);
+  min-height: 100svh;   /* importante para iOS */
   color: var(--foreground);
   overflow-x: clip;
   font-weight: 200;
-
 }
 
 /* Animations */

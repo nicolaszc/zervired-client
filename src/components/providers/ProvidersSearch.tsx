@@ -41,7 +41,6 @@ function useIOSBoundaryScrollLock(active: boolean) {
 
   useEffect(() => {
     if (!active) return
-    console.log('acive')
     const el = ref.current
     if (!el) return
 
@@ -50,7 +49,6 @@ function useIOSBoundaryScrollLock(active: boolean) {
     const onTouchStart: EventListener = (e) => {
       const ev = e as TouchEvent
       startY = ev.touches[0]?.clientY ?? 0
-      console.log('touch start')
     }
 
     const onTouchMove: EventListener = (e) => {
@@ -68,7 +66,6 @@ function useIOSBoundaryScrollLock(active: boolean) {
       if ((atTop && deltaY > 0) || (atBottom && deltaY < 0)) {
         ev.preventDefault()
       }
-      console.log('touch move')
     }
 
     el.addEventListener("touchstart", onTouchStart, { passive: true })
@@ -83,13 +80,23 @@ function useIOSBoundaryScrollLock(active: boolean) {
   return ref
 }
 
+function useDebouncedValue<T>(value: T, delay = 100) {
+  const [debounced, setDebounced] = useState(value)
+  useEffect(() => {
+    const id = window.setTimeout(() => setDebounced(value), delay)
+    return () => window.clearTimeout(id)
+  }, [value, delay])
+  return debounced
+}
+
 const ProvidersSearch = forwardRef<ProvidersSearchHandle, Props>(
 ({ variant = 'header', className }, ref) => {
 
   const router = useRouter()
   const pathname = usePathname()
   const [term, setTerm] = useState('')
-  const deferredTerm = useDeferredValue(term)
+  const debouncedTerm = useDebouncedValue(term, 100)
+  //const deferredTerm = useDeferredValue(term)
   const { state, actions } = useUI()
   const isMobile = state.isMobile
   const inputRef = useRef<HTMLInputElement>(null)
@@ -108,7 +115,7 @@ const ProvidersSearch = forwardRef<ProvidersSearchHandle, Props>(
       
   const suggestions: PredictiveSuggestions = useMemo(() => {
     const EMPTY = { services: [], locations: [], providers: [] }
-    const q = normalize(deferredTerm)
+    const q = normalize(debouncedTerm)
     if (q.length <= 0) {
 
       return EMPTY
@@ -147,7 +154,7 @@ const ProvidersSearch = forwardRef<ProvidersSearchHandle, Props>(
       providers: matchedProviders,
     }
 
-  }, [deferredTerm])
+  }, [debouncedTerm])
 
   const totalResults = suggestions.services.length + suggestions.locations.length + suggestions.providers.length 
 
