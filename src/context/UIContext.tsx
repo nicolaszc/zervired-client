@@ -232,14 +232,12 @@ export function UIProvider({ children }: { children: ReactNode }) {
   const [hydrated, setHydrated] = useState(false)
   const [dockSettled, setDockSettled] = useState(true)
   useEffect(() => {
-    console.log('Hydrated')
     const markHydrated = () => setHydrated(true)
     markHydrated()
   }, [])
 
   useEffect(() => {
     if (!hydrated) return
-    console.log('Hydrate')
      const bindDockToDevice = () => {
       setDockOpen(false)
       setDockSettled(true)   // ✅ estado inicial “en reposo”
@@ -262,7 +260,7 @@ export function UIProvider({ children }: { children: ReactNode }) {
   const pendingSearchModeRef = useRef<null | "open">(null)
 
   // Dock manda: abrir/toggle esconde hint (peek) momentáneo
- const openDock = useCallback(() => {
+  const openDock = useCallback(() => {
   setDockSettled(false)
   setDockOpen(true)
   setMobileSearchPeek(false)
@@ -272,8 +270,7 @@ export function UIProvider({ children }: { children: ReactNode }) {
 const closeDock = useCallback(() => {
   setDockSettled(false)
   setDockOpen(false)
-  console.log(pendingSearchModeRef.current)
-  console.log(dockToSearchPendingRef.current)
+
 }, [])
 
 const toggleDock = useCallback(() => {
@@ -295,7 +292,7 @@ const toggleDock = useCallback(() => {
       
       if (mobileSearchOpen) return
       if (mobileSearchPeek) return
-      console.log('scroll')
+      //console.log('scroll')
       setDockOpen(false)
     }
     window.addEventListener("scroll", onScroll, { passive: true })
@@ -320,9 +317,9 @@ const toggleDock = useCallback(() => {
         setMobileSearchPeek(false)
         setAdvancedSearchOpen(false)
 
-        dockToSearchPendingRef.current = false
+       /* dockToSearchPendingRef.current = false
         setDockToSearchPending(false)
-        pendingSearchModeRef.current = null
+        pendingSearchModeRef.current = null */
 
         return
       }
@@ -369,16 +366,14 @@ const toggleDock = useCallback(() => {
   pendingSearchModeRef.current = "open"
   dockToSearchPendingRef.current = true
   setDockToSearchPending(true)
-  console.log(pendingSearchModeRef.current)
-  console.log(dockToSearchPendingRef.current)
+
   closeDock()
 }, [isMobile, closeDock, dockOpen])
 
 
 const notifyDockSettled = useCallback(() => {
   setDockSettled(true)
-  console.log(pendingSearchModeRef.current)
-  console.log(dockToSearchPendingRef.current)
+
   // ✅ gate live
   if (!dockToSearchPendingRef.current) return
 

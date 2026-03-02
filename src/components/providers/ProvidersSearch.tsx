@@ -10,7 +10,7 @@
 
 'use client'
 
-import { useState, useMemo, useEffect, useDeferredValue, forwardRef, useImperativeHandle, useCallback} from 'react'
+import { useState, useMemo, useEffect, useDeferredValue, forwardRef, useImperativeHandle, useCallback, useRef} from 'react'
 import { useRouter, usePathname } from 'next/navigation'
 import { cn } from '@/lib/utils'
 import { providers } from '@/data/providers'
@@ -33,6 +33,7 @@ type PredictiveSuggestions = {
 
 export type ProvidersSearchHandle = {
   clear: () => void
+  focus: () => void
 }
 
 const ProvidersSearch = forwardRef<ProvidersSearchHandle, Props>(
@@ -44,10 +45,11 @@ const ProvidersSearch = forwardRef<ProvidersSearchHandle, Props>(
   const deferredTerm = useDeferredValue(term)
   const { state, actions } = useUI()
   const isMobile = state.isMobile
+  const inputRef = useRef<HTMLInputElement>(null)
 
   const containerStyles = {
     header: 'hidden md:flex justify-center items-center text-sm header-search-transition',
-    mobile: 'flex w-full max-w-full min-w-0 px-6 pb-4 overflow-x-clip z-50',
+    mobile: 'flex w-full max-w-full min-w-0 px-6 pb-4 z-50',
     floating: 'flex w-full items-center', //sinnutilizar aún
   }
 
@@ -60,7 +62,7 @@ const ProvidersSearch = forwardRef<ProvidersSearchHandle, Props>(
   const suggestions: PredictiveSuggestions = useMemo(() => {
     const EMPTY = { services: [], locations: [], providers: [] }
     const q = normalize(deferredTerm)
-    if (q.length <= 1) {
+    if (q.length <= 0) {
 
       return EMPTY
     }
@@ -128,7 +130,8 @@ const ProvidersSearch = forwardRef<ProvidersSearchHandle, Props>(
   
  
   useImperativeHandle(ref, () => ({
-    clear: clearTerm
+    clear: clearTerm,
+    focus: () => inputRef.current?.focus(),
   }))
 
   useEffect(() => {
@@ -136,15 +139,32 @@ const ProvidersSearch = forwardRef<ProvidersSearchHandle, Props>(
     clearTerm()
   }, [pathname, clearTerm])
   
+  const [vvh, setVvh] = useState<number | null>(null)
+
+  useEffect(() => {
+    if (!state.isMobile) return
+    const vv = window.visualViewport
+    if (!vv) return
+
+    const onResize = () => setVvh(vv.height)
+    onResize()
+    vv.addEventListener("resize", onResize)
+    vv.addEventListener("scroll", onResize)
+    return () => {
+      vv.removeEventListener("resize", onResize)
+      vv.removeEventListener("scroll", onResize)
+    }
+  }, [state.isMobile])
   return (
    <>
      
     {!isMobile  && hasResults && (<div className={cn('search-overlay')} onClick={clearTerm}><div className='overlay-bg'></div></div>)}
 
-    <div id="search-box" className={cn(containerStyles[variant], 'relative z-2', className)} onClick={(e) => {e.stopPropagation();if(isMobile){actions.requestMobileSearch('open')} }}>   
+    <div id="search-box" className={cn(containerStyles[variant], 'relative z-2', className)} onClick={(e) => {e.stopPropagation();/* if(isMobile){actions.requestMobileSearch('open')} */ }}>   
 
       <input
         id="search-input"
+        ref={inputRef}
         type="text"
         value={term}
         onChange={(e) => setTerm(e.target.value)}
@@ -174,12 +194,13 @@ const ProvidersSearch = forwardRef<ProvidersSearchHandle, Props>(
 
        
         <div 
-          className={cn('search-results-box absolute w-full left-0 z-3 ',
+          className={cn('search-results-box absolute w-full left-0 z-3 pb-10 md:pb-0',
             'top-full md:rounded-b-lg',      
             totalResults === 1 && 'to-300%',
             hasResults && 'pt-4',
             variant === 'header' && 'bg-linear-to-b gradient'
           )}
+          style={{ height: vvh ? `${vvh}px` : undefined}}
         >
 
           {hasResults && ( 

@@ -18,7 +18,7 @@ interface Props {
 export default function AdvabcedSearch({ className}: Props) {
   const { state, actions } = useUI()
   const searchRef = useRef<ProvidersSearchHandle>(null)
-  
+ 
   // Solo desktop
   if (state.isMobile) return null
 

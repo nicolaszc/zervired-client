@@ -4,7 +4,7 @@
 import { cn } from "@/lib/utils"
 import ProvidersSearch from "@/components/providers/ProvidersSearch"
 import type { ProvidersSearchHandle } from "@/components/providers/ProvidersSearch"
-import { useLayoutEffect, useMemo, useRef, useState } from "react"
+import { useLayoutEffect, useMemo, useRef, useState, useEffect } from "react"
 import { useUI } from "@/context/UIContext"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faXmark } from "@fortawesome/free-solid-svg-icons"
@@ -20,7 +20,13 @@ export default function MobileSearch({ className }: Props) {
 
   const searchRef = useRef<ProvidersSearchHandle>(null)
   const contentRef = useRef<HTMLDivElement>(null)
+  const searchBgRef = useRef<HTMLDivElement>(null)
   const [contentHeight, setContentHeight] = useState(0)
+  const [needsTapToFocus, setNeedsTapToFocus] = useState(true)
+
+  useEffect(() => {
+    if (open) {const tapFocus = () => setNeedsTapToFocus(true); tapFocus()}
+  }, [open])
 
   useLayoutEffect(() => {
     const el = contentRef.current
@@ -32,8 +38,7 @@ export default function MobileSearch({ className }: Props) {
 
     const ro = new ResizeObserver(measure)
     ro.observe(el)
-    console.log(window.innerWidth)
-    console.log(document.documentElement.scrollWidth)
+
     return () => ro.disconnect()
   }, [])
 
@@ -48,6 +53,7 @@ export default function MobileSearch({ className }: Props) {
     return Math.max(0, vh - peekHeight)
   }, [open, peek, state.viewport.height, contentHeight])
 
+
   if (!state.isMobile) return null
 
   const handleBackgroundClick = () => {
@@ -61,15 +67,25 @@ export default function MobileSearch({ className }: Props) {
     }
     actions.setMobileSearchPeek(false)
   }
-
+  const handleInputFocus = (e: React.TransitionEvent<HTMLDivElement>) => {
+    if(open && needsTapToFocus){
+      console.log('focus')
+      setNeedsTapToFocus(false)
+      requestAnimationFrame(() => searchRef.current?.focus())
+      return 
+    }
+  }
+  
   return (
   
     <div
       id="search"
+      ref={searchBgRef}
       onClick={handleBackgroundClick}
+      onTransitionEnd={handleInputFocus}
       className={cn(
-        "fixed bottom-0 h-full max-h-full inset-x-0 z-60",
-        "transition-transform-opacity duration-500 ease-out",
+        "fixed top-0 bottom-0 h-full max-full inset-x-0 z-60 overflow-hidden",
+        "transition-transform-opacity duration-500 delay-0 ease-out",
         "bg-linear-to-t gradient",
         className
       )}
@@ -86,7 +102,7 @@ export default function MobileSearch({ className }: Props) {
           actions.setMobileSearchPeek(false)
         }}
         className={cn(
-          "flex items-center justify-center absolute w-11 h-13 -top-6.5 end-0",
+          "flex items-center justify-center absolute z-60 w-11 h-13 -top-6.5 end-0",
           open ? "hidden" : ""
         )}
         aria-label="Dismiss hint"
@@ -95,8 +111,20 @@ export default function MobileSearch({ className }: Props) {
       </button>
 
       {/* ProvidersSearch: cualquier click interno NO debe cerrar */}
-      <div ref={contentRef} onClick={(e) => e.stopPropagation()} className="overflow-x-clip min-w-0 w-full max-w-full">
-        <ProvidersSearch ref={searchRef} variant="mobile" className={cn(peek && "pt-6.5", open && "pt-4")} />
+      <div ref={contentRef} onClick={(e) => e.stopPropagation()} className="overflow-x-clip min-w-0 w-full max-w-full relative">
+        {!open && (
+          <button
+            className="absolute inset-0 z-50"
+            onClick={(e) => {
+              e.stopPropagation()
+              actions.requestMobileSearch('open')
+              //setNeedsTapToFocus(false)
+              //requestAnimationFrame(() => searchRef.current?.focus())
+            }}
+            aria-label="Activar búsqueda"
+          />
+        )}
+        <ProvidersSearch ref={searchRef} variant="mobile" className={cn(peek && "pt-4", open && "pt-4")} />
       </div>
       
     </div>
