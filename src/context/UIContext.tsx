@@ -294,7 +294,6 @@ const toggleDock = useCallback(() => {
       
       if (mobileSearchOpen) return
       if (mobileSearchPeek) return
-      //console.log('scroll')
       setDockOpen(false)
     }
     window.addEventListener("scroll", onScroll, { passive: true })

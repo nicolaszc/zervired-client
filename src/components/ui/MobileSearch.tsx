@@ -70,7 +70,6 @@ export default function MobileSearch({ className }: Props) {
   }
   const handleInputFocus = (e: React.TransitionEvent<HTMLDivElement>) => {
     if(open && needsTapToFocus){
-      console.log('focus')
       setNeedsTapToFocus(false)
       requestAnimationFrame(() => searchRef.current?.focus())
       return 
