@@ -112,7 +112,15 @@ const ProvidersSearch = forwardRef<ProvidersSearchHandle, Props>(
       .toLowerCase()
       .normalize('NFD')
       .replace(/[\u0300-\u036f]/g, '')
-      
+   
+  const providerIndex = useMemo(() => {
+    return providers.map(p => ({
+      p,
+      nameN: normalize(p.name),
+      titleN: normalize(p.title),
+    }))
+  }, [])
+
   const suggestions: PredictiveSuggestions = useMemo(() => {
     const EMPTY = { services: [], locations: [], providers: [] }
     const q = normalize(debouncedTerm)
@@ -141,12 +149,10 @@ const ProvidersSearch = forwardRef<ProvidersSearchHandle, Props>(
 
     // Providers solo desde 3 chars
     const matchedProviders =
-      providers
-            .filter(p =>
-              normalize(p.title).includes(q) ||
-              normalize(p.name).includes(q)
-            )
-            .slice(0, 5)
+      providerIndex
+        .filter(x => x.nameN.includes(q) || x.titleN.includes(q))
+        .slice(0, 5)
+        .map(x => x.p)
 
     return {
       services: matchedServices,
@@ -154,7 +160,7 @@ const ProvidersSearch = forwardRef<ProvidersSearchHandle, Props>(
       providers: matchedProviders,
     }
 
-  }, [debouncedTerm])
+  }, [debouncedTerm, providerIndex])
 
   const totalResults = suggestions.services.length + suggestions.locations.length + suggestions.providers.length 
 
