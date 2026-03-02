@@ -10,7 +10,7 @@
 
 'use client'
 
-import { useState, useMemo, useEffect, forwardRef, useImperativeHandle, useCallback, useRef} from 'react'
+import React, { useState, useMemo, useEffect, forwardRef, useImperativeHandle, useCallback, useRef} from 'react'
 import { useRouter, usePathname } from 'next/navigation'
 import { cn } from '@/lib/utils'
 import { providers } from '@/data/providers'
@@ -85,7 +85,97 @@ function useIOSBoundaryScrollLock(active: boolean) {
 
   return ref
 }
+type SuggestionsContentProps = {
+  hasResults: boolean
+  totalResults: number
+  suggestions: PredictiveSuggestions
+  variant: 'header' | 'mobile' | 'floating'
+  onPickService: (s: string) => void
+  onPickLocation: (l: string) => void
+  onPickProvider: (slug: string) => void
+  onSubmit: () => void
+}
 
+const SuggestionsContent = React.memo(function SuggestionsContent({
+  hasResults,
+  totalResults,
+  suggestions,
+  variant,
+  onPickService,
+  onPickLocation,
+  onPickProvider,
+  onSubmit,
+}: SuggestionsContentProps) {
+  if (!hasResults) return null
+
+  
+  return (
+    <div className={cn('theme-search-shadow')}>
+      {/* Servicios */}
+      {suggestions.services.length > 0 && (
+        <div className={cn("", totalResults > 1 && "border-b border-(--lowlight-l)/10 dark:border-white/10")}>
+          <div className="px-6 py-2 text-xs opacity-60">Servicios</div>
+          {suggestions.services.map(s => (
+            <div
+              key={s}
+              onClick={() => onPickService(s)}
+              className="px-8 py-2 cursor-pointer hover:bg-(--lowlight-l)/10 dark:hover:bg-white/10"
+            >
+              {s}
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* Ubicaciones */}
+      {suggestions.locations.length > 0 && (
+        <div className={cn("", suggestions.services.length > 0 && suggestions.providers.length > 0 && "border-b border-(--lowlight-l)/10 dark:border-white/10")}>
+          <div className="px-6 py-2 text-xs opacity-60">Ubicaciones</div>
+          {suggestions.locations.map(l => (
+            <div
+              key={l}
+              onClick={() => onPickLocation(l)}
+              className="px-10 py-2 cursor-pointer hover:bg-(--lowlight-l)/10 dark:hover:bg-white/10"
+            >
+              {l}
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* Providers */}
+      {suggestions.providers.length > 0 && (
+        <div>
+          <div className="px-6 py-2 text-xs opacity-60">Especialistas</div>
+          {suggestions.providers.map(p => (
+            <div
+              key={p.id}
+              onClick={() => onPickProvider(p.slug)}
+              className="px-10 py-2 cursor-pointer hover:bg-(--lowlight-l)/10 dark:hover:bg-white/10"
+            >
+              <div className="font-semibold leading-tight">{p.name}</div>
+              <div className="text-xs opacity-60 truncate">{p.title}</div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* CTA Ver todos */}
+      <div>
+        <button
+          onClick={onSubmit}
+          className={cn(
+            'w-full text-center uppercase px-4 py-3 font-semibold cursor-pointer',
+            'bg-(--lowlight-l)/10 dark:bg-(--highlight-d)/20',
+            'hover:bg-(--lowlight-l)/15 dark:hover:bg-(--highlight-d)/50'
+          )}
+        >
+          Ver todos
+        </button>
+      </div>
+    </div>
+  )
+})
 
 
 const ProvidersSearch = forwardRef<ProvidersSearchHandle, Props>(
@@ -222,7 +312,17 @@ const ProvidersSearch = forwardRef<ProvidersSearchHandle, Props>(
   }, [state.isMobile])
 
   const listRef = useIOSBoundaryScrollLock(state.mobileSearchOpen)
+  const onPickService = useCallback((s: string) => {
+  router.push(`/search?q=${encodeURIComponent(s)}`)
+}, [router])
 
+const onPickLocation = useCallback((l: string) => {
+  router.push(`/search?q=${encodeURIComponent(l)}`)
+}, [router])
+
+const onPickProvider = useCallback((slug: string) => {
+  router.push(`/providers/${slug}`)
+}, [router])
   return (
    <>
      
@@ -272,85 +372,17 @@ const ProvidersSearch = forwardRef<ProvidersSearchHandle, Props>(
           ref={listRef}
         >
 
-          {hasResults && ( 
-            <div
-              className={cn(
-                'theme-search-shadow',
-              )}
-            >
-              {/* Servicios */}
-              {suggestions.services.length > 0 && (
-                <div className={cn("",
-                    totalResults > 1 && "border-b border-(--lowlight-l)/10 dark:border-white/10",
-                  )}
-                  >
-              
-                  <div className="px-6 py-2 text-xs opacity-60">Servicios</div>
-                  {suggestions.services.map(s => (
-                    <div
-                      key={s}
-                      onClick={() => router.push(`/search?q=${encodeURIComponent(s)}`)}
-                      className="px-8 py-2 cursor-pointer hover:bg-(--lowlight-l)/10 dark:hover:bg-white/10"
-                    >
-                      {s}
-                    </div>
-                  ))}
-                </div>
-              )}
+          <SuggestionsContent
+            hasResults={hasResults}
+            totalResults={totalResults}
+            suggestions={suggestions}
+            variant={variant}
+            onPickService={onPickService}
+            onPickLocation={onPickLocation}
+            onPickProvider={onPickProvider}
+            onSubmit={handleSearch}
+          />
 
-              {/* Ubicaciones */}
-              {suggestions.locations.length > 0 && (
-                <div className={cn("",
-                  suggestions.services.length > 0 && suggestions.providers.length > 0 && "border-b border-(--lowlight-l)/10 dark:border-white/10",
-                  )}
-                  >
-                  <div className="px-6 py-2 text-xs opacity-60">Ubicaciones</div>
-                  {suggestions.locations.map(l => (
-                    <div
-                      key={l}
-                      onClick={() => router.push(`/search?q=${encodeURIComponent(l)}`)}
-                      className="px-10 py-2 cursor-pointer hover:bg-(--lowlight-l)/10 dark:hover:bg-white/10"
-                    >
-                      {l}
-                    </div>
-                  ))}
-                </div>
-              )}
-
-              {/* Providers */}
-              {suggestions.providers.length > 0 && (
-                <div className={cn("",
-                  )}>
-                  <div className="px-6 py-2 text-xs opacity-60">Especialistas</div>
-                  {suggestions.providers.map(p => (
-                    <div
-                      key={p.id}
-                      onClick={() => router.push(`/providers/${p.slug}`)}
-                      className="px-10 py-2 cursor-pointer hover:bg-(--lowlight-l)/10 dark:hover:bg-white/10"
-                    >
-                      <div className="font-semibold leading-tight">{p.name}</div>
-                      <div className="text-xs opacity-60 truncate">{p.title}</div>
-                    </div>
-                    ))}
-                </div>
-              )}
-              {/* CTA Ver todos */}
-              <div className="">
-                <button
-                  onClick={handleSearch}
-                  className={cn(
-                    'w-full text-center uppercase px-4 py-3 font-semibold cursor-pointer', 
-                    'bg-(--lowlight-l)/10 dark:bg-(--highlight-d)/20', 
-                    'hover:bg-(--lowlight-l)/15 dark:hover:bg-(--highlight-d)/50'
-                  )}
-                >
-                  Ver todos
-                </button>
-                
-              </div>
-
-            </div>
-          )}
           {isMobile && (
           <p className={cn("text-xs text-center pb-6", hasResults &&("pt-6"))}>¿Quieres reactivar el hint de búsqueda? → <button>Reactivar</button></p>
           )}
