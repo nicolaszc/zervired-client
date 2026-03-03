@@ -105,14 +105,14 @@ export default function MobileSearch({ className }: Props) {
       onPointerDown={(e) => handleBgPointerDown(e)}
       onTransitionEnd={handleInputFocus}
       className={cn(
-        "fixed top-0 bottom-0 h-full max-h-full inset-x-0 z-60",
+        "relative h-screen z-60",
         "transition-transform-opacity duration-500 delay-0 ease-out",
         "bg-linear-to-t gradient",
         className
       )}
       style={{
         transform: `translateY(${translateY}px)`,
-        opacity: open || peek ? 1 : 0,
+        opacity: open || peek ? 1 : 1,
       }}
 
     >
@@ -139,7 +139,7 @@ export default function MobileSearch({ className }: Props) {
       <div ref={contentRef} onPointerDown={(e) => e.stopPropagation()} onClick={(e) => e.stopPropagation()} className="overflow-x-clip min-w-0 w-full max-w-full relative">
         {!open && (
           <button
-            className="absolute inset-0 z-50"
+            className="absolute inset-0 z-50 hidden"
             onClick={(e) => {
               e.stopPropagation()
               actions.requestMobileSearch('open')
