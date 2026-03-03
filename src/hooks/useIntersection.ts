@@ -76,7 +76,7 @@ export function useIntersection(selectors: string | string[], options: Options =
 
       return changed ? next : prev
     })
-  }, [selectorsKey, list])
+  }, [list])
 
   useEffect(() => {
     const cleanMap = () => cleanupMap()
