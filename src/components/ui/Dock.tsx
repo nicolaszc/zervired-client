@@ -126,6 +126,9 @@ const advancedJustToggled = prevAdvancedOpen !== undefined && prevAdvancedOpen !
       closeSteps: 0,
   })
   
+useEffect(() => {
+    console.log('commit')
+  }, [])
 
   return (
     <div
