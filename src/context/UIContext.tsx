@@ -289,16 +289,17 @@ const toggleDock = useCallback(() => {
 
   // Scroll close dock (evita side-effects mientras search activo)
   useEffect(() => {
+    if (!dockOpen) return // 👈 si está cerrado, no escuches nada
+
     const onScroll = () => {
-      //if (!isMobile) return
-      
       if (mobileSearchOpen) return
       if (mobileSearchPeek) return
       setDockOpen(false)
     }
+
     window.addEventListener("scroll", onScroll, { passive: true })
     return () => window.removeEventListener("scroll", onScroll)
-  }, [isMobile, mobileSearchOpen, mobileSearchPeek])
+  }, [dockOpen, isMobile, mobileSearchOpen, mobileSearchPeek])
 
   // Body class (solo mobile takeover)
   useEffect(() => {
