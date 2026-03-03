@@ -326,10 +326,38 @@ const onPickLocation = useCallback((l: string) => {
 const onPickProvider = useCallback((slug: string) => {
   router.push(`/providers/${slug}`)
 }, [router])
+
+type UISnap = {
+  mobileSearchOpen: boolean
+  mobileSearchPeek: boolean
+  dockOpen: boolean
+  autoSearchSuppressed: boolean
+  isMobile: boolean
+}
+
+/* const prev = useRef<UISnap | null>(null)
+
 useEffect(() => {
-  console.log('[search input] mounted')
-  return () => console.log('[search input] unmounted')
-}, [])
+  const snap: UISnap = {
+    mobileSearchOpen: state.mobileSearchOpen,
+    mobileSearchPeek: state.mobileSearchPeek,
+    dockOpen: state.dockOpen,
+    autoSearchSuppressed: state.autoSearchSuppressed,
+    isMobile: state.isMobile,
+  }
+
+  if (prev.current) {
+    (Object.keys(snap) as (keyof UISnap)[]).forEach((k) => {
+      if (prev.current![k] !== snap[k]) {
+        console.log('[UI change]', k, prev.current![k], '=>', snap[k])
+      }
+    })
+  } else {
+    console.log('[UI init]', snap)
+  }
+
+  prev.current = snap
+}) */
   return (
    <>
      
@@ -342,6 +370,7 @@ useEffect(() => {
         ref={inputRef}
         type="text"
         value={term}
+        name="search"
         onChange={(e) => setTerm(e.target.value)}
         onKeyDown={(e) => e.key === 'Enter' && handleSearch()} 
         placeholder="¿Qué servicio buscas?"

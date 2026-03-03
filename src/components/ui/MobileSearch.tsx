@@ -78,6 +78,15 @@ export default function MobileSearch({ className }: Props) {
     }
   }
   
+  const handleBgPointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
+  const target = e.target as Node
+  if (contentRef.current?.contains(target)) return // tap dentro => no cerrar
+  actions.requestMobileSearch('close')
+  searchRef.current?.clear?.() // opcional
+
+  
+}
+
   return (
     <>
     {state.hintToast && (
@@ -92,6 +101,8 @@ export default function MobileSearch({ className }: Props) {
       id="search"
       ref={searchBgRef}
       /* onClick={handleBackgroundClick} */
+      
+      onPointerDown={(e) => handleBgPointerDown(e)}
       onTransitionEnd={handleInputFocus}
       className={cn(
         "fixed top-0 bottom-0 h-full max-h-full inset-x-0 z-60",
@@ -125,7 +136,7 @@ export default function MobileSearch({ className }: Props) {
       
 
       {/* ProvidersSearch: cualquier click interno NO debe cerrar */}
-      <div ref={contentRef} onClick={(e) => e.stopPropagation()} className="overflow-x-clip min-w-0 w-full max-w-full relative">
+      <div ref={contentRef} onPointerDown={(e) => e.stopPropagation()} onClick={(e) => e.stopPropagation()} className="overflow-x-clip min-w-0 w-full max-w-full relative">
         {!open && (
           <button
             className="absolute inset-0 z-50"

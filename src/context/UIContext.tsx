@@ -112,6 +112,10 @@ function useIntersectionGroup(
   })
 }
 
+
+
+
+
 export function UIProvider({ children }: { children: ReactNode }) {
   // --- sensores globales ---
   const isMobile = useIsMobile()
@@ -201,33 +205,53 @@ export function UIProvider({ children }: { children: ReactNode }) {
     [recomputeGroups]
   )
 
-  // Intersection groups (hasta 3)
-  const g0 = groupsState[0]
-  const g1 = groupsState[1]
-  const g2 = groupsState[2]
+   // Intersection groups (hasta 3)
+const g0 = groupsState[0]
+const g1 = groupsState[1]
+const g2 = groupsState[2]
 
-  const map0 = useIntersectionGroup(
-    g0?.targets ?? [],
-    g0
-      ? { threshold: g0.threshold, rootMargin: toRootMarginPx(g0.margin, height) }
-      : { threshold: DEFAULT_THRESHOLD, rootMargin: toRootMarginPx(DEFAULT_MARGIN_RATIO, height) }
-  )
-  const map1 = useIntersectionGroup(
-    g1?.targets ?? [],
-    g1
-      ? { threshold: g1.threshold, rootMargin: toRootMarginPx(g1.margin, height) }
-      : { threshold: DEFAULT_THRESHOLD, rootMargin: toRootMarginPx(DEFAULT_MARGIN_RATIO, height) }
-  )
-  const map2 = useIntersectionGroup(
-    g2?.targets ?? [],
-    g2
-      ? { threshold: g2.threshold, rootMargin: toRootMarginPx(g2.margin, height) }
-      : { threshold: DEFAULT_THRESHOLD, rootMargin: toRootMarginPx(DEFAULT_MARGIN_RATIO, height) }
-  )
+// Targets estables (evita [] nuevo cada render)
+const EMPTY_TARGETS = useMemo<string[]>(() => [], [])
 
-  const intersectMap = useMemo(() => {
-    return { ...(map0 ?? {}), ...(map1 ?? {}), ...(map2 ?? {}) }
-  }, [map0, map1, map2])
+const t0 = g0?.targets ?? EMPTY_TARGETS
+const t1 = g1?.targets ?? EMPTY_TARGETS
+const t2 = g2?.targets ?? EMPTY_TARGETS
+
+const g0Threshold = g0?.threshold
+const g0Margin = g0?.margin
+
+const g1Threshold = g1?.threshold
+const g1Margin = g1?.margin
+
+const g2Threshold = g2?.threshold
+const g2Margin = g2?.margin
+
+// Config estable por grupo (deps primitivas)
+const cfg0 = useMemo(() => {
+  const threshold = typeof g0Threshold === "number" ? g0Threshold : DEFAULT_THRESHOLD
+  const rootMargin = toRootMarginPx(g0Margin ?? DEFAULT_MARGIN_RATIO, height)
+  return { threshold, rootMargin }
+}, [g0Threshold, g0Margin, height])
+
+const cfg1 = useMemo(() => {
+  const threshold = typeof g1Threshold === "number" ? g1Threshold : DEFAULT_THRESHOLD
+  const rootMargin = toRootMarginPx(g1Margin ?? DEFAULT_MARGIN_RATIO, height)
+  return { threshold, rootMargin }
+}, [g1Threshold, g1Margin, height])
+
+const cfg2 = useMemo(() => {
+  const threshold = typeof g2Threshold === "number" ? g2Threshold : DEFAULT_THRESHOLD
+  const rootMargin = toRootMarginPx(g2Margin ?? DEFAULT_MARGIN_RATIO, height)
+  return { threshold, rootMargin }
+}, [g2Threshold, g2Margin, height])
+
+const map0 = useIntersectionGroup(t0, cfg0)
+const map1 = useIntersectionGroup(t1, cfg1)
+const map2 = useIntersectionGroup(t2, cfg2)
+
+const intersectMap = useMemo(() => {
+  return { ...(map0 ?? {}), ...(map1 ?? {}), ...(map2 ?? {}) }
+}, [map0, map1, map2])
 
   // --- Dock (mantener tus useEffect tal cual) ---
   const [dockOpen, setDockOpen] = useState(false)
@@ -403,7 +427,38 @@ const notifyDockSettled = useCallback(() => {
     window.setTimeout(() => setHintToast(null), 5000)
   }, [])
 
-  const state = useMemo<UIState>(
+  type Snap = { 
+  isMobile: boolean 
+  intersectMap: Record<string, boolean> 
+  dockOpen: boolean 
+  dockSettled: boolean // Mobile search layer 
+  mobileSearchOpen: boolean 
+  mobileSearchPeek: boolean // Desktop search layer (AdvancedSearch) 
+  advancedSearchOpen: boolean // Hint suppression (solo afecta peek) 
+  autoSearchSuppressed: boolean 
+  hintToast: string | null // Anti-flash / coreografía dock -> search 
+  dockToSearchPending: boolean // agrega aquí los otros flags/values que tengas en UIContext 
+  } 
+  const prevSnap = useRef<Snap | null>(null) 
+  useEffect(() => { const snap: Snap = { 
+  isMobile, 
+  dockSettled, 
+  intersectMap, 
+  advancedSearchOpen, 
+  hintToast, 
+  dockToSearchPending, 
+  dockOpen, 
+  mobileSearchOpen, 
+  mobileSearchPeek, 
+  autoSearchSuppressed, 
+  } 
+  if (prevSnap.current) { 
+    (Object.keys(snap) as (keyof Snap)[]).forEach((k) => { if (prevSnap.current![k] !== snap[k]) { console.log('[UI STATE CHANGE]', k, prevSnap.current![k], '=>', snap[k]) } }) 
+  } else { 
+    console.log('[UI SNAP INIT]', snap) 
+  } prevSnap.current = snap })
+  
+    const state = useMemo<UIState>(
     () => ({
       isMobile,
       viewport: { width, height },
