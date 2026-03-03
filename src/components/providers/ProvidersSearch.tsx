@@ -110,70 +110,32 @@ const SuggestionsContent = React.memo(function SuggestionsContent({
 
   
   return (
-    <div className={cn('theme-search-shadow')}>
-      {/* Servicios */}
-      {suggestions.services.length > 0 && (
-        <div className={cn("", totalResults > 1 && "border-b border-(--lowlight-l)/10 dark:border-white/10")}>
-          <div className="px-6 py-2 text-xs opacity-60">Servicios</div>
-          {suggestions.services.map(s => (
-            <div
-              key={s}
-              onClick={() => onPickService(s)}
-              className="px-8 py-2 cursor-pointer hover:bg-(--lowlight-l)/10 dark:hover:bg-white/10"
-            >
-              {s}
-            </div>
-          ))}
-        </div>
-      )}
+    
 
-      {/* Ubicaciones */}
-      {suggestions.locations.length > 0 && (
-        <div className={cn("", suggestions.services.length > 0 && suggestions.providers.length > 0 && "border-b border-(--lowlight-l)/10 dark:border-white/10")}>
-          <div className="px-6 py-2 text-xs opacity-60">Ubicaciones</div>
-          {suggestions.locations.map(l => (
-            <div
-              key={l}
-              onClick={() => onPickLocation(l)}
-              className="px-10 py-2 cursor-pointer hover:bg-(--lowlight-l)/10 dark:hover:bg-white/10"
-            >
-              {l}
-            </div>
-          ))}
-        </div>
-      )}
+    <div>
+    <div>Servicios</div>
+    {suggestions.services.map(s => (
+      <button key={s} onClick={() => onPickService(s)}>
+        {s}
+      </button>
+    ))}
 
-      {/* Providers */}
-      {suggestions.providers.length > 0 && (
-        <div>
-          <div className="px-6 py-2 text-xs opacity-60">Especialistas</div>
-          {suggestions.providers.map(p => (
-            <div
-              key={p.id}
-              onClick={() => onPickProvider(p.slug)}
-              className="px-10 py-2 cursor-pointer hover:bg-(--lowlight-l)/10 dark:hover:bg-white/10"
-            >
-              <div className="font-semibold leading-tight">{p.name}</div>
-              <div className="text-xs opacity-60 truncate">{p.title}</div>
-            </div>
-          ))}
-        </div>
-      )}
+    <div>Ubicaciones</div>
+    {suggestions.locations.map(l => (
+      <button key={l} onClick={() => onPickLocation(l)}>
+        {l}
+      </button>
+    ))}
 
-      {/* CTA Ver todos */}
-      <div>
-        <button
-          onClick={onSubmit}
-          className={cn(
-            'w-full text-center uppercase px-4 py-3 font-semibold cursor-pointer',
-            'bg-(--lowlight-l)/10 dark:bg-(--highlight-d)/20',
-            'hover:bg-(--lowlight-l)/15 dark:hover:bg-(--highlight-d)/50'
-          )}
-        >
-          Ver todos
-        </button>
-      </div>
-    </div>
+    <div>Especialistas</div>
+    {suggestions.providers.map(p => (
+      <button key={p.id} onClick={() => onPickProvider(p.slug)}>
+        {p.name}
+      </button>
+    ))}
+
+    <button onClick={onSubmit}>Ver todos</button>
+  </div>
   )
 })
 
