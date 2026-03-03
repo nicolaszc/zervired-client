@@ -1,10 +1,15 @@
 
+'use client'
 import ProvidersGrid from '@/components/providers/ProvidersGrid'
 import ProviderCategories from '@/components/providers/ProviderCategories'
 import FeaturedProviders from '@/components/providers/FeaturedProviders'
 import { providers } from '@/data/providers'
 import Steps from '@/components/sections/Steps'
+import {useEffect } from "react"
 export default function HomeGrid() {
+  useEffect(() => {
+      console.log('commit')
+  })
   return (
     <>
     
@@ -21,11 +26,11 @@ export default function HomeGrid() {
           <ProviderCategories  context="section" />
         </section>
        
-        <section className="relative mt-8 z-1" data-grid-sentinel>
+        <section className="relative mt-8 z-1" >
           <ProvidersGrid
             key="home"
             providers={providers}
-            title="Servicios disponibless"
+            title="Servicios disponibles"
           />
         </section>
        
