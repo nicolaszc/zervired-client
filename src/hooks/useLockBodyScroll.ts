@@ -21,14 +21,13 @@ export function useLockBodyScroll(locked: boolean) {
     body.style.right = "0"
     body.style.width = "100%"
     body.style.overflow = "hidden"
-    console.log('locked')
+
     return () => {
       // Restaurar
       body.setAttribute("style", prevBodyStyle)
       html.setAttribute("style", prevHtmlStyle)
 
       window.scrollTo(0, scrollY)
-      console.log('locked')
     }
   }, [locked])
 }
