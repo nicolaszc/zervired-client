@@ -54,20 +54,30 @@ export default function MobileSearch({ className }: Props) {
     return Math.max(0, vh - peekHeight)
   }, [open, peek, state.viewport.height, contentHeight])
 
-
+useEffect(() => {
+  let last = performance.now()
+  const id = window.setInterval(() => {
+    const now = performance.now()
+    const delta = now - last
+    if (delta > 80) console.log('[Long frame]', Math.round(delta), 'ms')
+    last = now
+  }, 50)
+  return () => window.clearInterval(id)
+}, [])
   if (!state.isMobile) return null
 
-  const handleBackgroundClick = () => {
+  /* const handleBackgroundClick = () => {
     // Fondo clickeable:
     // - si open -> cerrar takeover
     // - si peek -> ocultar hint momentáneo
     if (open) {
       actions.requestSearch("close")
+      console.trace()
       searchRef.current?.clear()
       return
     }
     actions.setMobileSearchPeek(false)
-  }
+  } */
   const handleInputFocus = (e: React.TransitionEvent<HTMLDivElement>) => {
     if(open && needsTapToFocus){
       setNeedsTapToFocus(false)
@@ -89,7 +99,7 @@ export default function MobileSearch({ className }: Props) {
     <div
       id="search"
       ref={searchBgRef}
-      onClick={handleBackgroundClick}
+      /* onClick={handleBackgroundClick} */
       onTransitionEnd={handleInputFocus}
       className={cn(
         "fixed top-0 bottom-0 h-full max-h-full inset-x-0 z-60",
@@ -101,6 +111,10 @@ export default function MobileSearch({ className }: Props) {
         transform: `translateY(${translateY}px)`,
         opacity: open || peek ? 1 : 0,
       }}
+      onPointerDownCapture={(e) => {
+  console.log('[BG] pointerdown', e.target === e.currentTarget ? 'BG' : 'CHILD')
+  console.trace()
+}}
     >
       {/* X: SOLO en hint (peek) => suppressed */}
       <button

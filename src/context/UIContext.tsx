@@ -342,8 +342,15 @@ const toggleDock = useCallback(() => {
 
   // Back-compat
   const requestMobileSearch = useCallback(
-    (mode: "open" | "close") => requestSearch(mode),
-    [requestSearch]
+    
+    (mode: "open" | "close") => {
+      requestSearch(mode)
+      if (mode === 'open') {
+      console.log('[requestMobileSearch OPEN]', { origin })
+      console.trace()
+      }
+    },[requestSearch]
+
   )
 
   // Dock -> Search (lupa) en ambos devices:
