@@ -42,7 +42,7 @@ export default function Header() {
             </Link>
           </div>
 
-          
+         
           {/* Nav */}
           <nav className="hidden md:flex justify-end items-center gap-6 text-sm w-80">
             
@@ -54,7 +54,11 @@ export default function Header() {
               Publicar servicio
             </a>          
           </nav>
-<ProvidersSearch/>
+ 
+              
+              <ProvidersSearch/>
+            
+          
           <button
             onClick={() => setOpen(!open)}
             className="mobile-menu-btn md:hidden text-xl w-13 h-13 flex items-center justify-center"
