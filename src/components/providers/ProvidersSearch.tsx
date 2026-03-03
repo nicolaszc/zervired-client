@@ -327,37 +327,9 @@ const onPickProvider = useCallback((slug: string) => {
   router.push(`/providers/${slug}`)
 }, [router])
 
-type UISnap = {
-  mobileSearchOpen: boolean
-  mobileSearchPeek: boolean
-  dockOpen: boolean
-  autoSearchSuppressed: boolean
-  isMobile: boolean
-}
 
-/* const prev = useRef<UISnap | null>(null)
 
-useEffect(() => {
-  const snap: UISnap = {
-    mobileSearchOpen: state.mobileSearchOpen,
-    mobileSearchPeek: state.mobileSearchPeek,
-    dockOpen: state.dockOpen,
-    autoSearchSuppressed: state.autoSearchSuppressed,
-    isMobile: state.isMobile,
-  }
 
-  if (prev.current) {
-    (Object.keys(snap) as (keyof UISnap)[]).forEach((k) => {
-      if (prev.current![k] !== snap[k]) {
-        console.log('[UI change]', k, prev.current![k], '=>', snap[k])
-      }
-    })
-  } else {
-    console.log('[UI init]', snap)
-  }
-
-  prev.current = snap
-}) */
   return (
    <>
      
