@@ -8,10 +8,9 @@ import Dock from "@/components/ui/Dock"
 import MobileSearch from "@/components/ui/MobileSearch"
 import AdvancedSearch from "@/components/ui/AdvancedSearch"
 
-
 export default function LayoutShell({ children }: { children: React.ReactNode }) {
   const { state } = useUI()
-  
+ 
   return (
     <>
       <BackgroundAnimation />
@@ -19,11 +18,7 @@ export default function LayoutShell({ children }: { children: React.ReactNode })
 
       <main className="flex-1 pb-16">{children}</main>
 
-      <Dock
-        intersect={[
-          { target: "[data-grid-sentinel]", when: "in", threshold: 0.1, margin: 1 },
-        ]}
-      />
+      <Dock />
 
       {state.isMobile ? <MobileSearch /> : <AdvancedSearch />}
 
