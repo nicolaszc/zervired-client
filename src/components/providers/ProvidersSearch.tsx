@@ -297,7 +297,7 @@ const onPickProvider = useCallback((slug: string) => {
         ref={inputRef}
         type="text"
         value={term}
-        onChange={(e) => setTerm(e.target.value)}
+
         onKeyDown={(e) => e.key === 'Enter' && handleSearch()} 
         placeholder="¿Qué servicio buscas?"
         className={cn("input rounded-r-none search-input basis-2/3 text-[16px] placeholder:text-sm pt-1.5 pb-1.75 md:text-sm md:py-2"
