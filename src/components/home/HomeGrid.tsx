@@ -4,10 +4,11 @@ import ProviderCategories from '@/components/providers/ProviderCategories'
 import FeaturedProviders from '@/components/providers/FeaturedProviders'
 import { providers } from '@/data/providers'
 import Steps from '@/components/sections/Steps'
+import ProvidersSearch from "@/components/providers/ProvidersSearch"
 export default function HomeGrid() {
   return (
     <>
-    
+     <ProvidersSearch variant="mobile" />
         <section className='relative mt-8 z-1'>
           <Steps />
         </section>
