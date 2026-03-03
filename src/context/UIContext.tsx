@@ -345,10 +345,10 @@ const toggleDock = useCallback(() => {
     
     (mode: "open" | "close") => {
       requestSearch(mode)
-      if (mode === 'open') {
+      /* if (mode === 'open') {
       console.log('[requestMobileSearch OPEN]', { origin })
       console.trace()
-      }
+      } */
     },[requestSearch]
 
   )

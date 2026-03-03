@@ -60,36 +60,12 @@ export default function Hero() {
             </p>
 
             <div className="w-64 text-sm mt-5 text-center">
-              {/* <input
+              <input
                 type="mail"
                 placeholder="mail@mail.com"
                 className="input mb-3 input-transition"
-              /> */}
-              <input
-              type="email"
-              name="email"
-              placeholder="mail@mail.com"
-                className="input mb-3 input-transition"
-              onPointerDownCapture={(e) => {
-                console.log('[HERO email] pointerdown CAPTURE', {
-                  target: (e.target as HTMLElement).tagName,
-                  current: (e.currentTarget as HTMLElement).tagName,
-                })
-                console.trace()
-              }}
-              onPointerDown={(e) => console.log('[HERO email] pointerdown BUBBLE')}
-              onFocusCapture={() => {
-                console.log('[HERO email] focus CAPTURE')
-                console.trace()
-              }}
-              onFocus={() => console.log('[HERO email] focus BUBBLE')}
-              onClickCapture={() => {
-                console.log('[HERO email] click CAPTURE')
-                console.trace()
-              }}
-              onClick={() => console.log('[HERO email] click BUBBLE')}
+              /> 
               
-            />
               <input
                 type="password"
                 placeholder="********"

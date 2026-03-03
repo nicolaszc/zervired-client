@@ -85,6 +85,7 @@ function useIOSBoundaryScrollLock(active: boolean) {
 
   return ref
 }
+
 type SuggestionsContentProps = {
   hasResults: boolean
   totalResults: number
@@ -195,7 +196,7 @@ const ProvidersSearch = forwardRef<ProvidersSearchHandle, Props>(
 
   const containerStyles = {
     header: 'hidden md:flex justify-center items-center text-sm header-search-transition',
-    mobile: 'flex w-full max-w-full min-w-0 px-6 pb-4 z-50',
+    mobile: 'flex w-full max-w-full min-w-0 px-6 pb-4 z-70',
     floating: 'flex w-full items-center', //sinnutilizar aún
   }
 
@@ -334,7 +335,7 @@ useEffect(() => {
      
     {!isMobile  && hasResults && (<div className={cn('search-overlay')} onClick={clearTerm}><div className='overlay-bg'></div></div>)}
 
-    <div id="search-box" className={cn(containerStyles[variant], 'relative z-2', className)} onClick={(e) => {e.stopPropagation();/* if(isMobile){actions.requestMobileSearch('open')} */ }}>   
+    <div id="search-box" className={cn(containerStyles[variant], 'relative z-2', className)} onClick={(e) => e.stopPropagation()} onPointerDown={(e) => e.stopPropagation()}>   
 
       <input
         id="search-input"
@@ -346,26 +347,8 @@ useEffect(() => {
         placeholder="¿Qué servicio buscas?"
         className={cn("input rounded-r-none search-input basis-2/3 text-[16px] placeholder:text-sm pt-1.5 pb-1.75 md:text-sm md:py-2"
         )} 
-        onPointerDownCapture={(e) => {
-  console.log('[SEARCH] pointerdown CAPTURE', {
-    target: (e.target as HTMLElement).tagName,
-    current: (e.currentTarget as HTMLElement).tagName,
-  })
-  console.trace()
-}}
-onFocusCapture={() => {
-  console.log('[SEARCH] focus CAPTURE')
-  console.trace()
-}}
-onBlurCapture={() => {
-  console.log('[SEARCH] blur CAPTURE')
-  console.trace()
-}}
-onInputCapture={(e) => {
-  // Se dispara aunque no uses onChange, útil para ver si entra texto
-  const t = e.currentTarget as HTMLInputElement
-  console.log('[SEARCH] input CAPTURE', { value: t.value })
-}}     
+        onPointerDownCapture={(e) =>  e.stopPropagation()}
+    
       />
 
       {isMobile && ( 
