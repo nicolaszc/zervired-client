@@ -7,10 +7,29 @@ import Footer from "@/components/layout/Footer"
 import Dock from "@/components/ui/Dock"
 import MobileSearch from "@/components/ui/MobileSearch"
 import AdvancedSearch from "@/components/ui/AdvancedSearch"
+import { useEffect } from "react"
 
 export default function LayoutShell({ children }: { children: React.ReactNode }) {
   const { state } = useUI()
+  
+  useEffect(() => {
+  const onFocusIn = (e: FocusEvent) => {
+    const t = e.target as HTMLElement | null
+    console.log('[focusin]', t?.tagName, t?.id, t?.className)
+  }
+  const onFocusOut = (e: FocusEvent) => {
+    const t = e.target as HTMLElement | null
+    console.log('[focusout]', t?.tagName, t?.id, t?.className)
+  }
 
+  document.addEventListener('focusin', onFocusIn)
+  document.addEventListener('focusout', onFocusOut)
+
+  return () => {
+    document.removeEventListener('focusin', onFocusIn)
+    document.removeEventListener('focusout', onFocusOut)
+  }
+}, [])
   return (
     <>
       <BackgroundAnimation />
