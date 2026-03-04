@@ -47,7 +47,7 @@ export default function MobileSearch({ className }: Props) {
   const translateY = useMemo(() => {
     const vh = state.viewport.height
 
-    if (open) return 1
+    if (open) return 10
     if (!peek) return vh
 
     const peekHeight = contentHeight
