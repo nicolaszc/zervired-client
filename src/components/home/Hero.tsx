@@ -60,17 +60,7 @@ export default function Hero() {
             </p>
 
             <div className="w-64 text-sm mt-5 text-center">
-              <input
-                type="mail"
-                placeholder="mail@mail.com"
-                className="input mb-3 input-transition"
-              /> 
               
-              <input
-                type="password"
-                placeholder="********"
-                className="input mb-4 input-transition"
-              />
               <button className="cta cta-bg">
                 Enviar
               </button>
