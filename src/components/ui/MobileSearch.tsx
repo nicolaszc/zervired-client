@@ -102,7 +102,7 @@ export default function MobileSearch({ className }: Props) {
       ref={searchBgRef}
       /* onClick={handleBackgroundClick} */
       
-      onPointerDown={(e) => handleBgPointerDown(e)}
+      onPointerDown={(e) =>{e.stopPropagation();handleBgPointerDown(e)}}
       onTransitionEnd={handleInputFocus}
       className={cn(
         "fixed top-0 h-full max-h-full inset-x-0 z-60",
