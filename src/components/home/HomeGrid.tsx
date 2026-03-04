@@ -25,7 +25,7 @@ export default function HomeGrid() {
           <ProvidersGrid
             key="home"
             providers={providers}
-            title="Servicios disponibless"
+            title="Servicios disponiblesss"
           />
         </section>
        
