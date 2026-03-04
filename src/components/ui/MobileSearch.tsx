@@ -137,7 +137,7 @@ export default function MobileSearch({ className }: Props) {
       
 
       {/* ProvidersSearch: cualquier click interno NO debe cerrar */}
-      <div ref={contentRef} onPointerDown={(e) => e.stopPropagation()} onClick={(e) => e.stopPropagation()} className="flex relative w-full max-w-full min-w-0 px-6 pb-4 pt-4">
+      <div ref={contentRef} onPointerDown={(e) => e.stopPropagation()} onClick={(e) => e.stopPropagation()} className="flex relative w-full max-w-full min-w-0 px-6 py-4">
         {!open && (
           <button
             className="absolute inset-0 z-50"
