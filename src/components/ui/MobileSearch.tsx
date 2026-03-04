@@ -106,7 +106,7 @@ export default function MobileSearch({ className }: Props) {
       onTransitionEnd={handleInputFocus}
       className={cn(
         "fixed top-0 h-full max-h-full inset-x-0 z-60",
-        "transition-translate-opacity duration-500",
+       /*  "transition-translate-opacity duration-500", */
         "bg-linear-to-t gradient",
         className
       )}
