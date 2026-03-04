@@ -96,7 +96,6 @@ export default function MobileSearch({ className }: Props) {
         </div>
       )}
 
-      <ProvidersSearch ref={searchRef} variant="mobile" className={cn("hidden pt-4", open && "flex")} />
 
       <div
         id="search-overlay"
@@ -164,6 +163,8 @@ export default function MobileSearch({ className }: Props) {
           </div>
 
         </div>
+      <ProvidersSearch ref={searchRef} variant="mobile" className={cn("hidden pt-4", open && "flex")} />
+
       </div>
       
     </div>
