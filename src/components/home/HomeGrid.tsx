@@ -21,11 +21,11 @@ export default function HomeGrid() {
           <ProviderCategories  context="section" />
         </section>
        
-        <section className="relative mt-8 z-1" data-grid-sentinel>
+        <section className="relative mt-8 z-1">
           <ProvidersGrid
             key="home"
             providers={providers}
-            title="Servicios disponibless"
+            title="Servicios disponibles"
           />
         </section>
        

@@ -30,7 +30,7 @@ export default function RootLayout(
   return (
     <html lang="es" className={`${poppins.variable}`}>
 
-      <body className="font-sans min-h-screen flex flex-col relative pt-25">
+      <body className="font-sans min-h-screen flex flex-col relative pt-10">
 
         <ThemeProvider>
           <UIProvider>

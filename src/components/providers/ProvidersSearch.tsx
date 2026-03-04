@@ -196,7 +196,7 @@ const ProvidersSearch = forwardRef<ProvidersSearchHandle, Props>(
 
   const containerStyles = {
     header: 'hidden md:flex justify-center items-center text-sm header-search-transition',
-    mobile: 'flex w-full max-w-full min-w-0 px-6 pb-4 z-70',
+    mobile: 'flex w-full max-w-full min-w-0',
     floating: 'flex w-full items-center', //sinnutilizar aún
   }
 
@@ -335,7 +335,7 @@ const onPickProvider = useCallback((slug: string) => {
      
     {!isMobile  && hasResults && (<div className={cn('search-overlay')} onClick={clearTerm}><div className='overlay-bg'></div></div>)}
 
-    <div id="search-box" className={cn(containerStyles[variant], 'relative z-2', className)} onClick={(e) => e.stopPropagation()} onPointerDown={(e) => e.stopPropagation()}>   
+    <div id="search-box" className={cn(containerStyles[variant], className)} onClick={(e) => e.stopPropagation()} onPointerDown={(e) => e.stopPropagation()}>   
 
       <input
         id="search-input"
@@ -361,7 +361,7 @@ const onPickProvider = useCallback((slug: string) => {
         <FontAwesomeIcon icon={faCircleArrowDown} />
       </button>
       )}
-
+      
       <button
         onClick={() => {handleSearch()}}
         className={cn("px-6 py-2 cta-bg rounded-r-full rounded-l-none basis-1/3 cursor-pointer"
@@ -372,10 +372,10 @@ const onPickProvider = useCallback((slug: string) => {
 
        
         <div 
-          className={cn('search-results-box absolute w-full left-0 z-3 pb-10 md:pb-0',
+          className={cn('search-results-box absolute w-full left-0 z-3 md:pb-0',
             'top-full md:rounded-b-lg',      
             totalResults === 1 && 'to-300%',
-            hasResults && 'pt-4',
+            hasResults && 'pt-4 pb-10',
             variant === 'header' && 'bg-linear-to-b gradient'
           )}
           style={{ height: hasResults && vvh ? `${vvh}px` : undefined}}
@@ -393,7 +393,7 @@ const onPickProvider = useCallback((slug: string) => {
             onSubmit={handleSearch}
           />
 
-          {isMobile && (
+          {isMobile && state.mobileSearchOpen &&(
           <p className={cn("text-xs text-center pb-6", hasResults &&("pt-6"))}>¿Quieres reactivar el hint de búsqueda? → <button>Reactivar</button></p>
           )}
         </div> 

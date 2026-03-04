@@ -10,16 +10,17 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBars, faXmark } from '@fortawesome/free-solid-svg-icons'
 import { faXTwitter, faLinkedinIn, faInstagram } from '@fortawesome/free-brands-svg-icons'
 import { useUI } from "@/context/UIContext"
-
+import { cn } from '@/lib/utils'
 
 export default function Header() {
   const { state } = useUI()
   const [open, setOpen] = useState(false)
   const isMobile = state.isMobile
-
+  const mobileSearchOpen = state.mobileSearchOpen
   return (
     <>
-      <header className="bg-(--primary-l) dark:bg-(--secondary-d) fixed z-40 md:z-40 w-full top-0">
+        
+        <header className="bg-(--primary-l) dark:bg-(--secondary-d) fixed z-40 md:z-40 w-full top-0 overflow-hidden max-h-10">
         <div className="mx-auto max-w-7xl px-6 py-2.5 flex items-center justify-between bg-(--primary-l) dark:bg-(--secondary-d) relative z-2">
           
           {/* Logo */}
@@ -115,7 +116,9 @@ export default function Header() {
           </nav>
         </div>
       </header>
-
+      
+      
+      
    </> 
   )
 }

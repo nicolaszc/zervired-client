@@ -244,10 +244,6 @@
   body.open-search .close-search-btn{
     @apply opacity-100 pointer-events-auto cursor-pointer 
   }
-  
-  body.open-search{
-    @apply overflow-y-hidden;
-  }
 
   #dock, #dock .grid, #dock .flex{
     @apply transition-all
@@ -315,7 +311,7 @@ body {
   background-image: var(--background-image);
   min-height: 100svh;   /* importante para iOS */
   color: var(--foreground);
-  overflow-x: clip;
+  /* overflow-x: clip; */
   font-weight: 200;
 }
 

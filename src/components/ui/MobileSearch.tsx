@@ -28,7 +28,7 @@ export default function MobileSearch({ className }: Props) {
   useEffect(() => {
     if (open) {const tapFocus = () => setNeedsTapToFocus(true); tapFocus()}
   }, [open])
-  useLockBodyScroll(open)
+  //useLockBodyScroll(open)
   useLayoutEffect(() => {
     const el = contentRef.current
     if (!el) return
@@ -47,12 +47,26 @@ export default function MobileSearch({ className }: Props) {
   const translateY = useMemo(() => {
     const vh = state.viewport.height
 
-    if (open) return 0
+    if (open) return 100
     if (!peek) return vh
 
     const peekHeight = contentHeight
     return Math.max(0, vh - peekHeight)
   }, [open, peek, state.viewport.height, contentHeight])
+
+
+ const isInputFocused = () => {
+  const el = document.activeElement as HTMLElement | null
+  return !!el && el.matches("input,textarea,[contenteditable='true']")
+}
+
+const onPointerDown = (e: PointerEvent) => {
+  if (!document.documentElement.classList.contains("mobile-search-open")) return
+  if (!isInputFocused()) return
+  const t = e.target as HTMLElement | null
+  if (t?.closest("[data-mobile-search]")) return
+  console.log("POINTERDOWN outside while input focused:", t)
+}
 
 
   if (!state.isMobile) return null
@@ -82,40 +96,42 @@ export default function MobileSearch({ className }: Props) {
   const target = e.target as Node
   if (contentRef.current?.contains(target)) return // tap dentro => no cerrar
   actions.requestMobileSearch('close')
-  searchRef.current?.clear?.() // opcional
-
-  
+  searchRef.current?.clear?.() // opcional 
 }
 
   return (
     <>
-    {state.hintToast && (
-          <div className="fixed bottom-5 inset-x-3 z-999">
-            <div className="flex items-center gap-2 rounded-lg px-3 py-2 bg-yellow-100 text-yellow-900">
-              <span>⚠️</span>
-              <span className="text-sm">{state.hintToast}</span>
-            </div>
+      {state.hintToast && (
+        <div className="fixed bottom-5 inset-x-3 z-999">
+          <div className="flex items-center gap-2 rounded-lg px-3 py-2 bg-yellow-100 text-yellow-900">
+            <span>⚠️</span>
+            <span className="text-sm">{state.hintToast}</span>
           </div>
-        )}
-    <div
-      id="search"
-      ref={searchBgRef}
-      /* onClick={handleBackgroundClick} */
-      
-      onPointerDown={(e) => handleBgPointerDown(e)}
-      onTransitionEnd={handleInputFocus}
-      className={cn(
-        "relative h-screen z-60",
-        "transition-transform-opacity duration-500 delay-0 ease-out",
-        "bg-linear-to-t gradient",
-        className
+        </div>
       )}
-      style={{
-        transform: `translateY(${translateY}px)`,
-        opacity: open || peek ? 1 : 1,
-      }}
+      
+        <div className="fixed top-0 z-70 w-full"><ProvidersSearch ref={searchRef} variant="mobile" className="relative px-6 py-4"/>
+      </div>
+      <div
+        id="search-overlay"
+        ref={searchBgRef}
+        /* onClick={handleBackgroundClick} */
+        
+        onPointerDown={(e) =>{e.stopPropagation();handleBgPointerDown(e)}}
+        onTransitionEnd={handleInputFocus}
+        className={cn(
+          "fixed top-0 h-full max-h-full inset-x-0 z-60",
+         "transition-translate-opacity duration-500",
+          "bg-linear-to-t gradient",
+          className
+        )}
+        style={{
+          translate: `0 ${translateY}px`,
+          opacity: open || peek ? 1 : 0,
+        }}
 
-    >
+      >
+        
       {/* X: SOLO en hint (peek) => suppressed */}
       <button
         onClick={(e) => {
@@ -136,21 +152,33 @@ export default function MobileSearch({ className }: Props) {
       
 
       {/* ProvidersSearch: cualquier click interno NO debe cerrar */}
-      <div ref={contentRef} onPointerDown={(e) => e.stopPropagation()} onClick={(e) => e.stopPropagation()} className="overflow-x-clip min-w-0 w-full max-w-full relative">
+      <div ref={contentRef} onPointerDown={(e) => e.stopPropagation()} onClick={(e) => e.stopPropagation()} className="flex relative w-full max-w-full min-w-0 px-6 py-4">
         {!open && (
           <button
-            className="absolute inset-0 z-50 hidden"
+            className="absolute inset-0 z-50"
             onClick={(e) => {
               e.stopPropagation()
               actions.requestMobileSearch('open')
-              //setNeedsTapToFocus(false)
-              //requestAnimationFrame(() => searchRef.current?.focus())
+
             }}
             aria-label="Activar búsqueda"
           />
         )}
-        <input className="input w-full mb-10" placeholder="DEBUG UNCONTROLLED" />
-        <ProvidersSearch ref={searchRef} variant="mobile" className={cn(peek && "pt-4", open && "pt-4")} />
+      <div className="flex w-full">
+
+          <div            
+            className={cn("input rounded-r-none search-input basis-2/3 text-sm pt-2 pb-1.75")}
+            >
+            <span>¿Qué servicio buscass?</span>
+          </div> 
+          <div
+            className={cn("px-6 py-2 cta-bg rounded-r-full rounded-l-none basis-1/3")}
+            >
+            Buscar
+          </div>
+
+        </div>
+
       </div>
       
     </div>
