@@ -47,7 +47,7 @@ export default function MobileSearch({ className }: Props) {
   const translateY = useMemo(() => {
     const vh = state.viewport.height
 
-    if (open) return 200
+    if (open) return 0
     if (!peek) return vh
 
     const peekHeight = contentHeight
@@ -95,8 +95,9 @@ export default function MobileSearch({ className }: Props) {
           </div>
         </div>
       )}
-
-
+      
+        <ProvidersSearch ref={searchRef} variant="mobile" className="fixed top-0 z-70 px-6 py-4"/>
+      
       <div
         id="search-overlay"
         ref={searchBgRef}
@@ -149,7 +150,7 @@ export default function MobileSearch({ className }: Props) {
             aria-label="Activar búsqueda"
           />
         )}
-      {/*   <div className="flex w-full">
+      <div className="flex w-full">
 
           <div            
             className={cn("input rounded-r-none search-input basis-2/3 text-sm pt-2 pb-1.75")}
@@ -162,8 +163,7 @@ export default function MobileSearch({ className }: Props) {
             Buscar
           </div>
 
-        </div> */}
-      <ProvidersSearch ref={searchRef} variant="mobile" />
+        </div>
 
       </div>
       
