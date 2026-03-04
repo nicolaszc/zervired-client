@@ -105,7 +105,7 @@ export default function MobileSearch({ className }: Props) {
       onPointerDown={(e) => handleBgPointerDown(e)}
       onTransitionEnd={handleInputFocus}
       className={cn(
-        "fixed h-full max-h-full inset-x-0 z-60",
+        "absolute top-30 h-full max-h-full inset-x-0 z-60",
         "transition-translate-opacity duration-500 delay-0 ease-out",
         "bg-linear-to-t gradient",
         className
