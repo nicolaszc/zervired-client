@@ -246,8 +246,8 @@
   }
   
   body.open-search header{
-   @apply pointer-events-none
-    
+   @apply hidden
+   
   }
 
   #dock, #dock .grid, #dock .flex{
