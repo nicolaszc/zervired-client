@@ -245,10 +245,7 @@
     @apply opacity-100 pointer-events-auto cursor-pointer 
   }
   
-  body.open-search header{
-  /*  m  */
-   
-  }
+  b
 
   #dock, #dock .grid, #dock .flex{
     @apply transition-all
@@ -319,7 +316,10 @@ body {
   /* overflow-x: clip; */
   font-weight: 200;
 }
-
+ody.open-search header{
+  /*  m  */display: none;
+   
+  }
 /* Animations */
 .heartbeat {
   animation: float-heartbeat 2s ease-in-out infinite;
