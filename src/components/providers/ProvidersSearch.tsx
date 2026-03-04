@@ -196,7 +196,7 @@ const ProvidersSearch = forwardRef<ProvidersSearchHandle, Props>(
 
   const containerStyles = {
     header: 'hidden md:flex justify-center items-center text-sm header-search-transition',
-    mobile: 'flex w-full max-w-full min-w-0 px-6 pb-4 z-70',
+    mobile: 'flex w-full max-w-full min-w-0 px-6 pb-4 z-70 fixed top-0',
     floating: 'flex w-full items-center', //sinnutilizar aún
   }
 
@@ -335,7 +335,7 @@ const onPickProvider = useCallback((slug: string) => {
      
     {!isMobile  && hasResults && (<div className={cn('search-overlay')} onClick={clearTerm}><div className='overlay-bg'></div></div>)}
 
-    <div id="search-box" className={cn(containerStyles[variant], 'relative z-2', className)} onClick={(e) => e.stopPropagation()} onPointerDown={(e) => e.stopPropagation()}>   
+    <div id="search-box" className={cn(containerStyles[variant], 'z-80', className)} onClick={(e) => e.stopPropagation()} onPointerDown={(e) => e.stopPropagation()}>   
 
       <input
         id="search-input"
