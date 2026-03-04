@@ -96,8 +96,8 @@ export default function MobileSearch({ className }: Props) {
         </div>
       )}
       
-        <ProvidersSearch ref={searchRef} variant="mobile" className="fixed top-0 z-70 px-6 py-4"/>
-      
+        <div className="fixed top-0 z-70 w-full"><ProvidersSearch ref={searchRef} variant="mobile" className="relative px-6 py-4"/>
+      </div>
       <div
         id="search-overlay"
         ref={searchBgRef}
