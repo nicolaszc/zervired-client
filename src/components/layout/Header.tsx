@@ -19,9 +19,8 @@ export default function Header() {
   const mobileSearchOpen = state.mobileSearchOpen
   return (
     <>
-      {!mobileSearchOpen && (
         
-        <header className={cn("bg-(--primary-l) dark:bg-(--secondary-d) fixed z-40 md:z-40 w-full top-0 max-h-10 overflow-hidden")}>
+        <header className={cn("bg-(--primary-l) dark:bg-(--secondary-d) fixed z-40 md:z-40 w-full top-0 overflow-hidden", mobileSearchOpen && "max-h-0")}>
         <div className="mx-auto max-w-7xl px-6 py-2.5 flex items-center justify-between bg-(--primary-l) dark:bg-(--secondary-d) relative z-2">
           
           {/* Logo */}
@@ -117,7 +116,7 @@ export default function Header() {
           </nav>
         </div>
       </header>
-      )}
+      
       
       
    </> 
