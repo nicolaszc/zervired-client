@@ -317,9 +317,8 @@ body {
   font-weight: 200;
 }
 ody.open-search header{
-  /*  m  */display: none;
-   
-  }
+  display: none;  
+}
 /* Animations */
 .heartbeat {
   animation: float-heartbeat 2s ease-in-out infinite;
