@@ -28,7 +28,7 @@ export default function MobileSearch({ className }: Props) {
   useEffect(() => {
     if (open) {const tapFocus = () => setNeedsTapToFocus(true); tapFocus()}
   }, [open])
-  useLockBodyScroll(open)
+  //useLockBodyScroll(open)
   useLayoutEffect(() => {
     const el = contentRef.current
     if (!el) return
