@@ -335,7 +335,7 @@ const onPickProvider = useCallback((slug: string) => {
      
     {!isMobile  && hasResults && (<div className={cn('search-overlay')} onClick={clearTerm}><div className='overlay-bg'></div></div>)}
 
-    <div id="search-box" className={cn(containerStyles[variant], 'z-80', className)} onClick={(e) => e.stopPropagation()} onPointerDown={(e) => e.stopPropagation()}>   
+    <div id="search-box" className={cn(containerStyles[variant], '', className)} onClick={(e) => e.stopPropagation()} onPointerDown={(e) => e.stopPropagation()}>   
 
       <input
         id="search-input"
