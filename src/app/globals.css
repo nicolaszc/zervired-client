@@ -245,8 +245,9 @@
     @apply opacity-100 pointer-events-auto cursor-pointer 
   }
   
-  body.open-search{
-    /* @apply overflow-y-hidden; */
+  body.open-search header{
+   @apply pointer-events-none
+    
   }
 
   #dock, #dock .grid, #dock .flex{

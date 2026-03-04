@@ -196,7 +196,7 @@ const ProvidersSearch = forwardRef<ProvidersSearchHandle, Props>(
 
   const containerStyles = {
     header: 'hidden md:flex justify-center items-center text-sm header-search-transition',
-    mobile: 'flex w-full max-w-full min-w-0 px-6 py-4 z-70',
+    mobile: 'flex w-full max-w-full min-w-0 py-4 z-70',
     floating: 'flex w-full items-center', //sinnutilizar aún
   }
 
