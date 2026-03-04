@@ -106,14 +106,14 @@ export default function MobileSearch({ className }: Props) {
       onTransitionEnd={handleInputFocus}
       className={cn(
         "fixed top-0 h-full max-h-full inset-x-0 z-60",
-        "transition-translate-opacity duration-500 delay-0 ease-out",
+        /* "transition-translate-opacity duration-500 delay-0 ease-out", */
         "bg-linear-to-t gradient",
         className
       )}
-      style={{
+      /* style={{
         transform: `translateY(${translateY}px)`,
         opacity: open || peek ? 1 : 0,
-      }}
+      }} */
 
     >
       {/* X: SOLO en hint (peek) => suppressed */}
