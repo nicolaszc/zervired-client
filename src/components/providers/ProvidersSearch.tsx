@@ -352,16 +352,7 @@ const onPickProvider = useCallback((slug: string) => {
     
       />
 
-      {isMobile && ( 
-      <button
-        onClick={(e) => {e.stopPropagation();clearTerm();actions.requestMobileSearch('close')}}
-        className={cn("close-search-btn px-4 py-2.5"
-        )}
-      >
-        <FontAwesomeIcon icon={faCircleArrowDown} />
-      </button>
-      )}
-
+      
       <button
         onClick={() => {handleSearch()}}
         className={cn("px-6 py-2 cta-bg rounded-r-full rounded-l-none basis-1/3 cursor-pointer"
