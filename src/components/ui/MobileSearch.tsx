@@ -47,12 +47,26 @@ export default function MobileSearch({ className }: Props) {
   const translateY = useMemo(() => {
     const vh = state.viewport.height
 
-    if (open) return 75
+    if (open) return 100
     if (!peek) return vh
 
     const peekHeight = contentHeight
     return Math.max(0, vh - peekHeight)
   }, [open, peek, state.viewport.height, contentHeight])
+
+
+ const isInputFocused = () => {
+  const el = document.activeElement as HTMLElement | null
+  return !!el && el.matches("input,textarea,[contenteditable='true']")
+}
+
+const onPointerDown = (e: PointerEvent) => {
+  if (!document.documentElement.classList.contains("mobile-search-open")) return
+  if (!isInputFocused()) return
+  const t = e.target as HTMLElement | null
+  if (t?.closest("[data-mobile-search]")) return
+  console.log("POINTERDOWN outside while input focused:", t)
+}
 
 
   if (!state.isMobile) return null
@@ -155,7 +169,7 @@ export default function MobileSearch({ className }: Props) {
           <div            
             className={cn("input rounded-r-none search-input basis-2/3 text-sm pt-2 pb-1.75")}
             >
-            <span>¿Qué servicio buscas?</span>
+            <span>¿Qué servicio buscass?</span>
           </div> 
           <div
             className={cn("px-6 py-2 cta-bg rounded-r-full rounded-l-none basis-1/3")}
