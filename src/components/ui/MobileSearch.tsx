@@ -111,7 +111,7 @@ export default function MobileSearch({ className }: Props) {
         className
       )}
       style={{
-        transform: `translateY(${translateY}px)`,
+        translate: `0 ${translateY}px`,
         opacity: open || peek ? 1 : 0,
       }}
 
