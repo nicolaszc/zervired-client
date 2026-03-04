@@ -149,7 +149,6 @@ export default function MobileSearch({ className }: Props) {
             aria-label="Activar búsqueda"
           />
         )}
-        <input className="input w-full mb-10" placeholder="DEBUG UNCONTROLLED" />
         <ProvidersSearch ref={searchRef} variant="mobile" className={cn(peek && "pt-4", open && "pt-4")} />
       </div>
       
