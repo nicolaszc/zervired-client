@@ -145,8 +145,7 @@ export default function MobileSearch({ className }: Props) {
             onClick={(e) => {
               e.stopPropagation()
               actions.requestMobileSearch('open')
-              //setNeedsTapToFocus(false)
-              //requestAnimationFrame(() => searchRef.current?.focus())
+
             }}
             aria-label="Activar búsqueda"
           />
