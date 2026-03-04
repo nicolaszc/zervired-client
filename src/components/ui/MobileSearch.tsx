@@ -110,10 +110,10 @@ export default function MobileSearch({ className }: Props) {
         "bg-linear-to-t gradient",
         className
       )}
-      /* style={{
+      style={{
         transform: `translateY(${translateY}px)`,
         opacity: open || peek ? 1 : 0,
-      }} */
+      }}
 
     >
       {/* X: SOLO en hint (peek) => suppressed */}
