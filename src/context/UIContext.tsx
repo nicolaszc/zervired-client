@@ -47,6 +47,7 @@ type UIState = {
   // Anti-flash / coreografía dock -> search
   dockToSearchPending: boolean
 
+  vvh: number | null
 }
 
 type UIActions = {
@@ -77,6 +78,8 @@ type UIActions = {
   // Dock -> Search coreografía
   openSearchFromDock: () => void
   notifyDockSettled: () => void
+
+  //setVisualViewportHeight(h: number | null)
 }
 
 type UIContextValue = { state: UIState; actions: UIActions }
@@ -257,6 +260,7 @@ const intersectMap = useMemo(() => {
   const [dockOpen, setDockOpen] = useState(false)
   const [hydrated, setHydrated] = useState(false)
   const [dockSettled, setDockSettled] = useState(true)
+ 
   useEffect(() => {
     const markHydrated = () => setHydrated(true)
     markHydrated()
@@ -427,6 +431,27 @@ const notifyDockSettled = useCallback(() => {
     window.setTimeout(() => setHintToast(null), 5000)
   }, [])
 
+  const [vvh, setVvh] = useState<number | null>(null)
+
+  useEffect(() => {
+    if (!isMobile) return
+    const vv = window.visualViewport
+    if (!vv) return
+
+    const onResize = () => {
+    const h = Math.round(vv.height)
+      setVvh((prev) => (prev === h ? prev : h))
+    }
+    onResize()
+
+    vv.addEventListener("resize", onResize)
+    vv.addEventListener("scroll", onResize)
+    return () => {
+      vv.removeEventListener("resize", onResize)
+      vv.removeEventListener("scroll", onResize)
+    }
+  }, [isMobile])
+
   type Snap = { 
   isMobile: boolean 
   intersectMap: Record<string, boolean> 
@@ -471,6 +496,7 @@ const notifyDockSettled = useCallback(() => {
       autoSearchSuppressed,
       dockToSearchPending,
       hintToast,
+      vvh,
     }),
     [
       isMobile,
@@ -485,6 +511,7 @@ const notifyDockSettled = useCallback(() => {
       autoSearchSuppressed,
       dockToSearchPending,
       hintToast,
+      vvh,
     ]
   )
 
