@@ -132,7 +132,6 @@ export default function MobileSearch({ className }: Props) {
           className={cn(
             "relative h-full",
             "transition-transform",
-             peek ? "opacity-100 delay-100 duration-400" : "opacity-0 delay-100 duration-400 pointer-events-none"
           )}
           style={{
             translate: `0 ${translateY}px`,
@@ -168,7 +167,7 @@ export default function MobileSearch({ className }: Props) {
           >
             {!open && (
               <button
-                className="absolute inset-0 z-50"
+                className="absolute inset-0 z-50 bg-black"
                 onClick={(e) => {
                   e.stopPropagation()
                   actions.requestMobileSearch("open")
@@ -179,7 +178,8 @@ export default function MobileSearch({ className }: Props) {
 
             <div className={cn(
               "flex relative w-full max-w-full min-w-0 px-6 py-4 bg-(--secondary-l) dark:bg-(--lowlight-d) transition-opacity duration-400",
-              //open ? "opacity-0 pointer-events-none" : "opacity-100 delay-100"
+              peek ? "opacity-100 delay-100 duration-400" : "opacity-0 delay-100 duration-400 pointer-events-none"
+
             )}
             >
               <div className={cn("input rounded-r-none search-input basis-2/3 text-sm pt-2 pb-1.75")}>
