@@ -24,6 +24,7 @@ export default function MobileSearch({ className }: Props) {
   const searchBgRef = useRef<HTMLDivElement>(null)
   const [contentHeight, setContentHeight] = useState(0)
   const [needsTapToFocus, setNeedsTapToFocus] = useState(true)
+ 
 
   useEffect(() => {
     if (open) {
@@ -66,7 +67,10 @@ export default function MobileSearch({ className }: Props) {
       setNeedsTapToFocus(false)
       requestAnimationFrame(() => searchRef.current?.focus())
     }
+   
   }
+
+  
 
   const handleBgPointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
     const target = e.target as Node
@@ -94,8 +98,8 @@ export default function MobileSearch({ className }: Props) {
         ref={searchRef}
         variant="mobile"
         className={cn(
-          "px-6 py-4 fixed top-0 z-70 w-full transition-opacity duration-600",
-          open ? "opacity-100" : "opacity-0 pointer-events-none"
+          "px-6 py-4 fixed top-0 z-70 w-full transition-opacity",
+          open ? "opacity-100 delay-200 duration-300" : "opacity-0 pointer-events-none delay-0 duration-300"
         )}
       />
 
@@ -121,13 +125,14 @@ export default function MobileSearch({ className }: Props) {
         {/* Backdrop FULL (siempre parte en 0 visual) */}
         <div className={cn(
           "absolute inset-0 bg-linear-to-t gradient transition-opacity duration-500",
-          open ? "opacity-100 pointer-events-none" : "opacity-0 delay-100")} />
+          open || !peek ? "opacity-100 pointer-events-none" : "opacity-0")} />
 
         {/* SHEET (solo esto se traslada) */}
         <div
           className={cn(
             "relative h-full",
-            "transition-transform duration-500"
+            "transition-transform",
+             peek ? "opacity-100 delay-100 duration-400" : "opacity-0 delay-100 duration-400 pointer-events-none"
           )}
           style={{
             translate: `0 ${translateY}px`,
@@ -146,7 +151,7 @@ export default function MobileSearch({ className }: Props) {
             }}
             className={cn(
               "flex items-center justify-center absolute z-60 w-11 h-13 -top-6.5 end-0",
-              open ? "opacity-0 pointer-events-none" : "opacity-100"
+              //open || !peek ? "opacity-0 pointer-events-none" : "opacity-100"
             )}
             aria-label="Dismiss hint"
           >
@@ -174,7 +179,7 @@ export default function MobileSearch({ className }: Props) {
 
             <div className={cn(
               "flex relative w-full max-w-full min-w-0 px-6 py-4 bg-(--secondary-l) dark:bg-(--lowlight-d) transition-opacity duration-400",
-              open ? "opacity-0 pointer-events-none" : "opacity-100"
+              //open ? "opacity-0 pointer-events-none" : "opacity-100 delay-100"
             )}
             >
               <div className={cn("input rounded-r-none search-input basis-2/3 text-sm pt-2 pb-1.75")}>
