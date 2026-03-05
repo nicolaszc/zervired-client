@@ -70,7 +70,17 @@ export default function MobileSearch({ className }: Props) {
    
   }
 
-  
+  const handleBackgroundClick = () => {
+    // Fondo clickeable:
+    // - si open -> cerrar takeover
+    // - si peek -> ocultar hint momentáneo
+    if (open) {
+      actions.requestSearch("close")
+      searchRef.current?.clear()
+      return
+    }
+    actions.setMobileSearchPeek(false)
+  }
 
   const handleBgPointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
     const target = e.target as Node
@@ -99,45 +109,55 @@ export default function MobileSearch({ className }: Props) {
         variant="mobile"
         className={cn(
           "px-6 py-4 fixed top-0 z-70 w-full transition-opacity",
-          open ? "opacity-100 delay-200 duration-300" : "opacity-0 pointer-events-none delay-0 duration-300"
+          open ? "opacity-100 delay-100 duration-400" : "opacity-0 pointer-events-none delay-0 duration-300"
         )}
       />
 
       {/* OVERLAY FULLSCREEN (no translate aquí) */}
       <div
         id="search-overlay"
-        ref={searchBgRef}
-        onPointerDown={(e) => {
-          e.stopPropagation()
-          handleBgPointerDown(e)
-        }}
+        ref={searchBgRef}     
         className={cn(
-          "fixed inset-0 h-full max-h-full min-h-full z-60",
+          "fixed inset-0 h-full max-h-full min-h-full z-60 pointer-events-none",
           className
         )}
         style={{
           //opacity: open || peek ? 1 : 0,
           // Si quieres evitar que “se pueda clickear” cuando está invisible:
-          pointerEvents: open || peek ? "auto" : "none",
           height: vh ? `${vh}px` : undefined,
         }}
-      >
+        onPointerDown={(e) => e.preventDefault}
+          onClick={(e) => {
+            e.preventDefault()
+          }}
+        >
+
         {/* Backdrop FULL (siempre parte en 0 visual) */}
         <div className={cn(
-          "absolute inset-0 bg-linear-to-t gradient transition-opacity duration-500",
-          open || !peek ? "opacity-100 pointer-events-none" : "opacity-0")} />
+          "absolute inset-0 bg-linear-to-t gradient transition-opacity duration-600 pointer-events-none",
+          open ? "opacity-100" : "opacity-0")}        
+        />
 
         {/* SHEET (solo esto se traslada) */}
         <div
           className={cn(
             "relative h-full",
-            "transition-transform",
+            "transition-transform-color duration-500", 
+            "pointer-events-auto",
+            peek && "bg-(--secondary-l) dark:bg-(--lowlight-d)",
+            open && "bg-(--secondary-l)/0 dark:bg-(--lowlight-d)/0"
           )}
           style={{
             translate: `0 ${translateY}px`,
           }}
           onTransitionEnd={handleInputFocus}
-        >
+          onPointerDown={(e) => e.stopPropagation()}
+          onClick={(e) => {
+            e.stopPropagation()
+            handleBackgroundClick()
+          }}
+          >
+
           {/* X: SOLO en hint (peek) => suppressed */}
           <button
             onClick={(e) => {
@@ -147,13 +167,13 @@ export default function MobileSearch({ className }: Props) {
               actions.showHintToast(
                 "Hint de búsqueda suprimido temporalmente. Puedes reactivarlo desde la búsqueda."
               )
-            }}
-            className={cn(
-              "flex items-center justify-center absolute z-60 w-11 h-13 -top-6.5 end-0",
-              //open || !peek ? "opacity-0 pointer-events-none" : "opacity-100"
-            )}
-            aria-label="Dismiss hint"
-          >
+              }}
+              className={cn(
+                "flex items-center justify-center absolute z-60 w-11 h-13 -top-6.5 end-0",
+                peek ? "opacity-100 delay-100 duration-400" : "opacity-0 delay-100 duration-400 pointer-events-none"         
+              )}
+              aria-label="Dismiss hint"
+            >
             <span className="flex items-center justify-center w-7.5! h-7.5! bg-(--secondary-l) dark:bg-(--lowlight-d) overflow-hidden rounded-full">
               <FontAwesomeIcon icon={faXmark} className="w-3.75! h-3.75!" />
             </span>
@@ -164,10 +184,11 @@ export default function MobileSearch({ className }: Props) {
             ref={contentRef}
             onPointerDown={(e) => e.stopPropagation()}
             onClick={(e) => e.stopPropagation()}          
-          >
+            >
             {!open && (
               <button
-                className="absolute inset-0 z-50 bg-black"
+                className={cn("absolute inset-0 z-50",  
+                )}
                 onClick={(e) => {
                   e.stopPropagation()
                   actions.requestMobileSearch("open")
