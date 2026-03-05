@@ -4,28 +4,20 @@ export function useLockBodyScroll(locked: boolean) {
   useEffect(() => {
     if (!locked) return
 
-    const scrollY = window.scrollY || document.documentElement.scrollTop
+    const scrollY = window.scrollY
 
     const body = document.body
     const html = document.documentElement
 
-    // Guardar estilos previos para restaurar limpio
-    const prevBodyStyle = body.getAttribute("style") ?? ""
-    const prevHtmlStyle = html.getAttribute("style") ?? ""
+    const prevBodyOverflow = body.style.overflow
+    const prevHtmlOverflow = html.style.overflow
 
-    // Congelar scroll (iOS-safe)
-    html.style.height = "100%"
-    body.style.position = "fixed"
-    body.style.top = `-${scrollY}px`
-    body.style.left = "0"
-    body.style.right = "0"
-    body.style.width = "100%"
     body.style.overflow = "hidden"
+    html.style.overflow = "hidden"
 
     return () => {
-      // Restaurar
-      body.setAttribute("style", prevBodyStyle)
-      html.setAttribute("style", prevHtmlStyle)
+      body.style.overflow = prevBodyOverflow
+      html.style.overflow = prevHtmlOverflow
 
       window.scrollTo(0, scrollY)
     }

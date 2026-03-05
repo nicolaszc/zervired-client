@@ -304,9 +304,11 @@
 }
 
 html{
-  background-color: var(--background);
+  background-color: var(--primary-l);
 }
-
+html.dark{
+  background-color: var(--primary-d);
+}
 body { 
   background-image: var(--background-image);
   min-height: 100svh;   /* importante para iOS */

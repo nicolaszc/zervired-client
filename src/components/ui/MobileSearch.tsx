@@ -8,7 +8,7 @@ import { useLayoutEffect, useMemo, useRef, useState, useEffect } from "react"
 import { useUI } from "@/context/UIContext"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faXmark } from "@fortawesome/free-solid-svg-icons"
-// import { useLockBodyScroll } from "@/hooks/useLockBodyScroll"
+import { useLockBodyScroll } from "@/hooks/useLockBodyScroll"
 
 interface Props {
   className?: string
@@ -33,7 +33,7 @@ export default function MobileSearch({ className }: Props) {
     }
   }, [open])
 
-  // useLockBodyScroll(open)
+  useLockBodyScroll(open)
 
   useLayoutEffect(() => {
     const el = contentRef.current
