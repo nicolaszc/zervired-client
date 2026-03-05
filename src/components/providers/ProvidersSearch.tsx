@@ -297,22 +297,8 @@ const ProvidersSearch = forwardRef<ProvidersSearchHandle, Props>(
     clearTerm()
   }, [pathname, clearTerm])
   
-  const [vvh, setVvh] = useState<number | null>(null)
+  const vh = state.vvh ?? state.viewport.height
 
-  useEffect(() => {
-    if (!state.isMobile) return
-    const vv = window.visualViewport
-    if (!vv) return
-
-    const onResize = () => setVvh(vv.height)
-    onResize()
-    vv.addEventListener("resize", onResize)
-    vv.addEventListener("scroll", onResize)
-    return () => {
-      vv.removeEventListener("resize", onResize)
-      vv.removeEventListener("scroll", onResize)
-    }
-  }, [state.isMobile])
 
   const listRef = useIOSBoundaryScrollLock(state.mobileSearchOpen)
   const onPickService = useCallback((s: string) => {
@@ -361,7 +347,7 @@ const onPickProvider = useCallback((slug: string) => {
         <FontAwesomeIcon icon={faCircleArrowDown} />
       </button>
       )}
-      
+
       <button
         onClick={() => {handleSearch()}}
         className={cn("px-6 py-2 cta-bg rounded-r-full rounded-l-none basis-1/3 cursor-pointer"
@@ -378,7 +364,7 @@ const onPickProvider = useCallback((slug: string) => {
             hasResults && 'pt-4 pb-10',
             variant === 'header' && 'bg-linear-to-b gradient'
           )}
-          style={{ height: hasResults && vvh ? `${vvh}px` : undefined}}
+          style={{ height: hasResults && vh ? `${vh}px` : undefined}}
           ref={listRef}
         >
 

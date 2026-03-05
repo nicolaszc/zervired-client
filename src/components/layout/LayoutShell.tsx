@@ -20,7 +20,9 @@ export default function LayoutShell({ children }: { children: React.ReactNode })
       <main className="flex-1 pb-16">{children}</main>
 
       <Dock
-       
+        intersect={[
+          { target: "[data-grid-sentinel]", when: "in", threshold: 0.1, margin: 1 },
+        ]}
       />
 
       {state.isMobile ? <MobileSearch /> : <AdvancedSearch />}

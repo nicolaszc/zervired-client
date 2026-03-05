@@ -1,4 +1,4 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from "next";
 import './globals.css'
 import { ThemeProvider } from '@/context/ThemeContext'
 import { UIProvider } from '@/context/UIContext'
@@ -6,6 +6,7 @@ import LayoutShell from "@/components/layout/LayoutShell"
 import {poppins} from '@/styles/fonts/fonts'
 import { config } from '@fortawesome/fontawesome-svg-core'
 import '@fortawesome/fontawesome-svg-core/styles.css'
+
 config.autoAddCss = false
 export const metadata: Metadata = {
   title: 'Zervired',
@@ -24,13 +25,17 @@ export const metadata: Metadata = {
   },
   
 }
-
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  interactiveWidget: "resizes-content",
+};
 export default function RootLayout(
   { children }: { children: React.ReactNode}) {
   return (
     <html lang="es" className={`${poppins.variable}`}>
 
-      <body className="font-sans min-h-screen flex flex-col relative pt-10">
+      <body className="font-sans min-h-screen flex flex-col relative pt-25">
 
         <ThemeProvider>
           <UIProvider>
