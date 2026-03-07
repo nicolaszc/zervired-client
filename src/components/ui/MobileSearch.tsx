@@ -7,7 +7,7 @@ import type { ProvidersSearchHandle } from "@/components/providers/ProvidersSear
 import { useLayoutEffect, useMemo, useRef, useState, useEffect } from "react"
 import { useUI } from "@/context/UIContext"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faXmark } from "@fortawesome/free-solid-svg-icons"
+import { faXmark, faCircleArrowUp } from "@fortawesome/free-solid-svg-icons"
 import { useLockBodyScroll } from "@/hooks/useLockBodyScroll"
 
 interface Props {
@@ -82,12 +82,12 @@ export default function MobileSearch({ className }: Props) {
     actions.setMobileSearchPeek(false)
   }
 
-  const handleBgPointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
+  /* const handleBgPointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
     const target = e.target as Node
     if (contentRef.current?.contains(target)) return // tap dentro => no cerrar
     actions.requestMobileSearch("close")
     searchRef.current?.clear?.() // opcional
-  }
+  } */
 
 
   if (!state.isMobile) return null
@@ -134,8 +134,12 @@ export default function MobileSearch({ className }: Props) {
 
         {/* Backdrop FULL (siempre parte en 0 visual) */}
         <div className={cn(
-          "absolute inset-0 bg-linear-to-t gradient transition-opacity duration-600 pointer-events-none",
-          open ? "opacity-100" : "opacity-0")}        
+          "absolute inset-0 bg-(--primary-d)/60 backdrop-blur transition-opacity duration-600 ",
+          open ? "opacity-100" : "opacity-0 pointer-events-none")}  
+          onPointerDown={(e) => e.stopPropagation()}
+          onClick={(e) => {
+            e.stopPropagation()
+          }}  
         />
 
         {/* SHEET (solo esto se traslada) */}
@@ -144,8 +148,8 @@ export default function MobileSearch({ className }: Props) {
             "relative h-full",
             "transition-transform-color duration-500", 
             "pointer-events-auto",
-            peek && "bg-(--secondary-l) dark:bg-(--lowlight-d)",
-            open && "bg-(--secondary-l)/0 dark:bg-(--lowlight-d)/0"
+            peek && "bg-(--primary-d)/20 dark:bg-white/10 backdrop-blur",
+            open && "bg-(--primary-d)/0 dark:bg-white/0"
           )}
           style={{
             translate: `0 ${translateY}px`,
@@ -169,14 +173,17 @@ export default function MobileSearch({ className }: Props) {
               )
               }}
               className={cn(
-                "flex items-center justify-center absolute z-60 w-11 h-13 -top-6.5 end-0",
+                "flex items-center justify-center absolute z-60 w-11 h-13 -top-6.75 end-0",
                 peek ? "opacity-100 delay-100 duration-400" : "opacity-0 delay-100 duration-400 pointer-events-none"         
               )}
               aria-label="Dismiss hint"
             >
-            <span className="flex items-center justify-center w-7.5! h-7.5! bg-(--secondary-l) dark:bg-(--lowlight-d) overflow-hidden rounded-full">
+            <div className="btn-close rounded-full w-7.5! h-7.5! overflow-hidden relative">
+            <span className="backdrop-blur absolute top-0 left-0 w-7.5! h-4! bg-(--primary-d)/15 dark:bg-white/5"></span>
+            <span className="flex items-center justify-center w-7.5! h-7.5!">
               <FontAwesomeIcon icon={faXmark} className="w-3.75! h-3.75!" />
             </span>
+          </div>
           </button>
 
           {/* ProvidersSearch HINT / “input falso” */}
@@ -198,16 +205,17 @@ export default function MobileSearch({ className }: Props) {
             )}
 
             <div className={cn(
-              "flex relative w-full max-w-full min-w-0 px-6 py-4 bg-(--secondary-l) dark:bg-(--lowlight-d) transition-opacity duration-400",
+              "flex relative w-full max-w-full min-w-0 px-6 py-4 transition-opacity duration-400",
               peek ? "opacity-100 delay-100 duration-400" : "opacity-0 delay-100 duration-400 pointer-events-none"
 
             )}
             >
-              <div className={cn("input rounded-r-none search-input basis-2/3 text-sm pt-2 pb-1.75")}>
-                <span>¿Qué servicio buscass?</span>
+              <div className={cn("input relative rounded-r-none search-input basis-2/3 text-sm pt-2.5 pb-1.75 bg-white/40 dark:bg-white/20 backdrop-blur")}>
+                <span className="text-(--primary-d)/60">¿Qué servicio buscas?</span>
+                <FontAwesomeIcon icon={faCircleArrowUp} className="absolute right-1 text-[20px]"/>
               </div>
 
-              <div className={cn("px-6 py-2 cta-bg rounded-r-full rounded-l-none basis-1/3")}>
+              <div className={cn("px-6 py-2 text-white/50 dark:text-(--primary-d) bg-(--primary-d)/75 dark:bg-(--primary-l)/50 rounded-r-full rounded-l-none basis-1/3")}>
                 Buscar
               </div>
             </div>

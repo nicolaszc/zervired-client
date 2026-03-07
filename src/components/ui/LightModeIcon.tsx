@@ -10,7 +10,7 @@ export function SunIcon({ className = '' }) {
       className={`inline-block align-middle ${className}`}
     >
       {/* núcleo */}
-      <circle cx="12" cy="12" r="4" />
+      <circle cx="12" cy="12" r="4" fill="fill-(--primary-l)"/>
 
       {/* rayos */}
       <line x1="12" y1="1.5" x2="12" y2="4" />

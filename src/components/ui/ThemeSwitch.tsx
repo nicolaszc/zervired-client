@@ -5,11 +5,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMoon } from '@fortawesome/free-solid-svg-icons'
 import { SunIcon } from './LightModeIcon'
 import { cn } from '@/lib/utils'
-
+import { useUI } from "@/context/UIContext"
 
 export default function ThemeSwitch({className, ...props}:React.ButtonHTMLAttributes<HTMLButtonElement>) {
   const [mounted, setMounted] = useState(false)
   const [dark, setDark] = useState(false)
+  const { actions } = useUI()
 
   useEffect(() => {
   // eslint-disable-next-line react-hooks/set-state-in-effect
@@ -27,11 +28,12 @@ export default function ThemeSwitch({className, ...props}:React.ButtonHTMLAttrib
     setDark(next)
     document.documentElement.classList.toggle('dark', next)
     localStorage.setItem('theme', next ? 'dark' : 'light')
+    actions.closeDock()
   }
 
   const ICONS = {
     dark: <FontAwesomeIcon icon={faMoon} className={cn(dark ? 'text-(--highlight-d)' : '' )}/>,
-    light: <SunIcon className={cn(dark ? '' : 'text-(--primary-l) text-shadow-sm')} />,
+    light: <SunIcon className={cn(dark ? 'rounded-full' : 'text-(--primary-l) text-shadow-sm fill-(--primary-l)')} />,
   }
 
   if (!mounted) return null // 🔑 CLAVE ABSOLUTA
@@ -42,7 +44,7 @@ export default function ThemeSwitch({className, ...props}:React.ButtonHTMLAttrib
         <span>
           {ICONS.dark}
         </span>
-        <span>
+        <span className="rounded-full overflow-hidden">
           {ICONS.light}
         </span>
       </button>
