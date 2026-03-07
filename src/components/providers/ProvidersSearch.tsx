@@ -29,6 +29,7 @@ type PredictiveSuggestions = {
   services: string[]
   locations: string[]
   providers: Provider[]
+  categories: string[]
 }
 
 export type ProvidersSearchHandle = {
@@ -89,6 +90,10 @@ function useIOSBoundaryScrollLock(active: boolean) {
 type SuggestionsContentProps = {
   hasResults: boolean
   totalResults: number
+  totalServices: number
+  totalLocations: number
+  totalProviders: number
+  totalCategories: number
   suggestions: PredictiveSuggestions
   variant: 'header' | 'mobile' | 'floating'
   onPickService: (s: string) => void
@@ -99,28 +104,51 @@ type SuggestionsContentProps = {
 
 const SuggestionsContent = React.memo(function SuggestionsContent({
   hasResults,
-  totalResults,
+  //totalResults,
+  totalServices,
+  totalLocations,
+  totalProviders,
+  //totalCategories,
   suggestions,
-  variant,
+  //variant,
   onPickService,
   onPickLocation,
   onPickProvider,
   onSubmit,
 }: SuggestionsContentProps) {
-  if (!hasResults) return null
+  const { state } = useUI()
 
+  if (!hasResults) return null
+  
+  const isMobile = state.isMobile
   
   return (
-    <div className={cn('theme-search-shadow')}>
+    <div className={cn('theme-search-shadow md:flex md:justify-center md:py-2 md:px-10', isMobile && 'text-white bg-(--primary-d)/10 backdrop-blur')}>
+      {/* Categories */}
+      {suggestions.categories.length > 0 && (
+        <div className={cn("py-4", totalServices && totalLocations && totalProviders && isMobile && "border-b border-white/20")}>
+          <div className="px-6 py-2 text-xs opacity-75 font-normal">Categorías</div>
+          {suggestions.categories.map(s => (
+            <div
+              key={s}
+              onClick={() => onPickService(s)}
+              className="px-6 py-2 cursor-pointer md:hover:bg-(--lowlight-l)/10 md:dark:hover:bg-white/10 capitalize"
+            >
+              {s}
+            </div>
+          ))}
+        </div>
+      )}
+
       {/* Servicios */}
       {suggestions.services.length > 0 && (
-        <div className={cn("", totalResults > 1 && "border-b border-(--lowlight-l)/10 dark:border-white/10")}>
-          <div className="px-6 py-2 text-xs opacity-60">Servicios</div>
+        <div className={cn("py-4", totalLocations && totalProviders && isMobile && "border-b border-white/20")}>
+          <div className="px-6 py-2 text-xs opacity-75 font-normal">Servicios</div>
           {suggestions.services.map(s => (
             <div
               key={s}
               onClick={() => onPickService(s)}
-              className="px-8 py-2 cursor-pointer hover:bg-(--lowlight-l)/10 dark:hover:bg-white/10"
+              className="px-6 py-2 cursor-pointer md:hover:bg-(--lowlight-l)/10 md:dark:hover:bg-white/10"
             >
               {s}
             </div>
@@ -130,13 +158,13 @@ const SuggestionsContent = React.memo(function SuggestionsContent({
 
       {/* Ubicaciones */}
       {suggestions.locations.length > 0 && (
-        <div className={cn("", suggestions.services.length > 0 && suggestions.providers.length > 0 && "border-b border-(--lowlight-l)/10 dark:border-white/10")}>
-          <div className="px-6 py-2 text-xs opacity-60">Ubicaciones</div>
+        <div className={cn("py-4", totalProviders && isMobile && "border-b border-white/20")}>
+          <div className="px-6 py-2 text-xs opacity-75 font-normal">Ubicaciones</div>
           {suggestions.locations.map(l => (
             <div
               key={l}
               onClick={() => onPickLocation(l)}
-              className="px-10 py-2 cursor-pointer hover:bg-(--lowlight-l)/10 dark:hover:bg-white/10"
+              className="px-6 py-2 cursor-pointer md:hover:bg-(--lowlight-l)/10 md:dark:hover:bg-white/10"
             >
               {l}
             </div>
@@ -146,13 +174,13 @@ const SuggestionsContent = React.memo(function SuggestionsContent({
 
       {/* Providers */}
       {suggestions.providers.length > 0 && (
-        <div>
-          <div className="px-6 py-2 text-xs opacity-60">Especialistas</div>
+        <div className='py-4'>
+          <div className="px-6 py-2 text-xs opacity-75 font-normal">Especialistas</div>
           {suggestions.providers.map(p => (
             <div
               key={p.id}
               onClick={() => onPickProvider(p.slug)}
-              className="px-10 py-2 cursor-pointer hover:bg-(--lowlight-l)/10 dark:hover:bg-white/10"
+              className="px-6 py-2 cursor-pointer md:hover:bg-(--lowlight-l)/10 md:dark:hover:bg-white/10"
             >
               <div className="font-semibold leading-tight">{p.name}</div>
               <div className="text-xs opacity-60 truncate">{p.title}</div>
@@ -162,13 +190,13 @@ const SuggestionsContent = React.memo(function SuggestionsContent({
       )}
 
       {/* CTA Ver todos */}
-      <div>
+      <div className='md:flex md:items-center md:px-6 md:min-w-54'>
         <button
           onClick={onSubmit}
           className={cn(
-            'w-full text-center uppercase px-4 py-3 font-semibold cursor-pointer',
-            'bg-(--lowlight-l)/10 dark:bg-(--highlight-d)/20',
-            'hover:bg-(--lowlight-l)/15 dark:hover:bg-(--highlight-d)/50'
+            'w-full text-center uppercase px-4 py-3 font-semibold cursor-pointer md:w-42 md:rounded-full text-(--primary-d) dark:text-white md:text-white md:dark:text-(--primary-d) md:px-8',
+            'bg-(--primary-l)/90 dark:bg-[#143450] md:bg-(--primary-d) md:dark:bg-(--primary-l)',
+            'md:hover:bg-(--lowlight-l)/15 md:dark:hover:bg-(--highlight-d)/50'
           )}
         >
           Ver todos
@@ -188,14 +216,14 @@ const ProvidersSearch = forwardRef<ProvidersSearchHandle, Props>(
   const pathname = usePathname()
   const [term, setTerm] = useState('')
   const [query, setQuery] = useState('') // lo que gatilla suggestions
-
-  
   const { state, actions } = useUI()
   const isMobile = state.isMobile
+  
+ 
   const inputRef = useRef<HTMLInputElement>(null)
 
   const containerStyles = {
-    header: 'hidden md:flex justify-center items-center text-sm header-search-transition',
+    header: 'hidden md:flex justify-center items-center text-sm',
     mobile: 'flex w-full max-w-full min-w-0',
     floating: 'flex w-full items-center', //sinnutilizar aún
   }
@@ -221,11 +249,17 @@ const ProvidersSearch = forwardRef<ProvidersSearchHandle, Props>(
         orig: s,
         norm: normalize(s),
       })),
+
+      categories: (p.categories ?? []).map(c => ({
+      orig: c,
+      norm: normalize(c),
+      })),
+
     }))
   }, [])
 
   const suggestions: PredictiveSuggestions = useMemo(() => {
-  const EMPTY = { services: [], locations: [], providers: [] }
+  const EMPTY = { services: [], locations: [], providers: [], categories: [], }
 
   const q = normalize(query)
   if (!q) return EMPTY
@@ -247,6 +281,15 @@ const ProvidersSearch = forwardRef<ProvidersSearchHandle, Props>(
     )
   ).slice(0, 5)
 
+  const matchedCategories = Array.from(
+    new Set(
+      searchIndex
+        .flatMap(x => x.categories)
+        .filter(c => c.norm.includes(q))
+        .map(c => c.orig)
+    )
+  ).slice(0, 5)
+
   const matchedProviders =
     searchIndex
       .filter(x => x.nameN.includes(q) || x.titleN.includes(q))
@@ -254,18 +297,21 @@ const ProvidersSearch = forwardRef<ProvidersSearchHandle, Props>(
       .map(x => x.provider)
 
   return {
+    categories: matchedCategories,
     services: matchedServices,
     locations: matchedLocations,
     providers: matchedProviders,
   }
 }, [query, searchIndex])
 
-  const totalResults = suggestions.services.length + suggestions.locations.length + suggestions.providers.length 
+  const totalServices = suggestions.services.length || 0 
+  const totalLocations = suggestions.locations.length || 0 
+  const totalProviders = suggestions.providers.length || 0 
+  const totalCategories = suggestions.categories.length || 0 
 
-  const hasResults =
-  suggestions.services.length > 0 ||
-  suggestions.locations.length > 0 ||
-  suggestions.providers.length > 0 
+  const totalResults = totalServices + totalLocations + totalProviders + totalCategories  
+  
+  const hasResults = totalResults > 0
   
   
  const handleSearch = () => {
@@ -319,34 +365,34 @@ const onPickProvider = useCallback((slug: string) => {
   return (
    <>
      
-    {!isMobile  && hasResults && (<div className={cn('search-overlay')} onClick={clearTerm}><div className='overlay-bg'></div></div>)}
 
-    <div id="search-box" className={cn(containerStyles[variant], className)} onClick={(e) => e.stopPropagation()} onPointerDown={(e) => e.stopPropagation()}>   
+    <div id="search-box" className={cn(containerStyles[variant], "bg-(--primary-l)/90 dark:bg-[#143450] md:bg-transparent md:dark:bg-transparent md:z-30",  className)} onClick={(e) => e.stopPropagation()} onPointerDown={(e) => e.stopPropagation()}>   
+      <div className='relative basis-2/3'>
+        <input
+          ref={inputRef}
+          type="text"
+          value={term}
+          name="search"
+          onChange={(e) => setTerm(e.target.value)}
+          onKeyDown={(e) => e.key === 'Enter' && handleSearch()} 
+          placeholder="¿Qué servicio buscas?"
+          className={cn("input rounded-r-none search-input text-[16px] placeholder:text-sm pt-2 pb-2.25 md:text-sm md:py-2 h-10 md:h-auto"
+          )} 
+          onPointerDownCapture={(e) =>  e.stopPropagation()}
+      
+        />
 
-      <input
-        id="search-input"
-        ref={inputRef}
-        type="text"
-        value={term}
-        name="search"
-        onChange={(e) => setTerm(e.target.value)}
-        onKeyDown={(e) => e.key === 'Enter' && handleSearch()} 
-        placeholder="¿Qué servicio buscas?"
-        className={cn("input rounded-r-none search-input basis-2/3 text-[16px] placeholder:text-sm pt-1.5 pb-1.75 md:text-sm md:py-2"
-        )} 
-        onPointerDownCapture={(e) =>  e.stopPropagation()}
-    
-      />
-
-      {isMobile && ( 
-      <button
-        onClick={(e) => {e.stopPropagation();clearTerm();actions.requestMobileSearch('close')}}
-        className={cn("close-search-btn px-4 py-2.5"
+        {isMobile && ( 
+        <button
+          onClick={(e) => {e.stopPropagation();clearTerm();actions.requestMobileSearch('close')}}
+          className={cn("close-search-btn px-2 py-2.5"
+          )}
+        >
+          <FontAwesomeIcon icon={faCircleArrowDown} />
+        </button>
         )}
-      >
-        <FontAwesomeIcon icon={faCircleArrowDown} />
-      </button>
-      )}
+      </div>
+      
 
       <button
         onClick={() => {handleSearch()}}
@@ -358,19 +404,23 @@ const onPickProvider = useCallback((slug: string) => {
 
        
         <div 
-          className={cn('search-results-box absolute w-full left-0 z-3 md:pb-0',
+          className={cn('search-results-box absolute left-0 z-3 md:pb-0 w-full',
             'top-full md:rounded-b-lg',      
             totalResults === 1 && 'to-300%',
-            hasResults && 'pt-4 pb-10',
-            variant === 'header' && 'bg-linear-to-b gradient'
+            hasResults && 'pb-10',
+            variant === 'header' && 'bg-linear-to-b gradient left-1/2 -translate-x-1/2 transition-all duration-300 w-auto'
           )}
-          style={{ height: hasResults && vh ? `${vh}px` : undefined}}
+          style={{ height: hasResults && vh && isMobile ? `${vh}px` : undefined}}
           ref={listRef}
         >
 
           <SuggestionsContent
             hasResults={hasResults}
             totalResults={totalResults}
+            totalServices={totalServices}
+            totalLocations={totalLocations}
+            totalProviders={totalProviders}
+            totalCategories={totalCategories}
             suggestions={suggestions}
             variant={variant}
             onPickService={onPickService}
@@ -380,11 +430,13 @@ const onPickProvider = useCallback((slug: string) => {
           />
 
           {isMobile && state.mobileSearchOpen &&(
-          <p className={cn("text-xs text-center pb-6", hasResults &&("pt-6"))}>¿Quieres reactivar el hint de búsqueda? → <button>Reactivar</button></p>
+          <p className={cn("text-sm text-center text-white py-6")}>¿Quieres reactivar el hint de búsqueda? → <button>Reactivar</button></p>
           )}
         </div> 
            
     </div>
+    {!isMobile  && hasResults && (<div className={cn('search-overlay z-20')} onClick={clearTerm}><div className='overlay-bg'></div></div>)}
+
   </> 
   )}
 )

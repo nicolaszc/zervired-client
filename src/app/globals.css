@@ -58,6 +58,13 @@
       from-(--bg-l) to-transparent
       dark:from-(--bg-d) dark:to-transparent;
   }
+  .bg-s-fade-icon {
+    @apply bg-radial
+      from-20%
+      to-65%  
+       from-(--primary-l)/50 to-transparent
+      dark:from-(--bg-d) dark:to-transparent;
+  }
 
   .bg-s-blend{
     @apply bg-(--primary-l)/70 
@@ -104,7 +111,7 @@
       from-50% via-50% to-50%
       dark:from-black/20
   }
-
+ 
   /* Shadow */
   .theme-shadow{
     @apply filter 
@@ -176,6 +183,7 @@
       hover:text-(--hover-l) dark:hover:text-(--hover-d) ;
   }
 
+ 
   /* Tags */
   .tag{
     @apply rounded-sm 
@@ -234,7 +242,7 @@
   }
   .close-search-btn{
     @apply  inline-flex opacity-0 pointer-events-none
-      absolute right-1/3 md:right-[22.5%]
+      absolute right-0
       rounded-none 
       text-xl 
       text-(--primary-d)
@@ -250,13 +258,14 @@
     gap-y-2;
   }
 
+  /* Dock */
   #dock button{
     @apply flex justify-center items-center
     ps-3.75 pe-3 py-4 
     w-11 min-h-13 max-w-11
     text-xl
     rounded-l-lg
-    bg-(--primary-d)/15 dark:bg-white/10 backdrop-blur
+    bg-(--primary-d)/20 dark:bg-white/10 backdrop-blur
     hover:bg-(--primary-d)/25 dark:hover:bg-white/20 hover:backdrop-blur-3xl
     text-(--primary-d)/70 
     dark:text-white/80 
@@ -315,6 +324,18 @@ body {
   color: var(--foreground);
   /* overflow-x: clip; */
   font-weight: 200;
+}
+.btn-close-half-circle::before{
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 30px;
+  height: 15px; /* La mitad del ancho */
+  background-color: lightblue;
+  /* Redondear solo las esquinas superiores */
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
 }
 
 /* Animations */
