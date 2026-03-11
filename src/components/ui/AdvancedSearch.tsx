@@ -41,8 +41,8 @@ export default function AdvabcedSearch({ className}: Props) {
         className,
       )}
     >
-      <div className="relative advanced-search-gradient mt-6.5 py-12 "> 
-        <button
+      <div className="relative  bg-(--primary-d)/20 dark:bg-white/10 backdrop-blur  mt-6.5 py-12 "> 
+        {/* <button
           className={cn(
             "flex items-center justify-center absolute w-11 h-13 -top-6.5 end-0 cursor-pointer pointer-events-auto hover:text-sky-500 dark:hover:text-amber-500"
           )}    
@@ -54,8 +54,23 @@ export default function AdvabcedSearch({ className}: Props) {
               <FontAwesomeIcon icon={faXmark} className="w-3.75! h-3.75!" />
             </span>
           </div>
+        </button> */}
+        
+        <button
+            onClick={(e) => {e.stopPropagation();actions.requestMobileSearch('close');searchRef.current?.clear()}}
+            className={cn(
+              "flex items-center justify-center absolute z-60 w-11 h-13 -top-6.75 end-0",
+              //peek ? "opacity-100 delay-100 duration-400" : "opacity-0 delay-100 duration-400 pointer-events-none"         
+            )}
+            aria-label="Dismiss hint"
+          >
+            <div className="btn-close rounded-full w-7.5! h-7.5! overflow-hidden relative">
+              <span className="backdrop-blur absolute top-0 left-0 w-7.5! h-4! bg-(--primary-d)/15 dark:bg-white/5"></span>
+              <span className="flex items-center justify-center w-7.5! h-7.5!">
+                <FontAwesomeIcon icon={faXmark} className="w-3.75! h-3.75!" />
+              </span>
+            </div>
         </button>
-
         <section className='advanced-search relative z-1 grid grid-cols-5 gap-x-20 mx-auto max-w-7xl px-6'>
           <div className="col-span-3 flex flex-col items-start justify-between">
             <SectionTitle title={'Búsqueda de perfiles'} />

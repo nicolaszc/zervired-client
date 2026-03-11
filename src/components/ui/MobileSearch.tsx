@@ -162,28 +162,28 @@ export default function MobileSearch({ className }: Props) {
           }}
           >
 
-          {/* X: SOLO en hint (peek) => suppressed */}
-          <button
-            onClick={(e) => {
-              e.stopPropagation()
-              actions.setAutoSearchSuppressed(true)
-              actions.setMobileSearchPeek(false)
-              actions.showHintToast(
-                "Hint de búsqueda suprimido temporalmente. Puedes reactivarlo desde la búsqueda."
-              )
-              }}
-              className={cn(
-                "flex items-center justify-center absolute z-60 w-11 h-13 -top-6.75 end-0",
-                peek ? "opacity-100 delay-100 duration-400" : "opacity-0 delay-100 duration-400 pointer-events-none"         
-              )}
-              aria-label="Dismiss hint"
-            >
-            <div className="btn-close rounded-full w-7.5! h-7.5! overflow-hidden relative">
-            <span className="backdrop-blur absolute top-0 left-0 w-7.5! h-4! bg-(--primary-d)/15 dark:bg-white/5"></span>
-            <span className="flex items-center justify-center w-7.5! h-7.5!">
-              <FontAwesomeIcon icon={faXmark} className="w-3.75! h-3.75!" />
-            </span>
-          </div>
+            {/* X: SOLO en hint (peek) => suppressed */}
+            <button
+              onClick={(e) => {
+                e.stopPropagation()
+                actions.setAutoSearchSuppressed(true)
+                actions.setMobileSearchPeek(false)
+                actions.showHintToast(
+                  "Hint de búsqueda suprimido temporalmente. Puedes reactivarlo desde la búsqueda."
+                )
+                }}
+                className={cn(
+                  "flex items-center justify-center absolute z-60 w-11 h-13 -top-6.75 end-0",
+                  peek ? "opacity-100 delay-100 duration-400" : "opacity-0 delay-100 duration-400 pointer-events-none"         
+                )}
+                aria-label="Dismiss hint"
+              >
+              <div className="btn-close rounded-full w-7.5! h-7.5! overflow-hidden relative">
+              <span className="backdrop-blur absolute top-0 left-0 w-7.5! h-4! bg-(--primary-d)/15 dark:bg-white/5"></span>
+              <span className="flex items-center justify-center w-7.5! h-7.5!">
+                <FontAwesomeIcon icon={faXmark} className="w-3.75! h-3.75!" />
+              </span>
+            </div>
           </button>
 
           {/* ProvidersSearch HINT / “input falso” */}
@@ -212,7 +212,7 @@ export default function MobileSearch({ className }: Props) {
             >
               <div className={cn("input relative rounded-r-none search-input basis-2/3 text-sm pt-2.5 pb-1.75 bg-white/40 dark:bg-white/20 backdrop-blur")}>
                 <span className="text-(--primary-d)/60">¿Qué servicio buscas?</span>
-                <FontAwesomeIcon icon={faCircleArrowUp} className="absolute right-1 text-[20px]"/>
+                <FontAwesomeIcon icon={faCircleArrowUp} className="absolute right-0 px-2 text-[20px]"/>
               </div>
 
               <div className={cn("px-6 py-2 text-white/50 dark:text-(--primary-d) bg-(--primary-d)/75 dark:bg-(--primary-l)/50 rounded-r-full rounded-l-none basis-1/3")}>

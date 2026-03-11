@@ -50,7 +50,9 @@
   main{
     @apply bg-(--bg-l) dark:bg-(--bg-d);
   }
-
+  #advanced-search .text-shadow-white{
+    @apply text-shadow-none!
+  }
   /* Background */
   .bg-s-fade {
     @apply bg-radial
