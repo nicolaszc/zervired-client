@@ -14,6 +14,7 @@ export async function POST(req: NextRequest) {
     }
 
     const payload = await req.json();
+    console.log("FULL PAYLOAD:", JSON.stringify(payload, null, 2));
     const { uid, path } = payload.data;
 
     const msgRes = await fetch(
@@ -21,6 +22,9 @@ export async function POST(req: NextRequest) {
       { headers: { Authorization: `Bearer ${API_TOKEN}` } }
     );
     const msgJson = await msgRes.json();
+    console.log("MSG FETCH STATUS:", msgRes.status);
+    console.log("MSG FETCH BODY:", JSON.stringify(msgJson, null, 2));
+    
     const msg = msgJson.data;
 
     const summaryText = `New email received:
