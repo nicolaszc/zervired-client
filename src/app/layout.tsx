@@ -1,10 +1,16 @@
 import type { Metadata, Viewport } from "next";
+// Next.js processes this global stylesheet at runtime; TypeScript may not have
+// a declaration for side-effect CSS imports in some configurations.
+// @ts-expect-error -- global CSS is handled by Next.js
 import './globals.css'
 import { ThemeProvider } from '@/context/ThemeContext'
 import { UIProvider } from '@/context/UIContext'
 import LayoutShell from "@/components/layout/LayoutShell"
 import {poppins} from '@/styles/fonts/fonts'
 import { config } from '@fortawesome/fontawesome-svg-core'
+// Font Awesome processes this stylesheet at runtime; TypeScript may not have
+// a declaration for side-effect CSS imports in some configurations.
+// @ts-expect-error -- stylesheet is handled by the bundler
 import '@fortawesome/fontawesome-svg-core/styles.css'
 
 config.autoAddCss = false
