@@ -1,10 +1,13 @@
 import type { Metadata, Viewport } from "next";
+
+
 import './globals.css'
 import { ThemeProvider } from '@/context/ThemeContext'
 import { UIProvider } from '@/context/UIContext'
 import LayoutShell from "@/components/layout/LayoutShell"
 import {poppins} from '@/styles/fonts/fonts'
 import { config } from '@fortawesome/fontawesome-svg-core'
+
 import '@fortawesome/fontawesome-svg-core/styles.css'
 
 config.autoAddCss = false
