@@ -14,25 +14,16 @@ export async function POST(req: NextRequest) {
     }
 
     const payload = await req.json();
-    console.log("FULL PAYLOAD:", JSON.stringify(payload, null, 2));
-    const { uid, path } = payload.data;
-
-    const msgRes = await fetch(
-      `https://api.mail.hostinger.com/api/v1/mailboxes/${MAILBOX_ID}/folders/${encodeURIComponent(path)}/messages/${uid}`,
-      { headers: { Authorization: `Bearer ${API_TOKEN}` } }
-    );
-    const msgJson = await msgRes.json();
-    console.log("MSG FETCH STATUS:", msgRes.status);
-    console.log("MSG FETCH BODY:", JSON.stringify(msgJson, null, 2));
-    
-    const msg = msgJson.data;
+    const msg = payload.data; // <-- already the full message, no extra fetch needed
 
     const summaryText = `New email received:
-    From: ${msg.from?.name ?? ""} <${msg.from?.address ?? ""}>
-    Subject: ${msg.subject}
-    Date: ${msg.date}`;
+From: ${msg.from}
+Subject: ${msg.subject}
+Date: ${msg.date}
 
-    await fetch(
+${msg.plainBody?.slice(0, 300) ?? ""}`;
+
+    const sendRes = await fetch(
       `https://api.mail.hostinger.com/api/v1/mailboxes/${MAILBOX_ID}/send`,
       {
         method: "POST",
@@ -47,6 +38,10 @@ export async function POST(req: NextRequest) {
         }),
       }
     );
+
+    if (!sendRes.ok) {
+      console.error("SEND FAILED:", sendRes.status, await sendRes.text());
+    }
 
     return NextResponse.json({ received: true }, { status: 200 });
   } catch (error) {
